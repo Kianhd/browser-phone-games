@@ -1,296 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Scroller - TV Display</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        
-        #menu {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-        
-        h1 {
-            font-size: 48px;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        button {
-            background: white;
-            color: #667eea;
-            border: none;
-            padding: 15px 40px;
-            font-size: 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            font-weight: bold;
-            margin: 10px;
-        }
-        
-        button:hover {
-            transform: scale(1.05);
-        }
-        
-        #roomCode {
-            font-size: 48px;
-            letter-spacing: 8px;
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        #qrcode {
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            display: inline-block;
-        }
-        
-        .player-status {
-            display: inline-block;
-            margin: 10px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        
-        .player-status.connected {
-            background: rgba(76, 175, 80, 0.3);
-        }
-        
-        #gameCanvas {
-            border: 3px solid white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            background: #1a1a2e;
-            display: none;
-        }
-        
-        #gameInfo {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            display: none;
-        }
-        
-        .score {
-            font-size: 36px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        #gameOver {
-            display: none;
-            text-align: center;
-            padding: 40px;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 20px;
-        }
-        
-        #gameOver h2 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-        
-        .instructions {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        
-        .instructions h3 {
-            margin-bottom: 10px;
-        }
-        
-        .instructions p {
-            margin: 5px 0;
-            font-size: 18px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QuadPong TV</title>
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-    <div id="menu">
-        <h1>🏎️ Car Scroller 🏎️</h1>
-        <button onclick="createRoom()">Create Room</button>
-        
-        <div id="roomInfo" style="display: none;">
-            <h2>Room Code:</h2>
-            <div id="roomCode"></div>
-            <div id="qrcode"></div>
-            
-            <div class="instructions">
-                <h3>How to Connect:</h3>
-                <p>1. On your phone, go to this same URL</p>
-                <p>2. Click "Join as Controller"</p>
-                <p>3. Enter the room code above</p>
-                <p>Or scan the QR code with your phone!</p>
-            </div>
-            
-            <div id="playerStatus">
-                <div class="player-status" id="player1Status">
-                    Player 1: ❌ Not Connected
-                </div>
-                <div class="player-status" id="player2Status">
-                    Player 2: ❌ Not Connected
-                </div>
-            </div>
-            
-            <button id="startButton" onclick="startGame()" style="display: none;">
-                Start Game
-            </button>
-        </div>
+  <div class="tv-ui">
+    <div class="room-panel">
+      <div class="big-code" id="roomCode">—</div>
+      <div class="qr-wrap"><img id="qrImg" alt="qr" /></div>
+      <div class="controls-row">
+        <label>Mode:</label>
+        <select id="modeSelect">
+          <option value="2">2 Players</option>
+          <option value="3">3 Players</option>
+          <option value="4">4 Players</option>
+        </select>
+        <button id="createRoom">Create Room</button>
+        <button id="startGame" disabled>Start</button>
+      </div>
+      <div class="players" id="playersStatus">
+        <div class="pstatus" data-i="1">P1 — <span class="stat">❌</span></div>
+        <div class="pstatus" data-i="2">P2 — <span class="stat">❌</span></div>
+        <div class="pstatus" data-i="3">P3 — <span class="stat">❌</span></div>
+        <div class="pstatus" data-i="4">P4 — <span class="stat">❌</span></div>
+      </div>
     </div>
-    
-    <div id="gameInfo">
-        <div class="score">
-            <span id="score1">0</span> - <span id="score2">0</span>
-        </div>
-    </div>
-    
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    
-    <div id="gameOver">
-        <h2 id="winnerText"></h2>
-        <button onclick="location.reload()">Play Again</button>
-    </div>
-    
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    <script>
-        const socket = io();
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        let roomCode = '';
-        let gameState = null;
-        
-        function createRoom() {
-            socket.emit('create-room');
-        }
-        
-        socket.on('room-created', (code) => {
-            roomCode = code;
-            document.getElementById('roomCode').textContent = code;
-            document.getElementById('roomInfo').style.display = 'block';
-            document.querySelector('button[onclick="createRoom()"]').style.display = 'none';
-            
-            // Generate QR code
-            const qrContainer = document.getElementById('qrcode');
-            qrContainer.innerHTML = '';
-            new QRCode(qrContainer, {
-                text: `${window.location.origin}/controller.html?room=${code}`,
-                width: 200,
-                height: 200,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-            });
-        });
-        
-        socket.on('player-joined', ({ playerNumber, totalPlayers }) => {
-            const statusEl = document.getElementById(`player${playerNumber}Status`);
-            statusEl.textContent = `Player ${playerNumber}: ✅ Connected`;
-            statusEl.classList.add('connected');
-            
-            if (totalPlayers === 2) {
-                document.getElementById('startButton').style.display = 'inline-block';
-            }
-        });
-        
-        socket.on('player-left', ({ playerNumber }) => {
-            const statusEl = document.getElementById(`player${playerNumber}Status`);
-            statusEl.textContent = `Player ${playerNumber}: ❌ Not Connected`;
-            statusEl.classList.remove('connected');
-            document.getElementById('startButton').style.display = 'none';
-        });
-        
-        function startGame() {
-            socket.emit('start-game', roomCode);
-        }
-        
-        socket.on('game-started', () => {
-            document.getElementById('menu').style.display = 'none';
-            document.getElementById('gameCanvas').style.display = 'block';
-            document.getElementById('gameInfo').style.display = 'block';
-            startRendering();
-        });
-        
-        socket.on('game-update', (state) => {
-            gameState = state;
-            document.getElementById('score1').textContent = state.player1.score;
-            document.getElementById('score2').textContent = state.player2.score;
-        });
-        
-        socket.on('game-over', ({ winner }) => {
-            document.getElementById('gameCanvas').style.display = 'none';
-            document.getElementById('gameInfo').style.display = 'none';
-            document.getElementById('gameOver').style.display = 'block';
-            document.getElementById('winnerText').textContent = `Player ${winner} Wins! 🏆`;
-        });
-        
-        function startRendering() {
-            function render() {
-                if (!gameState) {
-                    requestAnimationFrame(render);
-                    return;
-                }
-                
-                // Clear canvas
-                ctx.fillStyle = '#1a1a2e';
-                ctx.fillRect(0, 0, 800, 600);
-                
-                // Draw center line
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-                ctx.lineWidth = 2;
-                ctx.setLineDash([10, 10]);
-                ctx.beginPath();
-                ctx.moveTo(400, 0);
-                ctx.lineTo(400, 600);
-                ctx.stroke();
-                ctx.setLineDash([]);
-                
-                // Draw paddles (as cars)
-                ctx.fillStyle = '#ff6b6b';
-                ctx.fillRect(50, gameState.player1.y - 50, 20, 100);
-                
-                ctx.fillStyle = '#4ecdc4';
-                ctx.fillRect(730, gameState.player2.y - 50, 20, 100);
-                
-                // Draw ball
-                ctx.fillStyle = '#ffd93d';
-                ctx.beginPath();
-                ctx.arc(gameState.ball.x, gameState.ball.y, 15, 0, Math.PI * 2);
-                ctx.fill();
-                
-                requestAnimationFrame(render);
-            }
-            render();
-        }
-    </script>
+  </div>
+
+  <canvas id="gameCanvas" width="1280" height="720"></canvas>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/tv.js"></script>
 </body>
 </html>

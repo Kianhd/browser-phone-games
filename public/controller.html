@@ -1,326 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Car Scroller - Controller</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: none;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-        
-        #joinForm {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            width: 90%;
-            max-width: 400px;
-        }
-        
-        h1 {
-            font-size: 32px;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        input {
-            width: 100%;
-            padding: 15px;
-            font-size: 24px;
-            text-align: center;
-            border: none;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #667eea;
-            font-weight: bold;
-        }
-        
-        button {
-            background: white;
-            color: #667eea;
-            border: none;
-            padding: 15px 40px;
-            font-size: 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            font-weight: bold;
-            width: 100%;
-        }
-        
-        button:active {
-            transform: scale(0.95);
-        }
-        
-        #controller {
-            display: none;
-            width: 100%;
-            height: 100vh;
-            position: relative;
-        }
-        
-        #playerInfo {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            z-index: 10;
-        }
-        
-        #playerInfo h2 {
-            font-size: 28px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .control-zone {
-            position: absolute;
-            width: 100%;
-            height: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 48px;
-            font-weight: bold;
-            transition: background 0.1s;
-            user-select: none;
-        }
-        
-        #upButton {
-            top: 0;
-            background: rgba(76, 175, 80, 0.3);
-        }
-        
-        #upButton:active {
-            background: rgba(76, 175, 80, 0.6);
-        }
-        
-        #downButton {
-            bottom: 0;
-            background: rgba(244, 67, 54, 0.3);
-        }
-        
-        #downButton:active {
-            background: rgba(244, 67, 54, 0.6);
-        }
-        
-        .arrow {
-            font-size: 72px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-        }
-        
-        #status {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-            z-index: 10;
-        }
-        
-        .vibrate {
-            animation: vibrate 0.1s;
-        }
-        
-        @keyframes vibrate {
-            0% { transform: translateX(-2px); }
-            25% { transform: translateX(2px); }
-            50% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
-            100% { transform: translateX(0); }
-        }
-        
-        #error {
-            color: #ff6b6b;
-            margin-top: 10px;
-            font-size: 16px;
-        }
-        
-        #disconnected {
-            display: none;
-            text-align: center;
-            padding: 40px;
-            background: rgba(244, 67, 54, 0.8);
-            border-radius: 20px;
-        }
-        
-        #disconnected h2 {
-            margin-bottom: 20px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Controller</title>
+  <link rel="stylesheet" href="/style.css" />
 </head>
-<body>
-    <div id="joinForm">
-        <h1>🎮 Join Game</h1>
-        <input type="text" id="roomCodeInput" placeholder="ROOM CODE" maxlength="6" autocomplete="off">
-        <button onclick="joinRoom()">Join Room</button>
-        <div id="error"></div>
+<body class="controller-body">
+  <div class="control-wrap">
+    <div class="join-panel">
+      <input id="roomInput" placeholder="ROOM CODE" maxlength="6" />
+      <button id="joinBtn">Join</button>
+      <div id="joinStatus" class="tiny muted"></div>
     </div>
-    
-    <div id="controller">
-        <div id="playerInfo">
-            <h2 id="playerNumber"></h2>
+
+    <div id="controllerArea" class="hidden">
+      <div id="meLabel" class="me-label">Joined as P?</div>
+
+      <div class="controls-grid">
+        <button class="ctrl-btn" id="upBtn">▲</button>
+        <div class="lr-row">
+          <button class="ctrl-btn" id="leftBtn">◀</button>
+          <button class="ctrl-btn accent" id="actionBtn">ACTION</button>
+          <button class="ctrl-btn" id="rightBtn">▶</button>
         </div>
-        
-        <div class="control-zone" id="upButton">
-            <div class="arrow">⬆️</div>
-        </div>
-        
-        <div class="control-zone" id="downButton">
-            <div class="arrow">⬇️</div>
-        </div>
-        
-        <div id="status">Connected</div>
+        <button class="ctrl-btn" id="downBtn">▼</button>
+      </div>
+      <div class="hint tiny muted">Hold left/right/up/down for continuous movement</div>
     </div>
-    
-    <div id="disconnected">
-        <h2>❌ Disconnected</h2>
-        <p>The game room has been closed.</p>
-        <button onclick="location.reload()">Join New Game</button>
-    </div>
-    
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-        let currentRoom = '';
-        let playerNum = 0;
-        
-        // Check for room in URL params
-        const urlParams = new URLSearchParams(window.location.search);
-        const roomFromUrl = urlParams.get('room');
-        if (roomFromUrl) {
-            document.getElementById('roomCodeInput').value = roomFromUrl;
-            setTimeout(() => joinRoom(), 500);
-        }
-        
-        function joinRoom() {
-            const code = document.getElementById('roomCodeInput').value.toUpperCase();
-            if (code.length !== 6) {
-                showError('Please enter a 6-character room code');
-                return;
-            }
-            socket.emit('join-room', code);
-        }
-        
-        function showError(message) {
-            document.getElementById('error').textContent = message;
-            setTimeout(() => {
-                document.getElementById('error').textContent = '';
-            }, 3000);
-        }
-        
-        socket.on('joined-room', ({ roomCode, playerNumber }) => {
-            currentRoom = roomCode;
-            playerNum = playerNumber;
-            document.getElementById('joinForm').style.display = 'none';
-            document.getElementById('controller').style.display = 'block';
-            document.getElementById('playerNumber').textContent = `Player ${playerNumber}`;
-            
-            // Add haptic feedback if available
-            if (navigator.vibrate) {
-                navigator.vibrate(200);
-            }
-        });
-        
-        socket.on('error', (message) => {
-            showError(message);
-        });
-        
-        socket.on('room-closed', () => {
-            document.getElementById('controller').style.display = 'none';
-            document.getElementById('joinForm').style.display = 'none';
-            document.getElementById('disconnected').style.display = 'block';
-        });
-        
-        // Touch controls
-        let touchActive = false;
-        
-        function sendInput(direction) {
-            socket.emit('controller-input', { 
-                roomCode: currentRoom, 
-                direction: direction 
-            });
-            
-            // Haptic feedback
-            if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
-        }
-        
-        // Up button
-        const upButton = document.getElementById('upButton');
-        upButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            touchActive = true;
-            sendInput('up');
-        });
-        
-        upButton.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            if (!touchActive) sendInput('up');
-        });
-        
-        // Down button
-        const downButton = document.getElementById('downButton');
-        downButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            touchActive = true;
-            sendInput('down');
-        });
-        
-        downButton.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            if (!touchActive) sendInput('down');
-        });
-        
-        // Reset touch flag
-        document.addEventListener('touchend', () => {
-            touchActive = false;
-        });
-        
-        // Keyboard support for testing
-        document.addEventListener('keydown', (e) => {
-            if (!currentRoom) return;
-            
-            if (e.key === 'ArrowUp' || e.key === 'w') {
-                sendInput('up');
-                upButton.classList.add('vibrate');
-                setTimeout(() => upButton.classList.remove('vibrate'), 100);
-            } else if (e.key === 'ArrowDown' || e.key === 's') {
-                sendInput('down');
-                downButton.classList.add('vibrate');
-                setTimeout(() => downButton.classList.remove('vibrate'), 100);
-            }
-        });
-        
-        // Allow Enter to submit room code
-        document.getElementById('roomCodeInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                joinRoom();
-            }
-        });
-    </script>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/controller.js"></script>
 </body>
 </html>

@@ -1,40 +1,86 @@
 const socket = io();
 const joinBtn = document.getElementById('joinBtn');
 const roomInput = document.getElementById('roomInput');
-const status = document.getElementById('status');
-const controls = document.getElementById('controls');
+const joinStatus = document.getElementById('joinStatus');
+const controllerArea = document.getElementById('controllerArea');
+const meLabel = document.getElementById('meLabel');
+
 const leftBtn = document.getElementById('leftBtn');
 const rightBtn = document.getElementById('rightBtn');
-const boostBtn = document.getElementById('boostBtn');
+const upBtn = document.getElementById('upBtn');
+const downBtn = document.getElementById('downBtn');
+const actionBtn = document.getElementById('actionBtn');
 
-let playerNumber = null;
 let joinedRoom = null;
+let playerNumber = null;
+let holdInterval = null;
+let currentState = { left:false, right:false, up:false, down:false, action:false };
 
-joinBtn.onclick = () => {
+// allow prefill via query param ?r=CODE
+(function prefill(){
+  const params = new URLSearchParams(location.search);
+  const r = params.get('r');
+  if (r) roomInput.value = r;
+})();
+
+joinBtn.onclick = async () => {
   const room = (roomInput.value || '').trim().toUpperCase();
-  if (!room) return status.textContent = 'Enter room code';
+  if (!room) return joinStatus.textContent = 'Enter room code';
   socket.emit('joinRoom', { room }, (res) => {
-    if (!res.ok) return status.textContent = res.error || 'Failed';
-    playerNumber = res.player;
+    if (!res.ok) {
+      joinStatus.textContent = res.error || 'Failed to join';
+      return;
+    }
     joinedRoom = room;
-    status.textContent = 'Joined as P' + playerNumber;
-    controls.classList.remove('hidden');
-    navigator.vibrate && navigator.vibrate(50);
+    playerNumber = res.player;
+    meLabel.textContent = `Joined as P${playerNumber}`;
+    joinStatus.textContent = '';
+    controllerArea.classList.remove('hidden');
+    navigator.vibrate && navigator.vibrate(40);
   });
 };
 
-function sendInput(obj){
+function sendState(){
   if (!joinedRoom) return;
-  // attach player id
-  obj.player = playerNumber;
-  socket.emit('input', { room: joinedRoom, input: obj });
+  socket.emit('input', { room: joinedRoom, input: currentState });
 }
 
-// hold buttons behaviour
-let leftDown=false, rightDown=false;
-leftBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); leftDown=true; sendInput({ left:true });});
-leftBtn.addEventListener('touchend', (e)=>{ e.preventDefault(); leftDown=false; sendInput({});});
-rightBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); rightDown=true; sendInput({ right:true });});
-rightBtn.addEventListener('touchend', (e)=>{ e.preventDefault(); rightDown=false; sendInput({});});
+// helper to begin repeating sends while holding
+function startHold() {
+  sendState(); // immediate
+  if (holdInterval) clearInterval(holdInterval);
+  holdInterval = setInterval(sendState, 80); // 80ms for smooth continuous updates
+}
+function stopHold() {
+  if (holdInterval) clearInterval(holdInterval);
+  holdInterval = null;
+  // reset movement flags
+  currentState.left = currentState.right = currentState.up = currentState.down = false;
+  sendState();
+}
 
-boostBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); sendInput({ boost:true }); navigator.vibrate && navigator.vibrate([40,20,40]);});
+// unify touch+mouse for buttons
+function addHold(button, onSetTrue, onSetFalse){
+  let isDown = false;
+  const start = (e) => { e.preventDefault(); if (isDown) return; isDown = true; onSetTrue(); startHold(); };
+  const end = (e) => { e.preventDefault(); if (!isDown) return; isDown = false; onSetFalse(); stopHold(); };
+  button.addEventListener('touchstart', start, {passive:false});
+  button.addEventListener('touchend', end, {passive:false});
+  button.addEventListener('mousedown', start);
+  window.addEventListener('mouseup', end);
+}
+
+// wire controls
+addHold(leftBtn, ()=> { currentState.left = true; }, ()=> { currentState.left = false; });
+addHold(rightBtn, ()=> { currentState.right = true; }, ()=> { currentState.right = false; });
+addHold(upBtn, ()=> { currentState.up = true; }, ()=> { currentState.up = false; });
+addHold(downBtn, ()=> { currentState.down = true; }, ()=> { currentState.down = false; });
+
+// action is a quick tap (not continuous)
+function actionTap(){
+  currentState.action = true;
+  sendState();
+  setTimeout(()=> { currentState.action = false; }, 120);
+}
+actionBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); actionTap(); navigator.vibrate && navigator.vibrate(50); }, {passive:false});
+actionBtn.addEventListener('mousedown', (e)=>{ e.preventDefault(); actionTap(); });

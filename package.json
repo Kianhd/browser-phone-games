@@ -1,7 +1,7 @@
 {
-  "name": "car-scroller",
-  "version": "1.0.0",
-  "description": "A multiplayer car racing game with TV + phone controllers",
+  "name": "air-console-mvp-updated",
+  "version": "2.0.0",
+  "description": "Upgraded AirConsole-style MVP — smoother controls, 3/4 players, QR, refined visuals",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -17,7 +17,7 @@
   "engines": {
     "node": ">=18"
   },
-  "keywords": ["game", "multiplayer", "realtime", "socketio", "pong", "car"],
+  "keywords": ["game", "multiplayer", "realtime", "socketio", "pong", "quadpong"],
   "author": "Claude Code",
   "license": "MIT"
 }
