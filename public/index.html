@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pong Remix — TV</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div id="ui" class="ui">
+    <div class="topbar">
+      <button id="createRoom">Create Room</button>
+      <div id="roomCode" class="roomCode">—</div>
+      <button id="startGame" disabled>Start Game</button>
+    </div>
+
+    <div id="players" class="players">Players: <span id="p1">❌</span> <span id="p2">❌</span></div>
+  </div>
+
+  <canvas id="game" width="1280" height="720"></canvas>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/tv.js"></script>
+</body>
+</html>

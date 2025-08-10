@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Controller</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="controller-body">
+  <div class="control-wrap">
+    <div class="room-panel">
+      <input id="roomInput" placeholder="ROOM CODE" maxlength="6" />
+      <button id="joinBtn">Join</button>
+      <div id="status"></div>
+    </div>
+
+    <div id="controls" class="controls hidden">
+      <div class="joy-row">
+        <button id="leftBtn" class="big-btn">◀</button>
+        <button id="rightBtn" class="big-btn">▶</button>
+      </div>
+      <div style="height:18px"></div>
+      <button id="boostBtn" class="big-btn accent">BOOST</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/controller.js"></script>
+</body>
+</html>
