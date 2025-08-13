@@ -53,37 +53,84 @@ const playerColors = {
 let audioContext = null;
 const soundEnabled = true;
 
-function initAudio() {
+async function initAudio() {
   try {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    // Resume the audio context if it's suspended
+    if (audioContext.state === 'suspended') {
+      await audioContext.resume();
+    }
+    
+    // Test audio with a very quiet sound to ensure it's working
+    if (audioContext.state === 'running') {
+      const testOsc = audioContext.createOscillator();
+      const testGain = audioContext.createGain();
+      testOsc.connect(testGain);
+      testGain.connect(audioContext.destination);
+      testGain.gain.setValueAtTime(0.001, audioContext.currentTime); // Very quiet
+      testOsc.frequency.value = 440;
+      testOsc.start(audioContext.currentTime);
+      testOsc.stop(audioContext.currentTime + 0.01);
+    }
   } catch (e) {
-    console.log('Web Audio API not supported');
+    console.log('Web Audio API not supported or failed to initialize:', e);
   }
 }
 
-function playSound(frequency, duration, volume = 0.1, type = 'sine') {
-  if (!audioContext || !soundEnabled) return;
+async function playSound(frequency, duration, volume = 0.1, type = 'sine') {
+  if (!soundEnabled) return;
   
-  const oscillator = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
+  // Initialize audio if not already done
+  if (!audioContext) {
+    await initAudio();
+  }
   
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
+  // Resume context if suspended
+  if (audioContext && audioContext.state === 'suspended') {
+    await audioContext.resume();
+  }
   
-  oscillator.frequency.value = frequency;
-  oscillator.type = type;
+  if (!audioContext || audioContext.state !== 'running') return;
   
-  gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-  gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
-  
-  oscillator.start(audioContext.currentTime);
-  oscillator.stop(audioContext.currentTime + duration);
+  try {
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = frequency;
+    oscillator.type = type;
+    
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + duration);
+  } catch (e) {
+    console.log('Failed to play sound:', e);
+  }
 }
 
 // Piano-like sound for Für Elise notes
-function playPianoNote(frequency) {
-  if (!audioContext || !soundEnabled) return;
+async function playPianoNote(frequency) {
+  if (!soundEnabled) return;
+  
+  // Initialize audio if not already done
+  if (!audioContext) {
+    await initAudio();
+  }
+  
+  // Resume context if suspended
+  if (audioContext && audioContext.state === 'suspended') {
+    await audioContext.resume();
+  }
+  
+  if (!audioContext || audioContext.state !== 'running') return;
   
   // Create multiple oscillators for richer piano sound
   const fundamental = audioContext.createOscillator();
@@ -164,6 +211,72 @@ const sounds = {
   }
 };
 
+// Background Game Canvas
+const backgroundCanvas = document.getElementById('backgroundGameCanvas');
+const backgroundCtx = backgroundCanvas.getContext('2d');
+let backgroundBalls = [];
+let backgroundAnimationId = null;
+
+// Initialize background game
+function initBackgroundGame() {
+  if (!backgroundCanvas || !backgroundCtx) return;
+  
+  // Create 5 balls with random properties
+  backgroundBalls = [];
+  for (let i = 0; i < 5; i++) {
+    backgroundBalls.push({
+      x: Math.random() * (backgroundCanvas.width - 40) + 20,
+      y: Math.random() * (backgroundCanvas.height - 40) + 20,
+      vx: (Math.random() - 0.5) * 4,
+      vy: (Math.random() - 0.5) * 4,
+      radius: 8,
+      color: '#ffffff'
+    });
+  }
+  
+  // Start background animation
+  if (backgroundAnimationId) cancelAnimationFrame(backgroundAnimationId);
+  animateBackground();
+}
+
+function animateBackground() {
+  if (!backgroundCtx) return;
+  
+  // Clear canvas
+  backgroundCtx.fillStyle = '#0a0a0f';
+  backgroundCtx.fillRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+  
+  // Update and draw balls
+  backgroundBalls.forEach(ball => {
+    // Update position
+    ball.x += ball.vx;
+    ball.y += ball.vy;
+    
+    // Bounce off walls
+    if (ball.x <= ball.radius || ball.x >= backgroundCanvas.width - ball.radius) {
+      ball.vx *= -1;
+      ball.x = Math.max(ball.radius, Math.min(backgroundCanvas.width - ball.radius, ball.x));
+    }
+    if (ball.y <= ball.radius || ball.y >= backgroundCanvas.height - ball.radius) {
+      ball.vy *= -1;
+      ball.y = Math.max(ball.radius, Math.min(backgroundCanvas.height - ball.radius, ball.y));
+    }
+    
+    // Draw ball
+    backgroundCtx.fillStyle = ball.color;
+    backgroundCtx.beginPath();
+    backgroundCtx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    backgroundCtx.fill();
+    
+    // Add subtle glow
+    backgroundCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    backgroundCtx.lineWidth = 1;
+    backgroundCtx.stroke();
+  });
+  
+  backgroundAnimationId = requestAnimationFrame(animateBackground);
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   setupModeButtons();
@@ -174,29 +287,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize player count display
   updatePlayerCountDisplay(0);
   
-  // Fix button width to prevent layout shifts
-  fixCreateButtonWidth();
+  // Initialize background game
+  initBackgroundGame();
   
-  // Initialize audio on first user interaction
+  // Initialize audio immediately and on various user interactions
+  initAudio();
+  
+  // Multiple fallbacks for audio initialization
   document.addEventListener('click', initAudio, { once: true });
   document.addEventListener('touchstart', initAudio, { once: true });
+  document.addEventListener('keydown', initAudio, { once: true });
+  document.addEventListener('mousemove', initAudio, { once: true });
+  
+  // Try to initialize audio when page becomes visible
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && !audioContext) {
+      initAudio();
+    }
+  });
 });
-
-function fixCreateButtonWidth() {
-  // Set button width based on the longer text to prevent layout shifts
-  const createRoomBtn = document.getElementById('createRoom');
-  if (createRoomBtn) {
-    // Temporarily set to longer text to measure width
-    const originalText = createRoomBtn.textContent;
-    createRoomBtn.textContent = 'CREATE NEW ROOM';
-    const width = createRoomBtn.offsetWidth;
-    
-    // Restore original text and set fixed width
-    createRoomBtn.textContent = originalText;
-    createRoomBtn.style.width = width + 'px';
-    createRoomBtn.style.minWidth = width + 'px';
-  }
-}
 
 function updatePlayerCountDisplay(count) {
   const playerCountEl = document.getElementById('playerCount');
@@ -233,7 +342,9 @@ function resizeCanvas() {
 function setupModeButtons() {
   // Score selection
   document.querySelectorAll('.score-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
+      // Ensure audio is ready for immediate playback
+      await initAudio();
       document.querySelector('.score-btn.active').classList.remove('active');
       btn.classList.add('active');
       winScore = parseInt(btn.dataset.score);
@@ -243,7 +354,9 @@ function setupModeButtons() {
 }
 
 // Room Management
-createRoomBtn.addEventListener('click', () => {
+createRoomBtn.addEventListener('click', async () => {
+  // Ensure audio is ready for immediate playback
+  await initAudio();
   playSound(528, 0.15, 0.06, 'triangle'); // Room creation sound
   
   // If this is creating a new room (not the first room)
@@ -263,8 +376,6 @@ createRoomBtn.addEventListener('click', () => {
     
     // Change button text after first room creation
     createRoomBtn.textContent = 'CREATE NEW ROOM';
-    createRoomBtn.style.background = 'rgba(255, 255, 255, 0.1)';
-    createRoomBtn.style.borderColor = 'rgba(255, 255, 255, 0.2)';
   });
 });
 
@@ -309,8 +420,10 @@ function generateQR(code) {
   document.getElementById('qrPlaceholder').style.display = 'none';
 }
 
-startGameBtn.addEventListener('click', () => {
+startGameBtn.addEventListener('click', async () => {
   if (!currentRoom) return;
+  // Ensure audio is ready for immediate playback
+  await initAudio();
   sounds.gameStart(); // Multi-note game start sound
   
   // Use the auto-determined game mode based on connected players
@@ -333,7 +446,15 @@ function setupSocketListeners() {
     // Resize canvas for the new game mode
     resizeCanvas();
     
+    // Stop background animation
+    if (backgroundAnimationId) {
+      cancelAnimationFrame(backgroundAnimationId);
+      backgroundAnimationId = null;
+    }
+    
+    // Hide menu and background canvas, show game
     menuPanel.style.display = 'none';
+    backgroundCanvas.style.display = 'none';
     gameContainer.classList.add('active');
     
     // Show the HTML scoreboard
@@ -389,8 +510,19 @@ function setupSocketListeners() {
   socket.on('gameOver', ({ winner }) => {
     setTimeout(() => {
       alert(`Player ${winner} Wins! 🏆`);
+      // Show background canvas again when reloading
+      backgroundCanvas.style.display = 'block';
+      initBackgroundGame();
       location.reload();
     }, 1000);
+  });
+
+  socket.on('speedWarning', ({ currentSpeed, newSpeed }) => {
+    showSpeedWarning(newSpeed);
+  });
+
+  socket.on('speedIncreased', ({ newSpeed }) => {
+    showSpeedIncrease(newSpeed);
   });
 }
 
@@ -468,22 +600,45 @@ function showPentagonUnlockMessage() {
 function updatePlayerStatus(slots, readyStates = []) {
   let connectedCount = 0;
   let readyCount = 0;
+  let hasFifthPlayer = false;
   
   // Track previous connected count for join sound
   const previousConnectedCount = window.previousConnectedCount || 0;
   
-  // Show/hide 5th player card based on whether we have 5 slots
+  // First, count connected players and check if 5th slot is connected
+  slots.forEach((connected, i) => {
+    if (connected) {
+      connectedCount++;
+      if (i === 4) { // 5th player (index 4)
+        hasFifthPlayer = true;
+      }
+    }
+  });
+  
+  // Only show 5th player card if a 5th player has actually joined (easter egg!)
   const player5Card = document.getElementById('player5Card');
   const playersGrid = document.querySelector('.players-grid');
   
-  if (slots.length >= 5) {
+  if (hasFifthPlayer) {
+    // Check if this is the first time showing P5 (easter egg reveal)
+    if (player5Card.classList.contains('hidden')) {
+      // Play special sound for P5 reveal
+      playSound(880, 0.15, 0.1, 'sine'); // Higher pitch pop
+      setTimeout(() => playSound(1047, 0.2, 0.12, 'sine'), 100); // C6 note
+      
+      // Add reveal animation class
+      player5Card.style.animation = 'revealP5 0.5s ease-out';
+    }
+    
     player5Card.classList.remove('hidden');
     playersGrid.classList.add('five-players');
   } else {
     player5Card.classList.add('hidden');
     playersGrid.classList.remove('five-players');
+    player5Card.style.animation = ''; // Reset animation
   }
   
+  // Process all player cards
   slots.forEach((connected, i) => {
     const card = document.querySelector(`.player-card[data-player="${i + 1}"]`);
     if (!card) return; // Skip if card doesn't exist
@@ -492,7 +647,6 @@ function updatePlayerStatus(slots, readyStates = []) {
     
     if (connected) {
       card.classList.add('connected');
-      connectedCount++;
       
       // Check if player is ready
       if (readyStates[i]) {
@@ -938,6 +1092,7 @@ function updateSpeedIndicator() {
       padding: 4px 8px;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
     `;
     document.getElementById('gameContainer').appendChild(speedIndicator);
   }
@@ -952,6 +1107,51 @@ function updateSpeedIndicator() {
     speedIndicator.style.color = 'rgba(255, 255, 255, 0.6)';
     speedIndicator.style.borderColor = 'rgba(255, 255, 255, 0.1)';
   }
+}
+
+// Show speed warning before increase
+function showSpeedWarning(newSpeed) {
+  let speedIndicator = document.getElementById('speedIndicator');
+  if (!speedIndicator) return;
+  
+  // Flash warning
+  speedIndicator.style.background = 'rgba(255, 165, 0, 0.3)';
+  speedIndicator.style.borderColor = 'rgba(255, 165, 0, 0.6)';
+  speedIndicator.style.color = '#ffaa00';
+  speedIndicator.textContent = `⚠️ Speed increasing to ${newSpeed.toFixed(1)}x`;
+  
+  // Sound warning
+  playSound(440, 0.15, 0.08, 'triangle');
+  
+  // Reset after 3 seconds
+  setTimeout(() => {
+    speedIndicator.style.background = 'rgba(0, 0, 0, 0.3)';
+    speedIndicator.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+    speedIndicator.style.color = 'rgba(255, 255, 255, 0.6)';
+  }, 3000);
+}
+
+// Show speed increase notification
+function showSpeedIncrease(newSpeed) {
+  let speedIndicator = document.getElementById('speedIndicator');
+  if (!speedIndicator) return;
+  
+  // Flash green for increase
+  speedIndicator.style.background = 'rgba(0, 255, 0, 0.2)';
+  speedIndicator.style.borderColor = 'rgba(0, 255, 0, 0.5)';
+  speedIndicator.style.color = '#00ff00';
+  speedIndicator.textContent = `🚀 Speed: ${newSpeed.toFixed(1)}x`;
+  
+  // Sound confirmation
+  playSound(660, 0.2, 0.08, 'sine');
+  
+  // Reset after 2 seconds
+  setTimeout(() => {
+    speedIndicator.style.background = 'rgba(0, 0, 0, 0.3)';
+    speedIndicator.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+    speedIndicator.style.color = 'rgba(255, 255, 255, 0.6)';
+    speedIndicator.textContent = `Speed: ${newSpeed.toFixed(1)}x`;
+  }, 2000);
 }
 
 function drawPowerUpTimer() {

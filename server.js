@@ -166,20 +166,36 @@ class GameRoom {
   }
 
   startSpeedProgression() {
-    // Increase speed every 10 seconds (not for pentagon mode)
-    setInterval(() => {
+    // Increase speed every 20 seconds (not for pentagon mode)
+    this.speedProgressionInterval = setInterval(() => {
       if (this.gameState.running && this.gameState.mode !== 5) {
-        this.gameState.speedMultiplier += 0.3;
-        // Update current ball speed if game is running
-        if (this.gameState.ball) {
-          const currentSpeed = Math.sqrt(this.gameState.ball.vx * this.gameState.ball.vx + this.gameState.ball.vy * this.gameState.ball.vy);
-          const speedRatio = (6 * this.gameState.speedMultiplier) / currentSpeed;
-          this.gameState.ball.vx *= speedRatio;
-          this.gameState.ball.vy *= speedRatio;
-          this.gameState.ball.speed = 6 * this.gameState.speedMultiplier;
-        }
+        // Send warning 3 seconds before speed increase
+        io.to(this.code).emit('speedWarning', { 
+          currentSpeed: this.gameState.speedMultiplier,
+          newSpeed: this.gameState.speedMultiplier + 0.2
+        });
+        
+        // Actually increase speed after 3 seconds
+        setTimeout(() => {
+          if (this.gameState.running && this.gameState.mode !== 5) {
+            this.gameState.speedMultiplier += 0.2;
+            // Update current ball speed if game is running
+            if (this.gameState.ball) {
+              const currentSpeed = Math.sqrt(this.gameState.ball.vx * this.gameState.ball.vx + this.gameState.ball.vy * this.gameState.ball.vy);
+              const speedRatio = (6 * this.gameState.speedMultiplier) / currentSpeed;
+              this.gameState.ball.vx *= speedRatio;
+              this.gameState.ball.vy *= speedRatio;
+              this.gameState.ball.speed = 6 * this.gameState.speedMultiplier;
+            }
+            
+            // Send speed increased notification
+            io.to(this.code).emit('speedIncreased', { 
+              newSpeed: this.gameState.speedMultiplier
+            });
+          }
+        }, 3000);
       }
-    }, 10000);
+    }, 20000);
   }
 
   startPentagonRotation() {
@@ -618,6 +634,10 @@ class GameRoom {
     if (this.powerUpInterval) {
       clearInterval(this.powerUpInterval);
       this.powerUpInterval = null;
+    }
+    if (this.speedProgressionInterval) {
+      clearInterval(this.speedProgressionInterval);
+      this.speedProgressionInterval = null;
     }
     this.gameState.running = false;
   }

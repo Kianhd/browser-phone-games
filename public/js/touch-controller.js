@@ -472,6 +472,25 @@ socket.on('startGame', () => {
   }
 });
 
+socket.on('speedWarning', ({ newSpeed }) => {
+  // Vibrate and play warning sound
+  if ('vibrate' in navigator) {
+    navigator.vibrate([100, 50, 100]);
+  }
+  playControllerSound(440, 0.15, 0.06);
+  
+  // Show brief overlay
+  showSpeedWarningOverlay(newSpeed);
+});
+
+socket.on('speedIncreased', ({ newSpeed }) => {
+  // Vibrate confirmation
+  if ('vibrate' in navigator) {
+    navigator.vibrate([50, 50, 200]);
+  }
+  playControllerSound(660, 0.2, 0.08);
+});
+
 socket.on('gameOver', () => {
   if ('vibrate' in navigator) {
     navigator.vibrate([100, 100, 100, 100, 200]);
@@ -640,6 +659,62 @@ function showScrollHint() {
       }
     }, 500);
   }, 3000);
+}
+
+// Show speed warning overlay for controllers
+function showSpeedWarningOverlay(newSpeed) {
+  let warningOverlay = document.getElementById('speedWarningOverlay');
+  if (!warningOverlay) {
+    warningOverlay = document.createElement('div');
+    warningOverlay.id = 'speedWarningOverlay';
+    warningOverlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 165, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      pointer-events: none;
+    `;
+    document.body.appendChild(warningOverlay);
+  }
+  
+  warningOverlay.innerHTML = `
+    <div style="
+      text-align: center;
+      color: #ffffff;
+      animation: pulseWarning 0.5s ease-in-out infinite;
+    ">
+      <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+      <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">
+        SPEED INCREASING
+      </div>
+      <div style="font-size: 16px;">
+        New speed: ${newSpeed.toFixed(1)}x
+      </div>
+    </div>
+    <style>
+      @keyframes pulseWarning {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+    </style>
+  `;
+  
+  warningOverlay.style.display = 'flex';
+  
+  // Hide warning after 2.5 seconds
+  setTimeout(() => {
+    if (warningOverlay.parentNode) {
+      warningOverlay.parentNode.removeChild(warningOverlay);
+    }
+  }, 2500);
 }
 
 // Enter key to join

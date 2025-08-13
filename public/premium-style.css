@@ -47,6 +47,15 @@ html, body {
   padding: 20px;
 }
 
+/* Menu Panel */
+.menu-panel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Liquid Glass Card */
 .glass-card {
   background: linear-gradient(135deg, 
@@ -62,12 +71,29 @@ html, body {
     0 2px 8px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   position: relative;
-  max-width: 520px;
-  width: 90%;
+  width: 520px;
+  max-width: 90%;
+  height: auto;
+  min-height: 600px;
   max-height: 95vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  z-index: 10;
+}
+
+/* Add backdrop overlay for dimming effect */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+  z-index: -1;
+  backdrop-filter: blur(5px);
 }
 
 /* Custom scrollbar for webkit browsers */
@@ -193,11 +219,15 @@ html, body {
   flex-direction: column;
   gap: 16px;
   margin-bottom: 16px;
+  align-items: center;
+  width: 100%;
 }
 
 /* Mode Selector & Score Selector */
 .mode-selector, .score-selector {
   margin-bottom: 0;
+  width: 100%;
+  max-width: 350px;
 }
 
 .mode-label {
@@ -251,6 +281,8 @@ html, body {
 .player-count-display {
   text-align: center;
   margin-bottom: 0;
+  width: 100%;
+  max-width: 350px;
 }
 
 .player-count {
@@ -315,9 +347,15 @@ html, body {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 12px;
-  min-width: 200px;
+  margin: 0 auto 12px auto;
+  width: 250px !important;
+  min-width: 250px !important;
+  max-width: 250px !important;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  flex-shrink: 0;
 }
 
 .create-btn:hover {
@@ -413,6 +451,23 @@ html, body {
   animation: readyPulse 1.5s infinite;
 }
 
+/* Special styling for P5 card (easter egg) */
+.player-card[data-player="5"] {
+  position: relative;
+}
+
+.player-card[data-player="5"]:not(.hidden) {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.player-card[data-player="5"] .player-label {
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+  font-weight: 700;
+}
+
 @keyframes readyPulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.3); }
@@ -421,6 +476,20 @@ html, body {
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.2); }
+}
+
+@keyframes revealP5 {
+  0% { 
+    transform: scale(0) rotate(180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1) rotate(90deg);
+  }
+  100% { 
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }
 
 /* Game Container */
@@ -761,6 +830,18 @@ html, body {
   font-weight: 400;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.5;
+}
+
+/* Background Game Canvas */
+#backgroundGameCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.8;
 }
 
 /* Utilities */
