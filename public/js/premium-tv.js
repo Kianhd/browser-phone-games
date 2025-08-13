@@ -28,6 +28,19 @@ let countdownNumber = null;
 let interpolatedPaddles = {};
 let lastUpdateTime = Date.now();
 
+// Für Elise note sequence
+let furEliseIndex = 0;
+// Notes: E5, D#5, E5, D#5, E5, B4, D5, C5, A4... (continuing the famous melody)
+const furEliseNotes = [
+  659.25, 622.25, 659.25, 622.25, 659.25, 493.88, 587.33, 523.25, 440.00, // Opening phrase
+  261.63, 329.63, 440.00, 493.88, // Continuation
+  329.63, 415.30, 493.88, 523.25, // Bridge
+  329.63, 659.25, 622.25, 659.25, 622.25, 659.25, 493.88, 587.33, 523.25, 440.00, // Repeat
+  261.63, 329.63, 440.00, 493.88, // Continuation
+  329.63, 523.25, 493.88, 440.00, // Ending phrase
+  493.88, // Final note before loop
+];
+
 // Player Colors
 const playerColors = {
   1: '#ff3b3b',
@@ -68,9 +81,74 @@ function playSound(frequency, duration, volume = 0.1, type = 'sine') {
   oscillator.stop(audioContext.currentTime + duration);
 }
 
+// Piano-like sound for Für Elise notes
+function playPianoNote(frequency) {
+  if (!audioContext || !soundEnabled) return;
+  
+  // Create multiple oscillators for richer piano sound
+  const fundamental = audioContext.createOscillator();
+  const overtone1 = audioContext.createOscillator();
+  const overtone2 = audioContext.createOscillator();
+  
+  const gainNode = audioContext.createGain();
+  const gainNode2 = audioContext.createGain();
+  const gainNode3 = audioContext.createGain();
+  
+  // Set frequencies (fundamental + overtones for piano timbre)
+  fundamental.frequency.value = frequency;
+  overtone1.frequency.value = frequency * 2; // First overtone
+  overtone2.frequency.value = frequency * 3; // Second overtone
+  
+  fundamental.type = 'sine';
+  overtone1.type = 'sine';
+  overtone2.type = 'sine';
+  
+  // Connect oscillators
+  fundamental.connect(gainNode);
+  overtone1.connect(gainNode2);
+  overtone2.connect(gainNode3);
+  
+  gainNode.connect(audioContext.destination);
+  gainNode2.connect(audioContext.destination);
+  gainNode3.connect(audioContext.destination);
+  
+  // Piano-like envelope (quick attack, gradual decay)
+  const now = audioContext.currentTime;
+  const duration = 0.8;
+  
+  // Fundamental
+  gainNode.gain.setValueAtTime(0, now);
+  gainNode.gain.linearRampToValueAtTime(0.15, now + 0.02); // Quick attack
+  gainNode.gain.exponentialRampToValueAtTime(0.08, now + 0.1); // Quick decay to sustain
+  gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration); // Gradual release
+  
+  // Overtones (quieter)
+  gainNode2.gain.setValueAtTime(0, now);
+  gainNode2.gain.linearRampToValueAtTime(0.05, now + 0.02);
+  gainNode2.gain.exponentialRampToValueAtTime(0.001, now + duration * 0.6);
+  
+  gainNode3.gain.setValueAtTime(0, now);
+  gainNode3.gain.linearRampToValueAtTime(0.02, now + 0.02);
+  gainNode3.gain.exponentialRampToValueAtTime(0.001, now + duration * 0.4);
+  
+  // Start and stop oscillators
+  fundamental.start(now);
+  overtone1.start(now);
+  overtone2.start(now);
+  
+  fundamental.stop(now + duration);
+  overtone1.stop(now + duration);
+  overtone2.stop(now + duration);
+}
+
 // Sound effects
 const sounds = {
-  paddleHit: () => playSound(220, 0.1, 0.08, 'square'),
+  paddleHit: () => {
+    // Play the next note in Für Elise sequence
+    const note = furEliseNotes[furEliseIndex % furEliseNotes.length];
+    playPianoNote(note);
+    furEliseIndex++;
+  },
   wallHit: () => playSound(150, 0.15, 0.1, 'sawtooth'),
   powerUpSpawn: () => playSound(440, 0.2, 0.06, 'triangle'),
   powerUpCollect: () => playSound(660, 0.3, 0.08, 'sine'),
@@ -78,6 +156,8 @@ const sounds = {
   countdown: () => playSound(440, 0.3, 0.1, 'triangle'),
   countdownFinal: () => playSound(660, 0.5, 0.12, 'sine'),
   gameStart: () => {
+    // Reset Für Elise sequence at game start
+    furEliseIndex = 0;
     playSound(262, 0.15, 0.06, 'square');
     setTimeout(() => playSound(330, 0.15, 0.06, 'square'), 150);
     setTimeout(() => playSound(392, 0.25, 0.08, 'square'), 300);
@@ -160,6 +240,7 @@ function setupSocketListeners() {
 
   socket.on('startGame', ({ mode }) => {
     gameMode = mode;
+    furEliseIndex = 0; // Reset Für Elise sequence for new game
     menuPanel.style.display = 'none';
     gameContainer.classList.add('active');
     startRenderLoop();
