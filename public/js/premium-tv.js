@@ -226,13 +226,52 @@ function setupModeButtons() {
 // Room Management
 createRoomBtn.addEventListener('click', () => {
   playSound(528, 0.15, 0.06, 'triangle'); // Room creation sound
+  
+  // If this is creating a new room (not the first room)
+  if (createRoomBtn.textContent === 'CREATE NEW ROOM') {
+    // Reset the interface first
+    resetRoomInterface();
+    // Reset the unlock state for pentagon mode
+    pentagonModeUnlocked = false;
+  }
+  
   socket.emit('createRoom', (res) => {
     currentRoom = res.room;
     roomCodeEl.textContent = res.room;
     generateQR(res.room);
-    createRoomBtn.style.display = 'none';
+    
+    // Change button text after first room creation
+    createRoomBtn.textContent = 'CREATE NEW ROOM';
+    createRoomBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+    createRoomBtn.style.borderColor = 'rgba(255, 255, 255, 0.2)';
   });
 });
+
+function resetRoomInterface() {
+  // Reset player count display
+  updatePlayerCountDisplay(0);
+  
+  // Reset start button
+  startGameBtn.disabled = true;
+  startGameBtn.textContent = 'WAITING FOR PLAYERS...';
+  
+  // Reset player cards to default state
+  for (let i = 1; i <= 5; i++) {
+    const card = document.querySelector(`.player-card[data-player="${i}"]`);
+    const status = card.querySelector('.player-status');
+    if (card && status) {
+      card.classList.remove('connected', 'ready');
+      status.textContent = '⭕';
+    }
+  }
+  
+  // Hide QR code and show placeholder
+  qrImg.classList.add('hidden');
+  document.getElementById('qrPlaceholder').style.display = 'flex';
+  
+  // Reset room code
+  roomCodeEl.textContent = '------';
+}
 
 function generateQR(code) {
   const url = `${location.origin}/controller.html?r=${code}`;
@@ -401,6 +440,8 @@ function showPentagonUnlockMessage() {
 
 function updatePlayerStatus(slots, readyStates = []) {
   let connectedCount = 0;
+  let readyCount = 0;
+  
   slots.forEach((connected, i) => {
     const card = document.querySelector(`.player-card[data-player="${i + 1}"]`);
     const status = card.querySelector('.player-status');
@@ -412,40 +453,50 @@ function updatePlayerStatus(slots, readyStates = []) {
       // Check if player is ready
       if (readyStates[i]) {
         card.classList.add('ready');
-        status.textContent = '✓';
+        status.textContent = '✅'; // Green tick when ready
+        readyCount++;
       } else {
         card.classList.remove('ready');
-        status.textContent = '✅';
+        status.textContent = '🔵'; // Blue circle when connected but not ready
       }
     } else {
       card.classList.remove('connected', 'ready');
-      status.textContent = '⭕';
+      status.textContent = '⭕'; // Red circle when not connected
     }
   });
 
-  // Auto-determine game mode based on connected players
-  gameMode = Math.max(2, connectedCount); // Minimum 2 players, max 5
+  // Auto-determine game mode based on ready players (not just connected)
+  gameMode = Math.max(2, readyCount); // Minimum 2 players, max 5
   
   // Update player count display
   updatePlayerCountDisplay(connectedCount);
   
-  // Trigger pentagon mode unlock if 5 players connected
-  if (connectedCount === 5 && !pentagonModeUnlocked) {
+  // Trigger pentagon mode unlock if 5 players are ready
+  if (readyCount === 5 && !pentagonModeUnlocked) {
     triggerPentagonUnlock();
     pentagonModeUnlocked = true;
   }
 
-  // Enable start button when 2 or more players connected
-  startGameBtn.disabled = connectedCount < 2;
+  // Enable start button when 2 or more players are READY (not just connected)
+  const canStart = readyCount >= 2;
+  startGameBtn.disabled = !canStart;
   
-  // Update start button text based on player count
-  if (connectedCount === 5) {
-    startGameBtn.textContent = '🌟 START PENTAGON MODE';
-  } else if (connectedCount >= 2) {
-    startGameBtn.textContent = `START ${connectedCount} PLAYER GAME`;
+  // Update start button text based on ready players
+  if (!canStart) {
+    if (connectedCount < 2) {
+      startGameBtn.textContent = 'WAITING FOR PLAYERS...';
+    } else {
+      startGameBtn.textContent = `WAITING FOR PLAYERS TO BE READY... (${readyCount}/${connectedCount})`;
+    }
   } else {
-    startGameBtn.textContent = 'WAITING FOR PLAYERS...';
+    if (connectedCount === 5 && readyCount === 5) {
+      startGameBtn.textContent = '🌟 START PENTAGON MODE';
+    } else {
+      startGameBtn.textContent = `START ${readyCount} PLAYER GAME`;
+    }
   }
+  
+  console.log(`Players status: ${connectedCount} connected, ${readyCount} ready, canStart: ${canStart}`); // Debug log
 }
 
 function detectGameEvents(prevState, currState) {

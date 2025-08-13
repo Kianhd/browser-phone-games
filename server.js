@@ -634,7 +634,9 @@ io.on('connection', socket => {
     socket.join(code);
     console.log('room created', code);
     cb && cb({ room: code });
-    io.to(code).emit('roomUpdate', getRoomState(code));
+    const initialState = getRoomState(code);
+    console.log('Broadcasting initial room state:', initialState); // Debug log
+    io.to(code).emit('roomUpdate', initialState);
   });
 
   socket.on('joinRoom', ({ room }, cb) => {
@@ -645,7 +647,9 @@ io.on('connection', socket => {
     
     socket.join(room);
     console.log('joined', socket.id, 'as P' + playerNum, 'room', room);
-    io.to(room).emit('roomUpdate', getRoomState(room));
+    const roomState = getRoomState(room);
+    console.log('Broadcasting room state after join:', roomState); // Debug log
+    io.to(room).emit('roomUpdate', roomState);
     cb && cb({ ok: true, player: playerNum });
   });
 
@@ -677,8 +681,11 @@ io.on('connection', socket => {
   socket.on('playerReady', ({ room, player }) => {
     if (!rooms[room]) return;
     const gameRoom = rooms[room];
+    console.log(`Player ${player} marked as ready in room ${room}`); // Debug log
     gameRoom.setPlayerReady(player);
-    io.to(room).emit('roomUpdate', getRoomState(room));
+    const roomState = getRoomState(room);
+    console.log('Broadcasting room state after ready:', roomState); // Debug log
+    io.to(room).emit('roomUpdate', roomState);
   });
 
   socket.on('disconnect', () => {
