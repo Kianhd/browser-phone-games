@@ -243,6 +243,10 @@ function setupSocketListeners() {
     furEliseIndex = 0; // Reset Für Elise sequence for new game
     menuPanel.style.display = 'none';
     gameContainer.classList.add('active');
+    
+    // Show the HTML scoreboard
+    document.getElementById('scoreDisplay').style.display = 'flex';
+    
     startRenderLoop();
   });
 
@@ -380,7 +384,7 @@ function render() {
   drawPaddles();
   drawPowerUp();
   drawBall();
-  drawScores();
+  updateHTMLScoreboard();
   drawPowerUpTimer();
   drawCountdown();
 
@@ -570,83 +574,24 @@ function drawPowerUp() {
   ctx.fillText(symbol, powerUp.x, powerUp.y);
 }
 
-function drawScores() {
+function updateHTMLScoreboard() {
   if (!gameState) return;
   
-  ctx.font = 'bold 48px Arial';
-  ctx.textAlign = 'center';
+  const scoreItems = document.querySelectorAll('.score-item');
   
-  if (gameMode === 2) {
-    // 2-player mode: show P1 and P2 scores side by side
-    ctx.fillStyle = playerColors[1];
-    ctx.fillText(gameState.scores[0], 540, 60);
+  // Update scores and show/hide based on game mode
+  scoreItems.forEach((item, index) => {
+    const playerNum = index + 1;
     
-    ctx.fillStyle = playerColors[2];  
-    ctx.fillText(gameState.scores[1], 740, 60);
-    
-    // Player labels
-    ctx.font = '20px Arial';
-    ctx.fillStyle = playerColors[1];
-    ctx.fillText('P1', 540, 90);
-    
-    ctx.fillStyle = playerColors[2];
-    ctx.fillText('P2', 740, 90);
-    
-  } else if (gameMode === 3) {
-    // 3-player mode: P1 left, P2 right, P3 center top
-    ctx.fillStyle = playerColors[1];
-    ctx.fillText(gameState.scores[0], 320, 60);
-    
-    ctx.fillStyle = playerColors[2];
-    ctx.fillText(gameState.scores[1], 960, 60);
-    
-    ctx.fillStyle = playerColors[3];
-    ctx.fillText(gameState.scores[2], 640, 60);
-    
-    // Player labels
-    ctx.font = '20px Arial';
-    ctx.fillStyle = playerColors[1];
-    ctx.fillText('P1', 320, 90);
-    
-    ctx.fillStyle = playerColors[2];
-    ctx.fillText('P2', 960, 90);
-    
-    ctx.fillStyle = playerColors[3];
-    ctx.fillText('P3', 640, 90);
-    
-  } else if (gameMode === 4) {
-    // 4-player mode: show all scores
-    ctx.fillStyle = playerColors[1];
-    ctx.fillText(gameState.scores[0], 320, 60);
-    
-    ctx.fillStyle = playerColors[2];
-    ctx.fillText(gameState.scores[1], 960, 60);
-    
-    ctx.fillStyle = playerColors[3];
-    ctx.fillText(gameState.scores[2], 640, 40);
-    
-    ctx.fillStyle = playerColors[4];
-    ctx.fillText(gameState.scores[3], 640, 680);
-    
-    // Player labels
-    ctx.font = '20px Arial';
-    ctx.fillStyle = playerColors[1];
-    ctx.fillText('P1', 320, 90);
-    
-    ctx.fillStyle = playerColors[2];
-    ctx.fillText('P2', 960, 90);
-    
-    ctx.fillStyle = playerColors[3];
-    ctx.fillText('P3', 640, 70);
-    
-    ctx.fillStyle = playerColors[4];
-    ctx.fillText('P4', 640, 710);
-  }
-  
-  // Win score indicator
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-  ctx.font = '16px Arial';
-  ctx.fillText(`First to ${gameState.winScore}`, 640, 20);
+    if (playerNum <= gameMode) {
+      // Show this player's score
+      item.style.display = 'block';
+      item.textContent = gameState.scores[index];
+    } else {
+      // Hide unused players
+      item.style.display = 'none';
+    }
+  });
 }
 
 function drawPowerUpTimer() {
