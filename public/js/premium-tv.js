@@ -177,23 +177,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function resizeCanvas() {
-  canvas.width = 1280;
-  canvas.height = 720;
+  // Use square canvas for 3+ player modes, widescreen for 2 player
+  if (gameMode >= 3) {
+    canvas.width = 800;
+    canvas.height = 800;
+  } else {
+    canvas.width = 1280;
+    canvas.height = 720;
+  }
   canvas.style.width = '100%';
   canvas.style.height = '100%';
 }
 
-// Mode Selection
+// Score Selection (Mode selection removed - auto-adapts to player count)
 function setupModeButtons() {
-  document.querySelectorAll('.mode-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelector('.mode-btn.active').classList.remove('active');
-      btn.classList.add('active');
-      gameMode = parseInt(btn.dataset.mode);
-      playSound(440, 0.1, 0.05, 'sine'); // Subtle click sound
-    });
-  });
-
   // Score selection
   document.querySelectorAll('.score-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -235,12 +232,16 @@ startGameBtn.addEventListener('click', () => {
 function setupSocketListeners() {
   socket.on('roomUpdate', (data) => {
     if (!data) return;
-    updatePlayerStatus(data.slots);
+    updatePlayerStatus(data.slots, data.readyStates);
   });
 
   socket.on('startGame', ({ mode }) => {
     gameMode = mode;
     furEliseIndex = 0; // Reset Für Elise sequence for new game
+    
+    // Resize canvas for the new game mode
+    resizeCanvas();
+    
     menuPanel.style.display = 'none';
     gameContainer.classList.add('active');
     
@@ -302,7 +303,7 @@ function setupSocketListeners() {
   });
 }
 
-function updatePlayerStatus(slots) {
+function updatePlayerStatus(slots, readyStates = []) {
   let connectedCount = 0;
   slots.forEach((connected, i) => {
     const card = document.querySelector(`.player-card[data-player="${i + 1}"]`);
@@ -310,13 +311,41 @@ function updatePlayerStatus(slots) {
     
     if (connected) {
       card.classList.add('connected');
-      status.textContent = '✅';
       connectedCount++;
+      
+      // Check if player is ready
+      if (readyStates[i]) {
+        card.classList.add('ready');
+        status.textContent = '✓';
+      } else {
+        card.classList.remove('ready');
+        status.textContent = '✅';
+      }
     } else {
-      card.classList.remove('connected');
+      card.classList.remove('connected', 'ready');
       status.textContent = '⭕';
     }
   });
+
+  // Auto-determine game mode based on connected players
+  gameMode = Math.max(2, connectedCount); // Minimum 2 players, max 5
+  
+  // Update player count display
+  const playerCountEl = document.getElementById('playerCount');
+  if (playerCountEl) {
+    playerCountEl.textContent = `${connectedCount} / 5`;
+    
+    // Change styling based on mode
+    if (connectedCount === 5) {
+      playerCountEl.style.color = '#ffd700';
+      playerCountEl.style.borderColor = 'rgba(255, 215, 0, 0.3)';
+      playerCountEl.style.background = 'rgba(255, 215, 0, 0.1)';
+    } else {
+      playerCountEl.style.color = 'var(--accent-red)';
+      playerCountEl.style.borderColor = 'rgba(255, 59, 59, 0.2)';
+      playerCountEl.style.background = 'rgba(255, 59, 59, 0.1)';
+    }
+  }
 
   startGameBtn.disabled = connectedCount < 2;
 }
@@ -348,10 +377,13 @@ function detectGameEvents(prevState, currState) {
     // Check if ball hit a paddle (velocity direction changed)
     if (vxChanged || vyChanged) {
       // Also check if it's not a wall bounce by checking position
+      const fieldWidth = currState.fieldWidth || (gameMode >= 3 ? 800 : 1280);
+      const fieldHeight = currState.fieldHeight || (gameMode >= 3 ? 800 : 720);
+      
       const nearLeftPaddle = currState.ball.x < 100;
-      const nearRightPaddle = currState.ball.x > 1180;
+      const nearRightPaddle = currState.ball.x > fieldWidth - 100;
       const nearTopPaddle = currState.ball.y < 100;
-      const nearBottomPaddle = currState.ball.y > 620;
+      const nearBottomPaddle = currState.ball.y > fieldHeight - 100;
       
       if (nearLeftPaddle || nearRightPaddle || nearTopPaddle || nearBottomPaddle) {
         sounds.paddleHit();
@@ -374,7 +406,7 @@ function render() {
 
   // Clear canvas
   ctx.fillStyle = '#0a0a0f';
-  ctx.fillRect(0, 0, 1280, 720);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Update interpolations for smooth movement
   updateInterpolation();
@@ -414,19 +446,53 @@ function lerp(start, end, factor) {
 }
 
 function drawField() {
-  // Draw borders
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(10, 10, 1260, 700);
+  // Get field dimensions from game state or use defaults
+  const fieldWidth = gameState?.fieldWidth || (gameMode >= 3 ? 800 : 1280);
+  const fieldHeight = gameState?.fieldHeight || (gameMode >= 3 ? 800 : 720);
   
-  // Center lines
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-  ctx.setLineDash([20, 20]);
+  if (gameMode === 5) {
+    // Draw pentagon field
+    drawPentagon();
+  } else {
+    // Draw rectangular borders
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(10, 10, fieldWidth - 20, fieldHeight - 20);
+  }
+  
+  // No center line for cleaner look when power-ups appear
+}
+
+function drawPentagon() {
+  const centerX = 400;
+  const centerY = 400;
+  const radius = 350;
+  
+  ctx.strokeStyle = gameMode === 5 ? 'rgba(255, 215, 0, 0.4)' : 'rgba(255, 255, 255, 0.2)';
+  ctx.lineWidth = 3;
+  
   ctx.beginPath();
-  ctx.moveTo(640, 10);
-  ctx.lineTo(640, 710);
+  for (let i = 0; i < 5; i++) {
+    const angle = (i * 2 * Math.PI / 5) - Math.PI / 2;
+    const x = centerX + Math.cos(angle) * radius;
+    const y = centerY + Math.sin(angle) * radius;
+    
+    if (i === 0) {
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
+    }
+  }
+  ctx.closePath();
   ctx.stroke();
-  ctx.setLineDash([]);
+  
+  // Add golden glow effect for pentagon
+  if (gameMode === 5) {
+    ctx.shadowColor = '#ffd700';
+    ctx.shadowBlur = 10;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
 }
 
 function drawPaddles() {
@@ -443,7 +509,23 @@ function drawPaddles() {
     const drawX = interpolated ? interpolated.x : paddle.x;
     const drawY = interpolated ? interpolated.y : paddle.y;
     
-    ctx.fillStyle = playerColors[playerNum];
+    ctx.fillStyle = gameMode === 5 ? '#ffd700' : playerColors[playerNum];
+    
+    // Handle pentagon mode rotation
+    if (gameMode === 5 && paddle.angle !== undefined) {
+      ctx.save();
+      ctx.translate(drawX, drawY);
+      ctx.rotate(paddle.angle);
+      ctx.fillRect(-paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
+      
+      // Add golden glow for pentagon paddles
+      ctx.strokeStyle = '#ffd700';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(-paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
+      
+      ctx.restore();
+      return; // Skip normal paddle drawing
+    }
     
     // Draw split paddle or normal paddle
     if (paddle.split && paddle.gapSize > 0) {
@@ -531,47 +613,78 @@ function drawPowerUp() {
   const elapsed = Date.now() - powerUp.spawnTime;
   const timeLeft = 10000 - elapsed;
   
-  // Blink in last 3 seconds
-  if (timeLeft < 3000 && Math.floor(timeLeft / 200) % 2 === 0) {
-    return;
-  }
+  // Subtle pulse instead of harsh blinking
+  const pulseOpacity = 0.7 + 0.3 * Math.sin(elapsed * 0.008);
+  const finalOpacity = timeLeft < 3000 ? pulseOpacity : 1;
   
-  // Different colors for different power-up types
-  let boxColor, symbol;
+  // Subtle, professional colors
+  let boxColor, symbol, shadowColor;
   if (powerUp.type === 'grow') {
-    boxColor = '#00ff00'; // Green for grow
+    boxColor = `rgba(46, 204, 113, ${finalOpacity})`; // Subtle green
+    shadowColor = 'rgba(46, 204, 113, 0.3)';
     symbol = '+';
   } else if (powerUp.type === 'shrink') {
-    boxColor = '#ff4444'; // Red for shrink
-    symbol = '-';
+    boxColor = `rgba(231, 76, 60, ${finalOpacity})`; // Subtle red
+    shadowColor = 'rgba(231, 76, 60, 0.3)';
+    symbol = '−';
   } else if (powerUp.type === 'split') {
-    boxColor = '#9d4edd'; // Purple for split
-    symbol = '÷';
+    boxColor = `rgba(155, 89, 182, ${finalOpacity})`; // Subtle purple
+    shadowColor = 'rgba(155, 89, 182, 0.3)';
+    symbol = '⟐';
   } else {
-    boxColor = '#ffd700'; // Gold default
+    boxColor = `rgba(241, 196, 15, ${finalOpacity})`; // Subtle gold
+    shadowColor = 'rgba(241, 196, 15, 0.3)';
     symbol = '?';
   }
   
-  // Draw power-up box
-  ctx.fillStyle = boxColor;
+  const size = powerUp.size * 0.8; // Slightly smaller, more elegant
+  
+  // Draw subtle shadow first
+  ctx.save();
+  ctx.fillStyle = shadowColor;
+  ctx.filter = 'blur(8px)';
   ctx.fillRect(
-    powerUp.x - powerUp.size,
-    powerUp.y - powerUp.size,
-    powerUp.size * 2,
-    powerUp.size * 2
+    powerUp.x - size - 4,
+    powerUp.y - size - 4,
+    (size * 2) + 8,
+    (size * 2) + 8
+  );
+  ctx.filter = 'none';
+  
+  // Draw main power-up box with rounded corners effect
+  const gradient = ctx.createLinearGradient(
+    powerUp.x - size, powerUp.y - size,
+    powerUp.x + size, powerUp.y + size
+  );
+  gradient.addColorStop(0, boxColor);
+  gradient.addColorStop(1, boxColor.replace(/[\d\.]+\)/, '0.7)'));
+  
+  ctx.fillStyle = gradient;
+  ctx.fillRect(
+    powerUp.x - size,
+    powerUp.y - size,
+    size * 2,
+    size * 2
   );
   
-  // Add glow effect
-  ctx.strokeStyle = boxColor;
-  ctx.lineWidth = 3;
-  ctx.stroke();
+  // Subtle border
+  ctx.strokeStyle = `rgba(255, 255, 255, ${finalOpacity * 0.4})`;
+  ctx.lineWidth = 1;
+  ctx.strokeRect(
+    powerUp.x - size,
+    powerUp.y - size,
+    size * 2,
+    size * 2
+  );
   
-  // Draw symbol
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 36px Arial';
+  // Draw symbol with subtle styling
+  ctx.fillStyle = `rgba(255, 255, 255, ${finalOpacity})`;
+  ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(symbol, powerUp.x, powerUp.y);
+  
+  ctx.restore();
 }
 
 function updateHTMLScoreboard() {
@@ -592,6 +705,45 @@ function updateHTMLScoreboard() {
       item.style.display = 'none';
     }
   });
+  
+  // Update speed indicator if it exists
+  updateSpeedIndicator();
+}
+
+function updateSpeedIndicator() {
+  if (!gameState) return;
+  
+  let speedIndicator = document.getElementById('speedIndicator');
+  if (!speedIndicator) {
+    // Create speed indicator
+    speedIndicator = document.createElement('div');
+    speedIndicator.id = 'speedIndicator';
+    speedIndicator.style.cssText = `
+      position: absolute;
+      top: 8px;
+      right: 20px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 500;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    `;
+    document.getElementById('gameContainer').appendChild(speedIndicator);
+  }
+  
+  if (gameMode === 5) {
+    speedIndicator.textContent = '⭐ PENTAGON MODE';
+    speedIndicator.style.color = '#ffd700';
+    speedIndicator.style.borderColor = 'rgba(255, 215, 0, 0.3)';
+  } else if (gameState.speedMultiplier) {
+    const speedText = gameState.speedMultiplier.toFixed(1);
+    speedIndicator.textContent = `Speed: ${speedText}x`;
+    speedIndicator.style.color = 'rgba(255, 255, 255, 0.6)';
+    speedIndicator.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+  }
 }
 
 function drawPowerUpTimer() {
@@ -612,12 +764,14 @@ function drawPowerUpTimer() {
   ctx.fillStyle = playerColor;
   ctx.font = 'bold 24px Arial';
   ctx.textAlign = 'center';
-  ctx.fillText(`P${gameState.activePowerUp.player} ${powerName}: ${timeLeft}s`, 640, 340);
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  ctx.fillText(`P${gameState.activePowerUp.player} ${powerName}: ${timeLeft}s`, centerX, centerY - 20);
   
   // Draw timer bar with better styling
   const barWidth = (timeLeft / 10) * 200;
-  const barX = 540;
-  const barY = 355;
+  const barX = centerX - 100;
+  const barY = centerY + 5;
   
   // Background bar
   ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
@@ -641,11 +795,11 @@ function drawCountdown() {
   
   // Draw countdown background overlay
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-  ctx.fillRect(0, 0, 1280, 720);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   
   // Draw countdown number
   ctx.save();
-  ctx.translate(640, 360);
+  ctx.translate(canvas.width / 2, canvas.height / 2);
   ctx.scale(pulseScale, pulseScale);
   
   if (countdownNumber === 0) {

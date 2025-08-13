@@ -34,12 +34,16 @@ function playControllerSound(freq, duration, volume = 0.03) {
 
 // DOM Elements
 const joinScreen = document.getElementById('joinScreen');
+const readyScreen = document.getElementById('readyScreen');
 const gameScreen = document.getElementById('gameScreen');
 const roomInput = document.getElementById('roomInput');
 const joinBtn = document.getElementById('joinBtn');
+const readyBtn = document.getElementById('readyBtn');
 const status = document.getElementById('status');
 const playerLabel = document.getElementById('playerLabel');
 const roomLabel = document.getElementById('roomLabel');
+const readyPlayerLabel = document.getElementById('readyPlayerLabel');
+const readyRoomLabel = document.getElementById('readyRoomLabel');
 const verticalController = document.getElementById('verticalController');
 const horizontalController = document.getElementById('horizontalController');
 const paddleIndicator = document.getElementById('paddleIndicator');
@@ -48,6 +52,7 @@ const paddleIndicatorH = document.getElementById('paddleIndicatorH');
 // State
 let joinedRoom = null;
 let playerNumber = null;
+let isReady = false;
 let touchActive = false;
 let currentPosition = 0.5; // 0 to 1 normalized
 let sendInterval = null;
@@ -94,6 +99,31 @@ joinBtn.addEventListener('click', () => {
   });
 });
 
+// Ready Button
+readyBtn.addEventListener('click', () => {
+  playControllerSound(660, 0.15, 0.06); // Ready sound
+  isReady = true;
+  
+  // Send ready status to server
+  socket.emit('playerReady', { room: joinedRoom, player: playerNumber });
+  
+  // Update ready button
+  readyBtn.textContent = '✓ READY';
+  readyBtn.disabled = true;
+  
+  // Transition to game screen
+  readyScreen.classList.add('hidden');
+  gameScreen.classList.remove('hidden');
+  
+  // Start sending position updates
+  startPositionUpdates();
+  
+  // Haptic feedback
+  if ('vibrate' in navigator) {
+    navigator.vibrate([100, 50, 100]);
+  }
+});
+
 function showStatus(message, type) {
   status.textContent = message;
   status.className = `status ${type}`;
@@ -104,14 +134,18 @@ function showStatus(message, type) {
 
 // Setup Controller Based on Player Number
 function setupController() {
-  // Update UI
+  // Update ready screen UI
+  readyPlayerLabel.textContent = `PLAYER ${playerNumber}`;
+  readyRoomLabel.textContent = `ROOM: ${joinedRoom}`;
+  
+  // Update game screen UI for later
   playerLabel.textContent = `PLAYER ${playerNumber}`;
   roomLabel.textContent = `ROOM: ${joinedRoom}`;
   
   // Set player color class
   gameScreen.className = `game-screen player-${playerNumber}`;
   
-  // Show appropriate controller
+  // Show appropriate controller for later
   if (playerNumber <= 2) {
     // Vertical controller for players 1 & 2
     verticalController.classList.remove('hidden');
@@ -124,17 +158,14 @@ function setupController() {
     setupHorizontalTouch();
   }
   
-  // Transition to game screen
+  // Transition to ready screen first
   joinScreen.style.display = 'none';
-  gameScreen.classList.remove('hidden');
+  readyScreen.classList.remove('hidden');
   
   // Haptic feedback
   if ('vibrate' in navigator) {
     navigator.vibrate([50, 50, 100]);
   }
-  
-  // Start sending position updates
-  startPositionUpdates();
 }
 
 // Vertical Touch Control (Players 1 & 2)

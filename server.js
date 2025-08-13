@@ -24,8 +24,10 @@ class GameRoom {
   constructor(code, ownerSocket) {
     this.code = code;
     this.ownerSocket = ownerSocket;
-    this.slots = [null, null, null, null];
+    this.slots = [null, null, null, null, null];
+    this.readyStates = [false, false, false, false, false];
     this.socketToPlayer = {};
+    this.pentagonRotation = 0; // For pentagon mode rotation
     this.gameState = {
       running: false,
       mode: 2,
@@ -56,8 +58,15 @@ class GameRoom {
     const playerNum = this.socketToPlayer[socketId];
     if (!playerNum) return;
     this.slots[playerNum - 1] = null;
+    this.readyStates[playerNum - 1] = false;
     delete this.socketToPlayer[socketId];
     delete this.inputBuffer[socketId];
+  }
+
+  setPlayerReady(playerNum) {
+    if (playerNum >= 1 && playerNum <= 4) {
+      this.readyStates[playerNum - 1] = true;
+    }
   }
 
   startGame(mode, winScore = 5) {
@@ -67,16 +76,22 @@ class GameRoom {
     this.gameState.countdown = 3; // Start countdown from 3
     this.gameState.countdownActive = true;
     this.gameState.scores = [0, 0, 0, 0];
+    this.gameState.gameStartTime = Date.now(); // Track game start time
+    this.gameState.speedMultiplier = 1; // Initial speed multiplier
     this.initPaddles();
     this.resetBallToCenter(); // Place ball in center without velocity during countdown
     this.startCountdown();
+    this.startSpeedProgression();
+    this.startPentagonRotation();
   }
 
   resetBallToCenter() {
     // Ball stays in center with no velocity during countdown
+    const centerX = this.gameState.fieldWidth / 2;
+    const centerY = this.gameState.fieldHeight / 2;
     this.gameState.ball = {
-      x: 640,
-      y: 360,
+      x: centerX,
+      y: centerY,
       vx: 0,
       vy: 0,
       speed: 6
@@ -85,24 +100,119 @@ class GameRoom {
   }
 
   initPaddles() {
-    this.gameState.paddles = {
-      1: { x: 40, y: 360, w: 15, h: 100 },
-      2: { x: 1240, y: 360, w: 15, h: 100 },
-      3: { x: 640, y: 30, w: 180, h: 15 },
-      4: { x: 640, y: 690, w: 180, h: 15 }
-    };
+    if (this.gameState.mode === 5) {
+      // Pentagon layout for 5 players
+      const centerX = 400;
+      const centerY = 400;
+      const radius = 320;
+      const paddleLength = 100;
+      
+      this.gameState.paddles = {};
+      for (let i = 0; i < 5; i++) {
+        const angle = (i * 2 * Math.PI / 5) - Math.PI / 2; // Start from top
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+        
+        this.gameState.paddles[i + 1] = {
+          x: x,
+          y: y,
+          w: 15,
+          h: paddleLength,
+          angle: angle + Math.PI / 2, // Perpendicular to radius
+          baseAngle: angle + Math.PI / 2 // Store base angle for rotation
+        };
+      }
+      this.gameState.fieldWidth = 800;
+      this.gameState.fieldHeight = 800;
+      this.gameState.isPentagon = true;
+    } else if (this.gameState.mode >= 3) {
+      // Square layout for 3-4 players - all players get equal space
+      this.gameState.paddles = {
+        1: { x: 40, y: 400, w: 15, h: 120 },    // Left
+        2: { x: 760, y: 400, w: 15, h: 120 },   // Right  
+        3: { x: 400, y: 40, w: 120, h: 15 },    // Top
+        4: { x: 400, y: 760, w: 120, h: 15 }    // Bottom
+      };
+      this.gameState.fieldWidth = 800;
+      this.gameState.fieldHeight = 800;
+      this.gameState.isPentagon = false;
+    } else {
+      // Widescreen layout for 2 players
+      this.gameState.paddles = {
+        1: { x: 40, y: 360, w: 15, h: 100 },
+        2: { x: 1240, y: 360, w: 15, h: 100 },
+        3: { x: 640, y: 30, w: 180, h: 15 },
+        4: { x: 640, y: 690, w: 180, h: 15 }
+      };
+      this.gameState.fieldWidth = 1280;
+      this.gameState.fieldHeight = 720;
+      this.gameState.isPentagon = false;
+    }
   }
 
   resetBall() {
     const angle = (Math.random() * Math.PI / 3) - Math.PI / 6 + (Math.random() > 0.5 ? 0 : Math.PI);
+    const baseSpeed = 6 * this.gameState.speedMultiplier;
+    const centerX = this.gameState.fieldWidth / 2;
+    const centerY = this.gameState.fieldHeight / 2;
     this.gameState.ball = {
-      x: 640,
-      y: 360,
-      vx: Math.cos(angle) * 6,
-      vy: Math.sin(angle) * 6,
-      speed: 6
+      x: centerX,
+      y: centerY,
+      vx: Math.cos(angle) * baseSpeed,
+      vy: Math.sin(angle) * baseSpeed,
+      speed: baseSpeed
     };
     this.gameState.lastHitPlayer = null;
+  }
+
+  startSpeedProgression() {
+    // Increase speed every 10 seconds (not for pentagon mode)
+    setInterval(() => {
+      if (this.gameState.running && this.gameState.mode !== 5) {
+        this.gameState.speedMultiplier += 0.3;
+        // Update current ball speed if game is running
+        if (this.gameState.ball) {
+          const currentSpeed = Math.sqrt(this.gameState.ball.vx * this.gameState.ball.vx + this.gameState.ball.vy * this.gameState.ball.vy);
+          const speedRatio = (6 * this.gameState.speedMultiplier) / currentSpeed;
+          this.gameState.ball.vx *= speedRatio;
+          this.gameState.ball.vy *= speedRatio;
+          this.gameState.ball.speed = 6 * this.gameState.speedMultiplier;
+        }
+      }
+    }, 10000);
+  }
+
+  startPentagonRotation() {
+    // Rotate pentagon slowly - 10 milliseconds interval for very slow rotation
+    if (this.gameState.mode === 5) {
+      setInterval(() => {
+        if (this.gameState.running || this.gameState.countdownActive) {
+          this.pentagonRotation += 0.001; // Very slow rotation
+          this.updatePentagonPaddles();
+        }
+      }, 10);
+    }
+  }
+
+  updatePentagonPaddles() {
+    if (this.gameState.mode !== 5) return;
+    
+    const centerX = 400;
+    const centerY = 400;
+    const radius = 320;
+    
+    Object.keys(this.gameState.paddles).forEach(key => {
+      const paddle = this.gameState.paddles[key];
+      const playerIndex = parseInt(key) - 1;
+      
+      // Calculate new position based on rotation
+      const baseAngle = (playerIndex * 2 * Math.PI / 5) - Math.PI / 2;
+      const currentAngle = baseAngle + this.pentagonRotation;
+      
+      paddle.x = centerX + Math.cos(currentAngle) * radius;
+      paddle.y = centerY + Math.sin(currentAngle) * radius;
+      paddle.angle = currentAngle + Math.PI / 2; // Perpendicular to radius
+    });
   }
 
   startCountdown() {
@@ -164,10 +274,14 @@ class GameRoom {
       powerUpType = 'split';
     }
     
-    // Random position avoiding edges
+    // Random position avoiding edges, scaled for field size
+    const margin = 150;
+    const spawnWidth = this.gameState.fieldWidth - (margin * 2);
+    const spawnHeight = this.gameState.fieldHeight - (margin * 2);
+    
     this.gameState.powerUp = {
-      x: 200 + Math.random() * 880,
-      y: 150 + Math.random() * 420,
+      x: margin + Math.random() * spawnWidth,
+      y: margin + Math.random() * spawnHeight,
       size: 30,
       type: powerUpType,
       lifetime: 10000,
@@ -191,12 +305,29 @@ class GameRoom {
       if (!input) return;
 
       // Direct position mapping from touch input
-      if (key <= 2) {
+      if (this.gameState.mode === 5) {
+        // Pentagon mode - radial movement
+        const centerX = 400;
+        const centerY = 400;
+        const minRadius = 250;
+        const maxRadius = 350;
+        const targetRadius = minRadius + (input.position * (maxRadius - minRadius));
+        
+        const playerIndex = parseInt(key) - 1;
+        const baseAngle = (playerIndex * 2 * Math.PI / 5) - Math.PI / 2;
+        const currentAngle = baseAngle + this.pentagonRotation;
+        
+        paddle.x = centerX + Math.cos(currentAngle) * targetRadius;
+        paddle.y = centerY + Math.sin(currentAngle) * targetRadius;
+        paddle.angle = currentAngle + Math.PI / 2; // Keep perpendicular
+      } else if (key <= 2) {
         // Vertical paddles
-        paddle.y = 60 + (input.position * 600); // Map 0-1 to game height
+        const playableHeight = this.gameState.fieldHeight - 120; // Leave 60px margin on each side
+        paddle.y = 60 + (input.position * playableHeight);
       } else {
-        // Horizontal paddles
-        paddle.x = 100 + (input.position * 1080); // Map 0-1 to game width
+        // Horizontal paddles  
+        const playableWidth = this.gameState.fieldWidth - 120; // Leave 60px margin on each side
+        paddle.x = 60 + (input.position * playableWidth);
       }
     });
 
@@ -270,9 +401,18 @@ class GameRoom {
 
   checkWallCollisions() {
     const ball = this.gameState.ball;
+    const fieldWidth = this.gameState.fieldWidth;
+    const fieldHeight = this.gameState.fieldHeight;
     let scored = false;
     
-    // Left wall - Player 1 loses point
+    if (this.gameState.mode === 5) {
+      // Pentagon collision detection
+      this.checkPentagonCollision();
+      return;
+    }
+    
+    // Regular rectangular field collisions
+    // Left wall - Player 2 scores (Player 1 loses)
     if (ball.x <= 10) {
       if (this.gameState.mode >= 2 && this.slots[1]) {
         this.gameState.scores[1]++;
@@ -281,8 +421,8 @@ class GameRoom {
       this.handleScore();
     }
     
-    // Right wall - Player 2 loses point
-    if (ball.x >= 1270) {
+    // Right wall - Player 1 scores (Player 2 loses)
+    if (ball.x >= fieldWidth - 10) {
       if (this.slots[0]) {
         this.gameState.scores[0]++;
         scored = true;
@@ -290,10 +430,14 @@ class GameRoom {
       this.handleScore();
     }
     
-    // Top wall - Player 3 loses point (if playing)
+    // Top wall - Player 4 scores (Player 3 loses) if playing 3+ players
     if (ball.y <= 10) {
       if (this.gameState.mode >= 3 && this.slots[2]) {
-        this.gameState.scores[0]++;
+        if (this.gameState.mode >= 4 && this.slots[3]) {
+          this.gameState.scores[3]++; // Player 4 scores
+        } else {
+          this.gameState.scores[0]++; // Player 1 scores if no Player 4
+        }
         scored = true;
         this.handleScore();
       } else {
@@ -301,14 +445,40 @@ class GameRoom {
       }
     }
     
-    // Bottom wall - Player 4 loses point (if playing)
-    if (ball.y >= 710) {
+    // Bottom wall - Player 3 scores (Player 4 loses) if playing 4 players
+    if (ball.y >= fieldHeight - 10) {
       if (this.gameState.mode >= 4 && this.slots[3]) {
-        this.gameState.scores[0]++;
+        this.gameState.scores[2]++; // Player 3 scores
         scored = true;
         this.handleScore();
       } else {
         ball.vy *= -1;
+      }
+    }
+  }
+
+  checkPentagonCollision() {
+    const ball = this.gameState.ball;
+    const centerX = 400;
+    const centerY = 400;
+    const outerRadius = 350;
+    
+    // Check if ball is outside pentagon boundary
+    const distFromCenter = Math.sqrt(Math.pow(ball.x - centerX, 2) + Math.pow(ball.y - centerY, 2));
+    
+    if (distFromCenter > outerRadius - 10) {
+      // Determine which side of pentagon was hit
+      const angleFromCenter = Math.atan2(ball.y - centerY, ball.x - centerX);
+      let normalizedAngle = angleFromCenter + Math.PI / 2; // Normalize to start from top
+      if (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
+      
+      const sideAngle = 2 * Math.PI / 5;
+      const hitSide = Math.floor(normalizedAngle / sideAngle);
+      const scoringPlayer = (hitSide + 2) % 5; // Opposite player scores
+      
+      if (this.slots[scoringPlayer]) {
+        this.gameState.scores[scoringPlayer]++;
+        this.handleScore();
       }
     }
   }
@@ -504,6 +674,13 @@ io.on('connection', socket => {
     }
   });
 
+  socket.on('playerReady', ({ room, player }) => {
+    if (!rooms[room]) return;
+    const gameRoom = rooms[room];
+    gameRoom.setPlayerReady(player);
+    io.to(room).emit('roomUpdate', getRoomState(room));
+  });
+
   socket.on('disconnect', () => {
     for (const code of Object.keys(rooms)) {
       const room = rooms[code];
@@ -525,6 +702,7 @@ function getRoomState(room) {
   if (!r) return null;
   return {
     slots: r.slots.map(s => !!s),
+    readyStates: r.readyStates.slice(),
     playerSockets: r.slots.slice()
   };
 }

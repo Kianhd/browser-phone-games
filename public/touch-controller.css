@@ -109,6 +109,63 @@ body {
   color: #ff3b3b;
 }
 
+/* Ready Screen */
+.ready-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+.ready-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.ready-card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ff3b3b;
+  margin-bottom: 8px;
+}
+
+.ready-card p {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 8px 0;
+}
+
+.ready-instruction {
+  font-size: 14px;
+  margin: 20px 0 30px 0 !important;
+}
+
+.ready-btn {
+  width: 100%;
+  padding: 18px;
+  background: #ff3b3b;
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.ready-btn:active {
+  transform: scale(0.98);
+  background: #ff5555;
+}
+
 /* Game Screen */
 .game-screen {
   height: 100vh;
@@ -123,6 +180,12 @@ body {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ready-status {
+  font-size: 12px;
+  color: #00ff00;
+  font-weight: 600;
 }
 
 .player-label {
