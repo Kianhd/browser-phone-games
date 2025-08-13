@@ -185,25 +185,6 @@ html, body {
   text-align: center;
 }
 
-.qr-shimmer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, 
-    transparent 40%, 
-    rgba(255, 255, 255, 0.2) 50%, 
-    transparent 60%);
-  animation: qr-shimmer 3s ease-in-out infinite;
-  border-radius: 16px;
-  opacity: 0.4;
-}
-
-@keyframes qr-shimmer {
-  0%, 100% { transform: translateX(-100%) translateY(-100%); }
-  50% { transform: translateX(100%) translateY(100%); }
-}
 
 /* Mode Selector & Score Selector */
 .mode-selector, .score-selector {
