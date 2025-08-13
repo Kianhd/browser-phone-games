@@ -64,7 +64,7 @@ class GameRoom {
   }
 
   setPlayerReady(playerNum) {
-    if (playerNum >= 1 && playerNum <= 4) {
+    if (playerNum >= 1 && playerNum <= 5) {
       this.readyStates[playerNum - 1] = true;
     }
   }
@@ -75,7 +75,7 @@ class GameRoom {
     this.gameState.running = false; // Don't start immediately, wait for countdown
     this.gameState.countdown = 3; // Start countdown from 3
     this.gameState.countdownActive = true;
-    this.gameState.scores = [0, 0, 0, 0];
+    this.gameState.scores = [0, 0, 0, 0, 0];
     this.gameState.gameStartTime = Date.now(); // Track game start time
     this.gameState.speedMultiplier = 1; // Initial speed multiplier
     this.initPaddles();

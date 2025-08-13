@@ -171,10 +171,31 @@ document.addEventListener('DOMContentLoaded', () => {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
   
+  // Initialize player count display
+  updatePlayerCountDisplay(0);
+  
   // Initialize audio on first user interaction
   document.addEventListener('click', initAudio, { once: true });
   document.addEventListener('touchstart', initAudio, { once: true });
 });
+
+function updatePlayerCountDisplay(count) {
+  const playerCountEl = document.getElementById('playerCount');
+  if (playerCountEl) {
+    playerCountEl.textContent = `${count} / 5`;
+    
+    // Change styling based on mode
+    if (count === 5) {
+      playerCountEl.style.color = '#ffd700';
+      playerCountEl.style.borderColor = 'rgba(255, 215, 0, 0.3)';
+      playerCountEl.style.background = 'rgba(255, 215, 0, 0.1)';
+    } else {
+      playerCountEl.style.color = 'var(--accent-red)';
+      playerCountEl.style.borderColor = 'rgba(255, 59, 59, 0.2)';
+      playerCountEl.style.background = 'rgba(255, 59, 59, 0.1)';
+    }
+  }
+}
 
 function resizeCanvas() {
   // Use square canvas for 3+ player modes, widescreen for 2 player
@@ -225,12 +246,16 @@ function generateQR(code) {
 startGameBtn.addEventListener('click', () => {
   if (!currentRoom) return;
   sounds.gameStart(); // Multi-note game start sound
+  
+  // Use the auto-determined game mode based on connected players
   socket.emit('startGame', { room: currentRoom, mode: gameMode, winScore: winScore });
+  console.log('Starting game with mode:', gameMode, 'players'); // Debug log
 });
 
 // Socket Listeners
 function setupSocketListeners() {
   socket.on('roomUpdate', (data) => {
+    console.log('Room update received:', data); // Debug log
     if (!data) return;
     updatePlayerStatus(data.slots, data.readyStates);
   });
@@ -303,6 +328,77 @@ function setupSocketListeners() {
   });
 }
 
+// Global variable to track if pentagon mode was already unlocked
+let pentagonModeUnlocked = false;
+
+function triggerPentagonUnlock() {
+  // Play victory sound sequence
+  playSound(523, 0.2, 0.1, 'sine'); // C5
+  setTimeout(() => playSound(659, 0.2, 0.1, 'sine'), 200); // E5
+  setTimeout(() => playSound(784, 0.2, 0.1, 'sine'), 400); // G5
+  setTimeout(() => playSound(1047, 0.4, 0.12, 'sine'), 600); // C6 - victory note
+  
+  // Show unlock message
+  showPentagonUnlockMessage();
+}
+
+function showPentagonUnlockMessage() {
+  // Create unlock overlay
+  const unlockOverlay = document.createElement('div');
+  unlockOverlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.5s ease-in;
+  `;
+  
+  unlockOverlay.innerHTML = `
+    <div style="
+      text-align: center;
+      color: #ffd700;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      animation: unlockPulse 2s ease-in-out;
+    ">
+      <div style="font-size: 48px; margin-bottom: 16px;">🌟</div>
+      <div style="font-size: 32px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 0 20px #ffd700;">
+        SPECIAL MODE UNLOCKED!
+      </div>
+      <div style="font-size: 18px; opacity: 0.9;">
+        Pentagon Mode Activated
+      </div>
+    </div>
+    <style>
+      @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+      }
+      @keyframes unlockPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+    </style>
+  `;
+  
+  document.body.appendChild(unlockOverlay);
+  
+  // Remove overlay after 3 seconds
+  setTimeout(() => {
+    unlockOverlay.style.animation = 'fadeIn 0.5s ease-out reverse';
+    setTimeout(() => {
+      if (unlockOverlay.parentNode) {
+        unlockOverlay.parentNode.removeChild(unlockOverlay);
+      }
+    }, 500);
+  }, 3000);
+}
+
 function updatePlayerStatus(slots, readyStates = []) {
   let connectedCount = 0;
   slots.forEach((connected, i) => {
@@ -331,23 +427,25 @@ function updatePlayerStatus(slots, readyStates = []) {
   gameMode = Math.max(2, connectedCount); // Minimum 2 players, max 5
   
   // Update player count display
-  const playerCountEl = document.getElementById('playerCount');
-  if (playerCountEl) {
-    playerCountEl.textContent = `${connectedCount} / 5`;
-    
-    // Change styling based on mode
-    if (connectedCount === 5) {
-      playerCountEl.style.color = '#ffd700';
-      playerCountEl.style.borderColor = 'rgba(255, 215, 0, 0.3)';
-      playerCountEl.style.background = 'rgba(255, 215, 0, 0.1)';
-    } else {
-      playerCountEl.style.color = 'var(--accent-red)';
-      playerCountEl.style.borderColor = 'rgba(255, 59, 59, 0.2)';
-      playerCountEl.style.background = 'rgba(255, 59, 59, 0.1)';
-    }
+  updatePlayerCountDisplay(connectedCount);
+  
+  // Trigger pentagon mode unlock if 5 players connected
+  if (connectedCount === 5 && !pentagonModeUnlocked) {
+    triggerPentagonUnlock();
+    pentagonModeUnlocked = true;
   }
 
+  // Enable start button when 2 or more players connected
   startGameBtn.disabled = connectedCount < 2;
+  
+  // Update start button text based on player count
+  if (connectedCount === 5) {
+    startGameBtn.textContent = '🌟 START PENTAGON MODE';
+  } else if (connectedCount >= 2) {
+    startGameBtn.textContent = `START ${connectedCount} PLAYER GAME`;
+  } else {
+    startGameBtn.textContent = 'WAITING FOR PLAYERS...';
+  }
 }
 
 function detectGameEvents(prevState, currState) {
