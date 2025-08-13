@@ -2,35 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Controller</title>
-  <link rel="stylesheet" href="/style.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Premium Controller</title>
+  <link rel="stylesheet" href="/premium-style.css" />
 </head>
 <body class="controller-body">
-  <div class="control-wrap">
-    <div class="join-panel">
-      <input id="roomInput" placeholder="ROOM CODE" maxlength="6" />
-      <button id="joinBtn">Join</button>
-      <div id="joinStatus" class="tiny muted"></div>
+  <div class="controller-wrapper">
+    <!-- Join screen with liquid glass -->
+    <div class="join-screen" id="joinScreen">
+      <div class="glass-card compact">
+        <h2 class="controller-title">GAME CONTROLLER</h2>
+        
+        <div class="input-group">
+          <input 
+            type="text" 
+            id="roomInput" 
+            class="room-input" 
+            placeholder="ROOM CODE" 
+            maxlength="6"
+            autocapitalize="characters"
+            autocomplete="off"
+          />
+          <button class="join-btn" id="joinBtn">
+            <span>JOIN</span>
+            <div class="btn-pulse"></div>
+          </button>
+        </div>
+        
+        <div class="status-message" id="statusMessage"></div>
+      </div>
     </div>
 
-    <div id="controllerArea" class="hidden">
-      <div id="meLabel" class="me-label">Joined as P?</div>
-
-      <div class="controls-grid">
-        <button class="ctrl-btn" id="upBtn">▲</button>
-        <div class="lr-row">
-          <button class="ctrl-btn" id="leftBtn">◀</button>
-          <button class="ctrl-btn accent" id="actionBtn">ACTION</button>
-          <button class="ctrl-btn" id="rightBtn">▶</button>
+    <!-- Game controller with smooth touch areas -->
+    <div class="game-controller hidden" id="gameController">
+      <div class="controller-header">
+        <div class="player-info" id="playerInfo">
+          <span class="player-badge">P1</span>
+          <div class="connection-status"></div>
         </div>
-        <button class="ctrl-btn" id="downBtn">▼</button>
       </div>
-      <div class="hint tiny muted">Hold left/right/up/down for continuous movement</div>
+
+      <div class="control-surface">
+        <!-- D-Pad style controls with continuous input -->
+        <div class="dpad-container">
+          <button class="dpad-btn up" id="upBtn" data-dir="up">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 14l5-5 5 5z"/>
+            </svg>
+          </button>
+          
+          <div class="dpad-center">
+            <button class="dpad-btn left" id="leftBtn" data-dir="left">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15 7l-5 5 5 5z"/>
+              </svg>
+            </button>
+            
+            <div class="dpad-middle"></div>
+            
+            <button class="dpad-btn right" id="rightBtn" data-dir="right">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 7l5 5-5 5z"/>
+              </svg>
+            </button>
+          </div>
+          
+          <button class="dpad-btn down" id="downBtn" data-dir="down">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 10l5 5 5-5z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Action button with haptic feedback -->
+        <button class="action-button" id="actionBtn">
+          <span class="action-text">BOOST</span>
+          <div class="action-ripple"></div>
+        </button>
+      </div>
+
+      <!-- Visual feedback indicator -->
+      <div class="feedback-indicator" id="feedbackIndicator"></div>
     </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/controller.js"></script>
+  <script src="/js/premium-controller.js"></script>
 </body>
 </html>

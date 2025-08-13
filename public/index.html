@@ -3,36 +3,92 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>QuadPong TV</title>
-  <link rel="stylesheet" href="/style.css" />
+  <title>Premium Pong - TV Display</title>
+  <link rel="stylesheet" href="/premium-style.css" />
 </head>
 <body>
-  <div class="tv-ui">
-    <div class="room-panel">
-      <div class="big-code" id="roomCode">—</div>
-      <div class="qr-wrap"><img id="qrImg" alt="qr" /></div>
-      <div class="controls-row">
-        <label>Mode:</label>
-        <select id="modeSelect">
-          <option value="2">2 Players</option>
-          <option value="3">3 Players</option>
-          <option value="4">4 Players</option>
-        </select>
-        <button id="createRoom">Create Room</button>
-        <button id="startGame" disabled>Start</button>
-      </div>
-      <div class="players" id="playersStatus">
-        <div class="pstatus" data-i="1">P1 — <span class="stat">❌</span></div>
-        <div class="pstatus" data-i="2">P2 — <span class="stat">❌</span></div>
-        <div class="pstatus" data-i="3">P3 — <span class="stat">❌</span></div>
-        <div class="pstatus" data-i="4">P4 — <span class="stat">❌</span></div>
+  <div class="tv-wrapper">
+    <!-- Liquid glass menu panel -->
+    <div class="menu-panel" id="menuPanel">
+      <div class="glass-card">
+        <h1 class="game-title">
+          <span class="title-glow">PREMIUM</span>
+          <span class="title-main">PONG</span>
+        </h1>
+        
+        <div class="room-display">
+          <div class="room-code" id="roomCode">------</div>
+          <div class="qr-container">
+            <img id="qrImg" class="qr-code" alt="QR Code" />
+            <div class="qr-shimmer"></div>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="mode-selector">
+            <label class="mode-label">Players</label>
+            <div class="mode-buttons">
+              <button class="mode-btn active" data-mode="2">2P</button>
+              <button class="mode-btn" data-mode="3">3P</button>
+              <button class="mode-btn" data-mode="4">4P</button>
+            </div>
+          </div>
+          
+          <button class="action-btn create-btn" id="createRoom">
+            <span class="btn-text">Create Room</span>
+            <div class="btn-glow"></div>
+          </button>
+        </div>
+
+        <div class="players-grid">
+          <div class="player-card" data-player="1">
+            <div class="player-indicator"></div>
+            <span class="player-label">P1</span>
+            <span class="player-status">⭕</span>
+          </div>
+          <div class="player-card" data-player="2">
+            <div class="player-indicator"></div>
+            <span class="player-label">P2</span>
+            <span class="player-status">⭕</span>
+          </div>
+          <div class="player-card" data-player="3">
+            <div class="player-indicator"></div>
+            <span class="player-label">P3</span>
+            <span class="player-status">⭕</span>
+          </div>
+          <div class="player-card" data-player="4">
+            <div class="player-indicator"></div>
+            <span class="player-label">P4</span>
+            <span class="player-status">⭕</span>
+          </div>
+        </div>
+
+        <button class="action-btn start-btn" id="startGame" disabled>
+          <span class="btn-text">Start Game</span>
+          <div class="btn-glow"></div>
+        </button>
       </div>
     </div>
+
+    <!-- Game canvas with effects -->
+    <div class="game-container" id="gameContainer">
+      <canvas id="gameCanvas" width="1280" height="720"></canvas>
+      <div class="game-overlay"></div>
+      
+      <!-- Score display -->
+      <div class="score-display" id="scoreDisplay">
+        <div class="score-item player1">0</div>
+        <div class="score-item player2">0</div>
+        <div class="score-item player3">0</div>
+        <div class="score-item player4">0</div>
+      </div>
+    </div>
+
+    <!-- Ambient effects -->
+    <div class="ambient-particles"></div>
   </div>
 
-  <canvas id="gameCanvas" width="1280" height="720"></canvas>
-
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/tv.js"></script>
+  <script src="/js/premium-tv.js"></script>
 </body>
 </html>
