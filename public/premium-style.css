@@ -316,6 +316,8 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 12px;
+  min-width: 200px;
+  white-space: nowrap;
 }
 
 .create-btn:hover {
@@ -354,6 +356,17 @@ html, body {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.players-grid.pentagon-mode {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.05) 100%);
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.players-grid.five-players {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .player-card {

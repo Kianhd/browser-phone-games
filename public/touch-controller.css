@@ -166,6 +166,32 @@ body {
   background: #ff5555;
 }
 
+.start-game-btn {
+  width: 100%;
+  padding: 18px;
+  background: #00ff00;
+  border: none;
+  border-radius: 12px;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 12px;
+}
+
+.start-game-btn:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
+
+.start-game-btn:active:not(:disabled) {
+  transform: scale(0.98);
+  background: #00cc00;
+}
+
 /* Game Screen */
 .game-screen {
   height: 100vh;

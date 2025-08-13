@@ -39,6 +39,7 @@ const gameScreen = document.getElementById('gameScreen');
 const roomInput = document.getElementById('roomInput');
 const joinBtn = document.getElementById('joinBtn');
 const readyBtn = document.getElementById('readyBtn');
+const startGameBtnController = document.getElementById('startGameBtnController');
 const status = document.getElementById('status');
 const playerLabel = document.getElementById('playerLabel');
 const roomLabel = document.getElementById('roomLabel');
@@ -111,9 +112,17 @@ readyBtn.addEventListener('click', () => {
   readyBtn.textContent = '✓ READY';
   readyBtn.disabled = true;
   
-  // Transition to game screen
-  readyScreen.classList.add('hidden');
-  gameScreen.classList.remove('hidden');
+  // Don't transition to game screen yet for non-host players
+  if (playerNumber === 1) {
+    // Player 1 can transition to game screen immediately
+    readyScreen.classList.add('hidden');
+    gameScreen.classList.remove('hidden');
+  } else {
+    // Other players show waiting message
+    readyBtn.textContent = '✓ WAITING FOR HOST TO START';
+    readyBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+    readyBtn.style.color = 'rgba(255, 255, 255, 0.7)';
+  }
   
   // Start sending position updates
   startPositionUpdates();
@@ -121,6 +130,36 @@ readyBtn.addEventListener('click', () => {
   // Haptic feedback
   if ('vibrate' in navigator) {
     navigator.vibrate([100, 50, 100]);
+  }
+});
+
+// Start Game Button (only for player 1)
+startGameBtnController.addEventListener('click', () => {
+  if (!startGameBtnController.disabled && joinedRoom) {
+    playControllerSound(880, 0.2, 0.08); // Start game sound
+    
+    // Get current ready count to determine mode
+    let readyCount = 0;
+    if (window.currentRoomData && window.currentRoomData.readyStates) {
+      window.currentRoomData.readyStates.forEach(ready => {
+        if (ready) readyCount++;
+      });
+    }
+    
+    const gameMode = Math.max(2, readyCount);
+    socket.emit('startGame', { room: joinedRoom, mode: gameMode, winScore: 5 });
+    
+    // Disable button after clicking
+    startGameBtnController.disabled = true;
+    startGameBtnController.textContent = 'STARTING...';
+    
+    // Show scroll hint for host as well
+    setTimeout(() => showScrollHint(), 1000);
+    
+    // Haptic feedback
+    if ('vibrate' in navigator) {
+      navigator.vibrate([50, 50, 200]);
+    }
   }
 });
 
@@ -151,12 +190,25 @@ function setupController() {
     verticalController.classList.remove('hidden');
     horizontalController.classList.add('hidden');
     setupVerticalTouch();
+  } else if (playerNumber === 5) {
+    // Special radial controller for player 5 (pentagon mode)
+    verticalController.classList.remove('hidden');
+    horizontalController.classList.add('hidden');
+    setupVerticalTouch(); // Use vertical for radial in/out movement
   } else {
     // Horizontal controller for players 3 & 4
     verticalController.classList.add('hidden');
     horizontalController.classList.remove('hidden');
     setupHorizontalTouch();
   }
+  
+  // Show start button for Player 1 immediately after joining
+  if (playerNumber === 1) {
+    startGameBtnController.classList.remove('hidden');
+  }
+  
+  // Update controller hint text based on player number
+  updateControllerHint();
   
   // Transition to ready screen first
   joinScreen.style.display = 'none';
@@ -346,6 +398,36 @@ socket.on('disconnect', () => {
   }
 });
 
+socket.on('roomUpdate', (data) => {
+  if (!data) return;
+  
+  // Store room data globally for access by start button
+  window.currentRoomData = data;
+  
+  // Only update start button for player 1
+  if (playerNumber !== 1) return;
+  
+  // Calculate ready players
+  let readyCount = 0;
+  data.readyStates.forEach(ready => {
+    if (ready) readyCount++;
+  });
+  
+  // Enable start button if 2+ players are ready
+  const canStart = readyCount >= 2;
+  startGameBtnController.disabled = !canStart;
+  
+  if (canStart) {
+    if (readyCount === 5) {
+      startGameBtnController.textContent = '🌟 START PENTAGON MODE';
+    } else {
+      startGameBtnController.textContent = `START ${readyCount} PLAYER GAME`;
+    }
+  } else {
+    startGameBtnController.textContent = 'WAITING FOR PLAYERS...';
+  }
+});
+
 socket.on('countdownTick', ({ count }) => {
   countdownActive = true;
   countdownNumber = count;
@@ -371,6 +453,22 @@ socket.on('countdownComplete', () => {
   playControllerSound(880, 0.3, 0.08); // Game start sound
   if ('vibrate' in navigator) {
     navigator.vibrate([50, 50, 50, 50, 300]); // Victory pattern
+  }
+});
+
+socket.on('startGame', () => {
+  // Transition non-host players to game screen when game starts
+  if (playerNumber !== 1) {
+    readyScreen.classList.add('hidden');
+    gameScreen.classList.remove('hidden');
+  }
+  
+  // Show scroll hint for all players
+  showScrollHint();
+  
+  // Haptic feedback
+  if ('vibrate' in navigator) {
+    navigator.vibrate([50, 50, 50, 50, 200]);
   }
 });
 
@@ -443,6 +541,105 @@ function hideCountdownOverlay() {
   if (overlay) {
     overlay.style.display = 'none';
   }
+}
+
+// Update controller hint text based on player number
+function updateControllerHint() {
+  const verticalHint = document.querySelector('#verticalController .touch-hint');
+  const horizontalHint = document.querySelector('#horizontalController .touch-hint');
+  
+  if (playerNumber === 5) {
+    // Pentagon mode - radial movement
+    if (verticalHint) {
+      verticalHint.textContent = 'SLIDE IN & OUT';
+    }
+  } else if (playerNumber <= 2) {
+    // Vertical movement
+    if (verticalHint) {
+      verticalHint.textContent = 'SLIDE UP & DOWN';
+    }
+  } else {
+    // Horizontal movement
+    if (horizontalHint) {
+      horizontalHint.textContent = 'SLIDE LEFT & RIGHT';
+    }
+  }
+}
+
+// Show scroll hint when game starts
+function showScrollHint() {
+  let hintOverlay = document.getElementById('scrollHintOverlay');
+  if (!hintOverlay) {
+    hintOverlay = document.createElement('div');
+    hintOverlay.id = 'scrollHintOverlay';
+    hintOverlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    `;
+    document.body.appendChild(hintOverlay);
+  }
+  
+  let controlText, icon;
+  
+  // Check if we're in pentagon mode (5 players)
+  const isPentagonMode = window.currentRoomData && 
+                        window.currentRoomData.readyStates && 
+                        window.currentRoomData.readyStates.filter(ready => ready).length === 5;
+  
+  if (isPentagonMode && playerNumber === 5) {
+    controlText = 'SCROLL IN & OUT';
+    icon = '🌟';
+  } else if (playerNumber <= 2) {
+    controlText = 'SCROLL UP & DOWN';
+    icon = '↕️';
+  } else {
+    controlText = 'SCROLL LEFT & RIGHT';
+    icon = '↔️';
+  }
+  
+  hintOverlay.innerHTML = `
+    <div style="
+      text-align: center;
+      color: #ffffff;
+      animation: fadeInScale 0.5s ease-out;
+    ">
+      <div style="font-size: 64px; margin-bottom: 16px;">${icon}</div>
+      <div style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">
+        ${controlText}
+      </div>
+      <div style="font-size: 16px; opacity: 0.8;">
+        to control your paddle
+      </div>
+    </div>
+    <style>
+      @keyframes fadeInScale {
+        0% { transform: scale(0.8); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+    </style>
+  `;
+  
+  hintOverlay.style.display = 'flex';
+  
+  // Hide hint after 3 seconds
+  setTimeout(() => {
+    hintOverlay.style.animation = 'fadeInScale 0.5s ease-out reverse';
+    setTimeout(() => {
+      if (hintOverlay.parentNode) {
+        hintOverlay.parentNode.removeChild(hintOverlay);
+      }
+    }, 500);
+  }, 3000);
 }
 
 // Enter key to join

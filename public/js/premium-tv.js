@@ -174,10 +174,29 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize player count display
   updatePlayerCountDisplay(0);
   
+  // Fix button width to prevent layout shifts
+  fixCreateButtonWidth();
+  
   // Initialize audio on first user interaction
   document.addEventListener('click', initAudio, { once: true });
   document.addEventListener('touchstart', initAudio, { once: true });
 });
+
+function fixCreateButtonWidth() {
+  // Set button width based on the longer text to prevent layout shifts
+  const createRoomBtn = document.getElementById('createRoom');
+  if (createRoomBtn) {
+    // Temporarily set to longer text to measure width
+    const originalText = createRoomBtn.textContent;
+    createRoomBtn.textContent = 'CREATE NEW ROOM';
+    const width = createRoomBtn.offsetWidth;
+    
+    // Restore original text and set fixed width
+    createRoomBtn.textContent = originalText;
+    createRoomBtn.style.width = width + 'px';
+    createRoomBtn.style.minWidth = width + 'px';
+  }
+}
 
 function updatePlayerCountDisplay(count) {
   const playerCountEl = document.getElementById('playerCount');
@@ -233,6 +252,8 @@ createRoomBtn.addEventListener('click', () => {
     resetRoomInterface();
     // Reset the unlock state for pentagon mode
     pentagonModeUnlocked = false;
+    // Reset current room to force new room creation
+    currentRoom = null;
   }
   
   socket.emit('createRoom', (res) => {
@@ -264,6 +285,12 @@ function resetRoomInterface() {
       status.textContent = '⭕';
     }
   }
+  
+  // Hide 5th player card and reset grid styling
+  const player5Card = document.getElementById('player5Card');
+  const playersGrid = document.querySelector('.players-grid');
+  player5Card.classList.add('hidden');
+  playersGrid.classList.remove('five-players', 'pentagon-mode');
   
   // Hide QR code and show placeholder
   qrImg.classList.add('hidden');
@@ -442,8 +469,25 @@ function updatePlayerStatus(slots, readyStates = []) {
   let connectedCount = 0;
   let readyCount = 0;
   
+  // Track previous connected count for join sound
+  const previousConnectedCount = window.previousConnectedCount || 0;
+  
+  // Show/hide 5th player card based on whether we have 5 slots
+  const player5Card = document.getElementById('player5Card');
+  const playersGrid = document.querySelector('.players-grid');
+  
+  if (slots.length >= 5) {
+    player5Card.classList.remove('hidden');
+    playersGrid.classList.add('five-players');
+  } else {
+    player5Card.classList.add('hidden');
+    playersGrid.classList.remove('five-players');
+  }
+  
   slots.forEach((connected, i) => {
     const card = document.querySelector(`.player-card[data-player="${i + 1}"]`);
+    if (!card) return; // Skip if card doesn't exist
+    
     const status = card.querySelector('.player-status');
     
     if (connected) {
@@ -465,8 +509,23 @@ function updatePlayerStatus(slots, readyStates = []) {
     }
   });
 
+  // Add golden glow to players grid when 5 players are connected
+  if (connectedCount === 5) {
+    playersGrid.classList.add('pentagon-mode');
+  } else {
+    playersGrid.classList.remove('pentagon-mode');
+  }
+
   // Auto-determine game mode based on ready players (not just connected)
   gameMode = Math.max(2, readyCount); // Minimum 2 players, max 5
+  
+  // Play pop sound when new player joins
+  if (connectedCount > previousConnectedCount && previousConnectedCount > 0) {
+    playSound(800, 0.1, 0.08, 'sine'); // Small pop sound
+  }
+  
+  // Store current count for next comparison
+  window.previousConnectedCount = connectedCount;
   
   // Update player count display
   updatePlayerCountDisplay(connectedCount);
