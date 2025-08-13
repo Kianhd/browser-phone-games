@@ -19,9 +19,22 @@
         <div class="room-display">
           <div class="room-code" id="roomCode">------</div>
           <div class="qr-container">
-            <img id="qrImg" class="qr-code" alt="QR Code" />
+            <img id="qrImg" class="qr-code hidden" alt="QR Code" />
+            <div class="qr-placeholder" id="qrPlaceholder">
+              <div class="qr-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3,3H11V11H3V3M5,5V9H9V5H5M13,13H21V21H13V13M15,15V19H19V15H15M19,3H21V5H19V3M19,7V9H21V7H19M21,11H19V13H21V11M11,7H13V9H11V7M7,13V11H9V13H7M3,19V21H5V19H3M5,21H7V19H5V21Z" />
+                </svg>
+              </div>
+              <span class="qr-text">QR Code will appear here</span>
+            </div>
             <div class="qr-shimmer"></div>
           </div>
+        </div>
+
+        <div class="instruction-text">
+          <p>Press "Create Room" to start playing with friends</p>
+          <p style="font-size: 12px; opacity: 0.6; margin-top: 8px;">Share the QR code or room code with players</p>
         </div>
 
         <div class="control-group">
@@ -87,6 +100,9 @@
     <!-- Ambient effects -->
     <div class="ambient-particles"></div>
   </div>
+
+  <!-- Audio elements for sound effects -->
+  <audio id="audioContext" preload="none"></audio>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/premium-tv.js"></script>

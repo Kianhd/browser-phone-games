@@ -30,7 +30,7 @@ class GameRoom {
       running: false,
       mode: 2,
       paddles: {},
-      ball: { x: 640, y: 360, vx: 0, vy: 0, speed: 10 },
+      ball: { x: 640, y: 360, vx: 0, vy: 0, speed: 6 },
       scores: [0, 0, 0, 0],
       powerUp: null,
       powerUpTimer: 0,
@@ -48,7 +48,7 @@ class GameRoom {
     if (idx === -1) return null;
     this.slots[idx] = socketId;
     this.socketToPlayer[socketId] = idx + 1;
-    this.inputBuffer[socketId] = { position: 0.5 }; // 0 to 1 normalized position
+    this.inputBuffer[socketId] = { position: 0.5, lastUpdate: Date.now() }; // 0 to 1 normalized position
     return idx + 1;
   }
 
@@ -84,9 +84,9 @@ class GameRoom {
     this.gameState.ball = {
       x: 640,
       y: 360,
-      vx: Math.cos(angle) * 10,
-      vy: Math.sin(angle) * 10,
-      speed: 10
+      vx: Math.cos(angle) * 6,
+      vy: Math.sin(angle) * 6,
+      speed: 6
     };
     this.gameState.lastHitPlayer = null;
   }
@@ -114,11 +114,23 @@ class GameRoom {
   spawnPowerUp() {
     if (this.gameState.powerUp || this.gameState.activePowerUp) return;
     
+    // Random power-up type: 'grow' (50%), 'shrink' (30%), 'split' (20%)
+    const rand = Math.random();
+    let powerUpType;
+    if (rand < 0.5) {
+      powerUpType = 'grow';
+    } else if (rand < 0.8) {
+      powerUpType = 'shrink';
+    } else {
+      powerUpType = 'split';
+    }
+    
     // Random position avoiding edges
     this.gameState.powerUp = {
       x: 200 + Math.random() * 880,
       y: 150 + Math.random() * 420,
       size: 30,
+      type: powerUpType,
       lifetime: 10000,
       spawnTime: Date.now()
     };
@@ -192,14 +204,17 @@ class GameRoom {
     if (this.gameState.activePowerUp) {
       const elapsed = Date.now() - this.gameState.activePowerUp.startTime;
       if (elapsed > 10000) {
-        // Remove power-up effect
+        // Remove power-up effect and restore original size
         const paddle = this.gameState.paddles[this.gameState.activePowerUp.player];
         if (paddle) {
           if (this.gameState.activePowerUp.player <= 2) {
-            paddle.h = 100;
+            paddle.h = 100; // Restore original height
           } else {
-            paddle.w = 180;
+            paddle.w = 180; // Restore original width
           }
+          // Remove split effect
+          paddle.split = false;
+          paddle.gapSize = 0;
         }
         this.gameState.activePowerUp = null;
       }
@@ -253,17 +268,41 @@ class GameRoom {
   }
 
   checkPaddleCollision(ball, paddle) {
-    return ball.x - 10 < paddle.x + paddle.w/2 && 
+    // Basic collision detection
+    const hit = ball.x - 10 < paddle.x + paddle.w/2 && 
            ball.x + 10 > paddle.x - paddle.w/2 &&
            ball.y - 10 < paddle.y + paddle.h/2 && 
            ball.y + 10 > paddle.y - paddle.h/2;
+    
+    if (!hit || !paddle.split) return hit;
+    
+    // Check if ball is in the gap (split paddle)
+    if (paddle.gapSize && paddle.gapSize > 0) {
+      // For vertical paddles (players 1 & 2)
+      if (paddle.h > paddle.w) {
+        const gapTop = paddle.y - paddle.gapSize / 2;
+        const gapBottom = paddle.y + paddle.gapSize / 2;
+        if (ball.y > gapTop && ball.y < gapBottom) {
+          return false; // Ball passes through gap
+        }
+      } else {
+        // For horizontal paddles (players 3 & 4)
+        const gapLeft = paddle.x - paddle.gapSize / 2;
+        const gapRight = paddle.x + paddle.gapSize / 2;
+        if (ball.x > gapLeft && ball.x < gapRight) {
+          return false; // Ball passes through gap
+        }
+      }
+    }
+    
+    return hit;
   }
 
   handlePaddleHit(ball, paddle, playerNum) {
     const relativeIntersectY = (paddle.y - ball.y) / (paddle.h / 2);
     const bounceAngle = relativeIntersectY * Math.PI / 4;
     
-    ball.speed = Math.min(ball.speed * 1.03, 25);
+    ball.speed = Math.min(ball.speed * 1.02, 16);
     
     if (playerNum <= 2) {
       ball.vx = (playerNum == 1 ? 1 : -1) * ball.speed * Math.cos(bounceAngle);
@@ -275,28 +314,47 @@ class GameRoom {
   }
 
   collectPowerUp(playerNum) {
-    // Apply power-up
+    const powerUpType = this.gameState.powerUp.type;
     const paddle = this.gameState.paddles[playerNum];
     if (paddle) {
-      if (playerNum <= 2) {
-        paddle.h = 130; // 1.3x size
-      } else {
-        paddle.w = 234; // 1.3x size
+      // Apply power-up effect based on type
+      if (powerUpType === 'grow') {
+        if (playerNum <= 2) {
+          paddle.h = 130; // 1.3x size
+        } else {
+          paddle.w = 234; // 1.3x size
+        }
+      } else if (powerUpType === 'shrink') {
+        if (playerNum <= 2) {
+          paddle.h = 50; // 0.5x size (half)
+        } else {
+          paddle.w = 90; // 0.5x size (half)
+        }
+      } else if (powerUpType === 'split') {
+        // Split paddle creates a gap in the middle
+        paddle.split = true;
+        if (playerNum <= 2) {
+          paddle.gapSize = 40; // Gap size for vertical paddles
+        } else {
+          paddle.gapSize = 60; // Gap size for horizontal paddles
+        }
       }
       
       this.gameState.activePowerUp = {
         player: playerNum,
+        type: powerUpType,
         startTime: Date.now()
       };
       
       this.gameState.powerUp = null;
       
-      // Next power-up in 20 seconds
+      // Next power-up in 15-25 seconds (random)
+      const nextSpawnTime = 15000 + Math.random() * 10000;
       setTimeout(() => {
         if (this.gameState.running) {
           this.spawnPowerUp();
         }
-      }, 20000);
+      }, nextSpawnTime);
     }
   }
 
@@ -360,6 +418,7 @@ io.on('connection', socket => {
     const gameRoom = rooms[room];
     if (gameRoom.inputBuffer[socket.id] !== undefined) {
       gameRoom.inputBuffer[socket.id].position = position;
+      gameRoom.inputBuffer[socket.id].lastUpdate = Date.now();
     }
   });
 

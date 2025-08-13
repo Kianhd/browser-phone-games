@@ -72,15 +72,24 @@ html, body {
   right: 0;
   height: 1px;
   background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.3), 
-    transparent);
-  animation: shimmer 3s infinite;
+    transparent 0%, 
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%, 
+    transparent 70%,
+    transparent 100%);
+  animation: subtle-shimmer 4s ease-in-out infinite;
+  opacity: 0.6;
 }
 
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+@keyframes subtle-shimmer {
+  0%, 100% { 
+    transform: translateX(-200%); 
+    opacity: 0;
+  }
+  50% { 
+    transform: translateX(200%); 
+    opacity: 0.6;
+  }
 }
 
 /* Game Title */
@@ -143,6 +152,10 @@ html, body {
   padding: 12px;
   background: var(--pure-white);
   border-radius: 16px;
+  min-height: 144px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .qr-code {
@@ -152,6 +165,26 @@ html, body {
   border-radius: 8px;
 }
 
+.qr-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.qr-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.qr-text {
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
 .qr-shimmer {
   position: absolute;
   top: 0;
@@ -159,10 +192,17 @@ html, body {
   right: 0;
   bottom: 0;
   background: linear-gradient(45deg, 
-    transparent 30%, 
-    rgba(255, 255, 255, 0.5) 50%, 
-    transparent 70%);
-  animation: shimmer 2s infinite;
+    transparent 40%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    transparent 60%);
+  animation: qr-shimmer 3s ease-in-out infinite;
+  border-radius: 16px;
+  opacity: 0.4;
+}
+
+@keyframes qr-shimmer {
+  0%, 100% { transform: translateX(-100%) translateY(-100%); }
+  50% { transform: translateX(100%) translateY(100%); }
 }
 
 /* Mode Selector */
@@ -619,6 +659,19 @@ html, body {
     transform: translate(-50%, -50%) scale(2);
     opacity: 0;
   }
+}
+
+/* Instruction Text */
+.instruction-text {
+  text-align: center;
+  margin-bottom: 24px;
+  color: var(--text-secondary);
+}
+
+.instruction-text p {
+  margin: 4px 0;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* Utilities */

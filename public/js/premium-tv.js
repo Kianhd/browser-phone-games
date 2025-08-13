@@ -18,6 +18,7 @@ ctx.imageSmoothingEnabled = false;
 let currentRoom = null;
 let gameMode = 2;
 let gameState = null;
+let previousGameState = null;
 let animationId = null;
 
 // Player Colors
@@ -28,12 +29,62 @@ const playerColors = {
   4: '#00bfff'
 };
 
+// Sound System
+let audioContext = null;
+const soundEnabled = true;
+
+function initAudio() {
+  try {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  } catch (e) {
+    console.log('Web Audio API not supported');
+  }
+}
+
+function playSound(frequency, duration, volume = 0.1, type = 'sine') {
+  if (!audioContext || !soundEnabled) return;
+  
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  oscillator.frequency.value = frequency;
+  oscillator.type = type;
+  
+  gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+  gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+  
+  oscillator.start(audioContext.currentTime);
+  oscillator.stop(audioContext.currentTime + duration);
+}
+
+// Sound effects
+const sounds = {
+  paddleHit: () => playSound(220, 0.1, 0.08, 'square'),
+  wallHit: () => playSound(150, 0.15, 0.1, 'sawtooth'),
+  powerUpSpawn: () => playSound(440, 0.2, 0.06, 'triangle'),
+  powerUpCollect: () => playSound(660, 0.3, 0.08, 'sine'),
+  score: () => playSound(330, 0.4, 0.1, 'triangle'),
+  gameStart: () => {
+    playSound(262, 0.15, 0.06, 'square');
+    setTimeout(() => playSound(330, 0.15, 0.06, 'square'), 150);
+    setTimeout(() => playSound(392, 0.25, 0.08, 'square'), 300);
+  }
+};
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   setupModeButtons();
   setupSocketListeners();
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
+  
+  // Initialize audio on first user interaction
+  document.addEventListener('click', initAudio, { once: true });
+  document.addEventListener('touchstart', initAudio, { once: true });
 });
 
 function resizeCanvas() {
@@ -50,12 +101,14 @@ function setupModeButtons() {
       document.querySelector('.mode-btn.active').classList.remove('active');
       btn.classList.add('active');
       gameMode = parseInt(btn.dataset.mode);
+      playSound(440, 0.1, 0.05, 'sine'); // Subtle click sound
     });
   });
 }
 
 // Room Management
 createRoomBtn.addEventListener('click', () => {
+  playSound(528, 0.15, 0.06, 'triangle'); // Room creation sound
   socket.emit('createRoom', (res) => {
     currentRoom = res.room;
     roomCodeEl.textContent = res.room;
@@ -67,10 +120,15 @@ createRoomBtn.addEventListener('click', () => {
 function generateQR(code) {
   const url = `${location.origin}/controller.html?r=${code}`;
   qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=0a0a0f`;
+  
+  // Show QR code and hide placeholder
+  qrImg.classList.remove('hidden');
+  document.getElementById('qrPlaceholder').style.display = 'none';
 }
 
 startGameBtn.addEventListener('click', () => {
   if (!currentRoom) return;
+  sounds.gameStart(); // Multi-note game start sound
   socket.emit('startGame', { room: currentRoom, mode: gameMode });
 });
 
@@ -89,7 +147,13 @@ function setupSocketListeners() {
   });
 
   socket.on('gameState', (state) => {
+    previousGameState = gameState;
     gameState = state;
+    
+    // Detect game events and play sounds
+    if (previousGameState) {
+      detectGameEvents(previousGameState, gameState);
+    }
   });
 
   socket.on('gameOver', ({ winner }) => {
@@ -117,6 +181,36 @@ function updatePlayerStatus(slots) {
   });
 
   startGameBtn.disabled = connectedCount < 2;
+}
+
+function detectGameEvents(prevState, currState) {
+  // Detect score changes (wall hits)
+  for (let i = 0; i < currState.scores.length; i++) {
+    if (currState.scores[i] > prevState.scores[i]) {
+      sounds.score();
+      break;
+    }
+  }
+  
+  // Detect power-up spawn
+  if (!prevState.powerUp && currState.powerUp) {
+    sounds.powerUpSpawn();
+  }
+  
+  // Detect power-up collection
+  if (prevState.powerUp && !currState.powerUp && currState.activePowerUp) {
+    sounds.powerUpCollect();
+  }
+  
+  // Detect ball speed changes (paddle hits)
+  if (prevState.ball && currState.ball) {
+    const prevSpeed = Math.sqrt(prevState.ball.vx * prevState.ball.vx + prevState.ball.vy * prevState.ball.vy);
+    const currSpeed = Math.sqrt(currState.ball.vx * currState.ball.vx + currState.ball.vy * currState.ball.vy);
+    
+    if (currSpeed > prevSpeed + 0.5) {
+      sounds.paddleHit();
+    }
+  }
 }
 
 // Optimized Game Rendering
@@ -171,14 +265,55 @@ function drawPaddles() {
     
     if (playerNum > gameMode) return;
     
-    // Draw paddle with player color
     ctx.fillStyle = playerColors[playerNum];
-    ctx.fillRect(
-      paddle.x - paddle.w/2, 
-      paddle.y - paddle.h/2, 
-      paddle.w, 
-      paddle.h
-    );
+    
+    // Draw split paddle or normal paddle
+    if (paddle.split && paddle.gapSize > 0) {
+      // Draw two parts with gap
+      if (paddle.h > paddle.w) {
+        // Vertical paddle split
+        const gapHalf = paddle.gapSize / 2;
+        // Top part
+        ctx.fillRect(
+          paddle.x - paddle.w/2,
+          paddle.y - paddle.h/2,
+          paddle.w,
+          (paddle.h/2) - gapHalf
+        );
+        // Bottom part
+        ctx.fillRect(
+          paddle.x - paddle.w/2,
+          paddle.y + gapHalf,
+          paddle.w,
+          (paddle.h/2) - gapHalf
+        );
+      } else {
+        // Horizontal paddle split
+        const gapHalf = paddle.gapSize / 2;
+        // Left part
+        ctx.fillRect(
+          paddle.x - paddle.w/2,
+          paddle.y - paddle.h/2,
+          (paddle.w/2) - gapHalf,
+          paddle.h
+        );
+        // Right part
+        ctx.fillRect(
+          paddle.x + gapHalf,
+          paddle.y - paddle.h/2,
+          (paddle.w/2) - gapHalf,
+          paddle.h
+        );
+      }
+    } else {
+      // Draw normal paddle
+      ctx.fillRect(
+        paddle.x - paddle.w/2, 
+        paddle.y - paddle.h/2, 
+        paddle.w, 
+        paddle.h
+      );
+    }
     
     // Add glow effect for powered-up paddle
     if (gameState.activePowerUp && gameState.activePowerUp.player === playerNum) {
@@ -223,8 +358,24 @@ function drawPowerUp() {
     return;
   }
   
+  // Different colors for different power-up types
+  let boxColor, symbol;
+  if (powerUp.type === 'grow') {
+    boxColor = '#00ff00'; // Green for grow
+    symbol = '+';
+  } else if (powerUp.type === 'shrink') {
+    boxColor = '#ff4444'; // Red for shrink
+    symbol = '-';
+  } else if (powerUp.type === 'split') {
+    boxColor = '#9d4edd'; // Purple for split
+    symbol = '÷';
+  } else {
+    boxColor = '#ffd700'; // Gold default
+    symbol = '?';
+  }
+  
   // Draw power-up box
-  ctx.fillStyle = '#ffd700';
+  ctx.fillStyle = boxColor;
   ctx.fillRect(
     powerUp.x - powerUp.size,
     powerUp.y - powerUp.size,
@@ -232,12 +383,17 @@ function drawPowerUp() {
     powerUp.size * 2
   );
   
-  // Draw question mark
-  ctx.fillStyle = '#0a0a0f';
-  ctx.font = 'bold 32px Arial';
+  // Add glow effect
+  ctx.strokeStyle = boxColor;
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  
+  // Draw symbol
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 36px Arial';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('?', powerUp.x, powerUp.y);
+  ctx.fillText(symbol, powerUp.x, powerUp.y);
 }
 
 function drawScores() {
@@ -280,17 +436,35 @@ function drawPowerUpTimer() {
   const elapsed = Date.now() - gameState.activePowerUp.startTime;
   const timeLeft = Math.max(0, 10 - Math.floor(elapsed / 1000));
   const playerColor = playerColors[gameState.activePowerUp.player];
+  const powerType = gameState.activePowerUp.type || 'grow';
   
-  // Draw timer
+  // Get power-up name
+  let powerName = 'POWER';
+  if (powerType === 'grow') powerName = 'GROW';
+  else if (powerType === 'shrink') powerName = 'SHRINK';
+  else if (powerType === 'split') powerName = 'SPLIT';
+  
+  // Draw timer with power-up type
   ctx.fillStyle = playerColor;
-  ctx.font = 'bold 32px Arial';
+  ctx.font = 'bold 24px Arial';
   ctx.textAlign = 'center';
-  ctx.fillText(`POWER: ${timeLeft}s`, 640, 360);
+  ctx.fillText(`P${gameState.activePowerUp.player} ${powerName}: ${timeLeft}s`, 640, 340);
   
-  // Draw timer bar
+  // Draw timer bar with better styling
   const barWidth = (timeLeft / 10) * 200;
+  const barX = 540;
+  const barY = 355;
+  
+  // Background bar
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+  ctx.fillRect(barX, barY, 200, 12);
+  
+  // Active bar
   ctx.fillStyle = playerColor;
-  ctx.fillRect(540, 380, barWidth, 10);
+  ctx.fillRect(barX, barY, barWidth, 12);
+  
+  // Border
   ctx.strokeStyle = playerColor;
-  ctx.strokeRect(540, 380, 200, 10);
+  ctx.lineWidth = 2;
+  ctx.strokeRect(barX, barY, 200, 12);
 }

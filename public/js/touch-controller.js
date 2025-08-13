@@ -1,6 +1,37 @@
 // Touch Slider Controller - Direct 1:1 Movement
 const socket = io();
 
+// Simple sound system for controller
+let audioCtx = null;
+
+function initControllerAudio() {
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  } catch (e) {
+    console.log('Audio not supported');
+  }
+}
+
+function playControllerSound(freq, duration, volume = 0.03) {
+  if (!audioCtx) return;
+  
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  
+  osc.frequency.value = freq;
+  osc.type = 'sine';
+  
+  gain.gain.setValueAtTime(0, audioCtx.currentTime);
+  gain.gain.linearRampToValueAtTime(volume, audioCtx.currentTime + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
 // DOM Elements
 const joinScreen = document.getElementById('joinScreen');
 const gameScreen = document.getElementById('gameScreen');
@@ -29,6 +60,10 @@ window.addEventListener('DOMContentLoaded', () => {
     roomInput.value = roomCode.toUpperCase();
     setTimeout(() => joinBtn.click(), 500);
   }
+  
+  // Initialize audio on first interaction
+  document.addEventListener('touchstart', initControllerAudio, { once: true });
+  document.addEventListener('click', initControllerAudio, { once: true });
 });
 
 // Join Room
@@ -39,6 +74,7 @@ joinBtn.addEventListener('click', () => {
     return;
   }
   
+  playControllerSound(440, 0.1, 0.04); // Join button sound
   joinBtn.disabled = true;
   showStatus('Connecting...', '');
   
@@ -49,6 +85,7 @@ joinBtn.addEventListener('click', () => {
       return;
     }
     
+    playControllerSound(660, 0.2, 0.05); // Success sound
     joinedRoom = room;
     playerNumber = res.player;
     setupController();
@@ -255,7 +292,7 @@ function startPositionUpdates() {
         position: currentPosition
       });
     }
-  }, 16); // ~60 FPS
+  }, 10); // ~100 FPS for ultra-responsive controls
 }
 
 // Socket Events
