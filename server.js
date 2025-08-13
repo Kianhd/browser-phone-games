@@ -270,27 +270,32 @@ class GameRoom {
 
   checkWallCollisions() {
     const ball = this.gameState.ball;
+    let scored = false;
     
     // Left wall - Player 1 loses point
     if (ball.x <= 10) {
       if (this.gameState.mode >= 2 && this.slots[1]) {
         this.gameState.scores[1]++;
+        scored = true;
       }
-      this.resetBall();
+      this.handleScore();
     }
     
     // Right wall - Player 2 loses point
     if (ball.x >= 1270) {
       if (this.slots[0]) {
         this.gameState.scores[0]++;
+        scored = true;
       }
-      this.resetBall();
+      this.handleScore();
     }
     
     // Top wall - Player 3 loses point (if playing)
     if (ball.y <= 10) {
       if (this.gameState.mode >= 3 && this.slots[2]) {
         this.gameState.scores[0]++;
+        scored = true;
+        this.handleScore();
       } else {
         ball.vy *= -1;
       }
@@ -300,10 +305,48 @@ class GameRoom {
     if (ball.y >= 710) {
       if (this.gameState.mode >= 4 && this.slots[3]) {
         this.gameState.scores[0]++;
+        scored = true;
+        this.handleScore();
       } else {
         ball.vy *= -1;
       }
     }
+  }
+
+  handleScore() {
+    // Pause game for countdown
+    this.gameState.running = false;
+    this.gameState.countdownActive = true;
+    this.gameState.countdown = 3;
+    this.resetBallToCenter();
+    
+    // Start countdown after a brief pause
+    setTimeout(() => {
+      this.startScoreCountdown();
+    }, 500);
+  }
+
+  startScoreCountdown() {
+    // Send initial countdown
+    io.to(this.code).emit('countdownTick', { count: this.gameState.countdown });
+    
+    const countdownInterval = setInterval(() => {
+      this.gameState.countdown--;
+      
+      if (this.gameState.countdown < 0) {
+        clearInterval(countdownInterval);
+        this.gameState.countdownActive = false;
+        this.gameState.running = true;
+        this.resetBall(); // Give ball velocity
+        
+        // Send game resumed event
+        io.to(this.code).emit('countdownComplete');
+        return;
+      }
+      
+      // Broadcast countdown number (including 0 for "GO!")
+      io.to(this.code).emit('countdownTick', { count: this.gameState.countdown });
+    }, 1000);
   }
 
   checkPaddleCollision(ball, paddle) {

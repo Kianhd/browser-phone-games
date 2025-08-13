@@ -336,13 +336,22 @@ function detectGameEvents(prevState, currState) {
     sounds.powerUpCollect();
   }
   
-  // Detect ball speed changes (paddle hits)
+  // Detect paddle hits by velocity direction changes
   if (prevState.ball && currState.ball) {
-    const prevSpeed = Math.sqrt(prevState.ball.vx * prevState.ball.vx + prevState.ball.vy * prevState.ball.vy);
-    const currSpeed = Math.sqrt(currState.ball.vx * currState.ball.vx + currState.ball.vy * currState.ball.vy);
+    const vxChanged = Math.sign(prevState.ball.vx) !== Math.sign(currState.ball.vx);
+    const vyChanged = Math.sign(prevState.ball.vy) !== Math.sign(currState.ball.vy);
     
-    if (currSpeed > prevSpeed + 0.5) {
-      sounds.paddleHit();
+    // Check if ball hit a paddle (velocity direction changed)
+    if (vxChanged || vyChanged) {
+      // Also check if it's not a wall bounce by checking position
+      const nearLeftPaddle = currState.ball.x < 100;
+      const nearRightPaddle = currState.ball.x > 1180;
+      const nearTopPaddle = currState.ball.y < 100;
+      const nearBottomPaddle = currState.ball.y > 620;
+      
+      if (nearLeftPaddle || nearRightPaddle || nearTopPaddle || nearBottomPaddle) {
+        sounds.paddleHit();
+      }
     }
   }
 }
@@ -562,37 +571,82 @@ function drawPowerUp() {
 }
 
 function drawScores() {
-  ctx.fillStyle = '#ffffff';
+  if (!gameState) return;
+  
   ctx.font = 'bold 48px Arial';
   ctx.textAlign = 'center';
   
-  // Draw scores based on mode
-  if (gameMode >= 2) {
-    // Player 1 score (left)
+  if (gameMode === 2) {
+    // 2-player mode: show P1 and P2 scores side by side
+    ctx.fillStyle = playerColors[1];
+    ctx.fillText(gameState.scores[0], 540, 60);
+    
+    ctx.fillStyle = playerColors[2];  
+    ctx.fillText(gameState.scores[1], 740, 60);
+    
+    // Player labels
+    ctx.font = '20px Arial';
+    ctx.fillStyle = playerColors[1];
+    ctx.fillText('P1', 540, 90);
+    
+    ctx.fillStyle = playerColors[2];
+    ctx.fillText('P2', 740, 90);
+    
+  } else if (gameMode === 3) {
+    // 3-player mode: P1 left, P2 right, P3 center top
     ctx.fillStyle = playerColors[1];
     ctx.fillText(gameState.scores[0], 320, 60);
     
-    // Player 2 score (right)
     ctx.fillStyle = playerColors[2];
     ctx.fillText(gameState.scores[1], 960, 60);
-  }
-  
-  if (gameMode >= 3) {
-    // Player 3 score (top)
+    
     ctx.fillStyle = playerColors[3];
     ctx.fillText(gameState.scores[2], 640, 60);
-  }
-  
-  if (gameMode >= 4) {
-    // Player 4 score (bottom)
+    
+    // Player labels
+    ctx.font = '20px Arial';
+    ctx.fillStyle = playerColors[1];
+    ctx.fillText('P1', 320, 90);
+    
+    ctx.fillStyle = playerColors[2];
+    ctx.fillText('P2', 960, 90);
+    
+    ctx.fillStyle = playerColors[3];
+    ctx.fillText('P3', 640, 90);
+    
+  } else if (gameMode === 4) {
+    // 4-player mode: show all scores
+    ctx.fillStyle = playerColors[1];
+    ctx.fillText(gameState.scores[0], 320, 60);
+    
+    ctx.fillStyle = playerColors[2];
+    ctx.fillText(gameState.scores[1], 960, 60);
+    
+    ctx.fillStyle = playerColors[3];
+    ctx.fillText(gameState.scores[2], 640, 40);
+    
     ctx.fillStyle = playerColors[4];
     ctx.fillText(gameState.scores[3], 640, 680);
+    
+    // Player labels
+    ctx.font = '20px Arial';
+    ctx.fillStyle = playerColors[1];
+    ctx.fillText('P1', 320, 90);
+    
+    ctx.fillStyle = playerColors[2];
+    ctx.fillText('P2', 960, 90);
+    
+    ctx.fillStyle = playerColors[3];
+    ctx.fillText('P3', 640, 70);
+    
+    ctx.fillStyle = playerColors[4];
+    ctx.fillText('P4', 640, 710);
   }
   
   // Win score indicator
   ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-  ctx.font = '20px Arial';
-  ctx.fillText(`First to ${gameState.winScore}`, 640, 30);
+  ctx.font = '16px Arial';
+  ctx.fillText(`First to ${gameState.winScore}`, 640, 20);
 }
 
 function drawPowerUpTimer() {
