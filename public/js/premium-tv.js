@@ -17,9 +17,12 @@ ctx.imageSmoothingEnabled = false;
 // Game State
 let currentRoom = null;
 let gameMode = 2;
+let winScore = 5;
 let gameState = null;
 let previousGameState = null;
 let animationId = null;
+let countdownActive = false;
+let countdownNumber = null;
 
 // Player Colors
 const playerColors = {
@@ -68,6 +71,8 @@ const sounds = {
   powerUpSpawn: () => playSound(440, 0.2, 0.06, 'triangle'),
   powerUpCollect: () => playSound(660, 0.3, 0.08, 'sine'),
   score: () => playSound(330, 0.4, 0.1, 'triangle'),
+  countdown: () => playSound(440, 0.3, 0.1, 'triangle'),
+  countdownFinal: () => playSound(660, 0.5, 0.12, 'sine'),
   gameStart: () => {
     playSound(262, 0.15, 0.06, 'square');
     setTimeout(() => playSound(330, 0.15, 0.06, 'square'), 150);
@@ -104,6 +109,16 @@ function setupModeButtons() {
       playSound(440, 0.1, 0.05, 'sine'); // Subtle click sound
     });
   });
+
+  // Score selection
+  document.querySelectorAll('.score-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelector('.score-btn.active').classList.remove('active');
+      btn.classList.add('active');
+      winScore = parseInt(btn.dataset.score);
+      playSound(528, 0.1, 0.05, 'triangle'); // Different sound for score selection
+    });
+  });
 }
 
 // Room Management
@@ -129,7 +144,7 @@ function generateQR(code) {
 startGameBtn.addEventListener('click', () => {
   if (!currentRoom) return;
   sounds.gameStart(); // Multi-note game start sound
-  socket.emit('startGame', { room: currentRoom, mode: gameMode });
+  socket.emit('startGame', { room: currentRoom, mode: gameMode, winScore: winScore });
 });
 
 // Socket Listeners
@@ -154,6 +169,22 @@ function setupSocketListeners() {
     if (previousGameState) {
       detectGameEvents(previousGameState, gameState);
     }
+  });
+
+  socket.on('countdownTick', ({ count }) => {
+    countdownActive = true;
+    countdownNumber = count;
+    if (count === 1) {
+      sounds.countdownFinal();
+    } else {
+      sounds.countdown();
+    }
+  });
+
+  socket.on('countdownComplete', () => {
+    countdownActive = false;
+    countdownNumber = null;
+    playSound(880, 0.4, 0.1, 'sine'); // Game start sound
   });
 
   socket.on('gameOver', ({ winner }) => {
@@ -236,6 +267,7 @@ function render() {
   drawBall();
   drawScores();
   drawPowerUpTimer();
+  drawCountdown();
 
   animationId = requestAnimationFrame(render);
 }
@@ -467,4 +499,50 @@ function drawPowerUpTimer() {
   ctx.strokeStyle = playerColor;
   ctx.lineWidth = 2;
   ctx.strokeRect(barX, barY, 200, 12);
+}
+
+function drawCountdown() {
+  if (!countdownActive || countdownNumber === null) return;
+  
+  // Create pulsing effect
+  const pulseScale = 1 + Math.sin(Date.now() * 0.01) * 0.1;
+  
+  // Draw countdown background overlay
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+  ctx.fillRect(0, 0, 1280, 720);
+  
+  // Draw countdown number
+  ctx.save();
+  ctx.translate(640, 360);
+  ctx.scale(pulseScale, pulseScale);
+  
+  if (countdownNumber === 0) {
+    // Show "GO!" instead of 0
+    ctx.fillStyle = '#00ff00';
+    ctx.font = 'bold 120px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('GO!', 0, 0);
+    
+    // Add glow effect
+    ctx.shadowColor = '#00ff00';
+    ctx.shadowBlur = 40;
+    ctx.fillText('GO!', 0, 0);
+    ctx.shadowBlur = 0;
+  } else {
+    // Show countdown number
+    ctx.fillStyle = countdownNumber === 1 ? '#ff3b3b' : '#ffffff';
+    ctx.font = 'bold 200px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(countdownNumber.toString(), 0, 0);
+    
+    // Add glow effect
+    ctx.shadowColor = countdownNumber === 1 ? '#ff3b3b' : '#ffffff';
+    ctx.shadowBlur = 50;
+    ctx.fillText(countdownNumber.toString(), 0, 0);
+    ctx.shadowBlur = 0;
+  }
+  
+  ctx.restore();
 }

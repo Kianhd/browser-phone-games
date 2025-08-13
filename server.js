@@ -60,14 +60,28 @@ class GameRoom {
     delete this.inputBuffer[socketId];
   }
 
-  startGame(mode) {
+  startGame(mode, winScore = 5) {
     this.gameState.mode = mode;
-    this.gameState.running = true;
+    this.gameState.winScore = winScore;
+    this.gameState.running = false; // Don't start immediately, wait for countdown
+    this.gameState.countdown = 3; // Start countdown from 3
+    this.gameState.countdownActive = true;
     this.gameState.scores = [0, 0, 0, 0];
     this.initPaddles();
-    this.resetBall();
-    this.startGameLoop();
-    this.startPowerUpSystem();
+    this.resetBallToCenter(); // Place ball in center without velocity during countdown
+    this.startCountdown();
+  }
+
+  resetBallToCenter() {
+    // Ball stays in center with no velocity during countdown
+    this.gameState.ball = {
+      x: 640,
+      y: 360,
+      vx: 0,
+      vy: 0,
+      speed: 6
+    };
+    this.gameState.lastHitPlayer = null;
   }
 
   initPaddles() {
@@ -89,6 +103,31 @@ class GameRoom {
       speed: 6
     };
     this.gameState.lastHitPlayer = null;
+  }
+
+  startCountdown() {
+    // Send initial countdown
+    io.to(this.code).emit('countdownTick', { count: this.gameState.countdown });
+    
+    const countdownInterval = setInterval(() => {
+      this.gameState.countdown--;
+      
+      if (this.gameState.countdown < 0) {
+        clearInterval(countdownInterval);
+        this.gameState.countdownActive = false;
+        this.gameState.running = true;
+        this.resetBall(); // Now give ball velocity
+        this.startGameLoop();
+        this.startPowerUpSystem();
+        
+        // Send game started event
+        io.to(this.code).emit('countdownComplete');
+        return;
+      }
+      
+      // Broadcast countdown number (including 0 for "GO!")
+      io.to(this.code).emit('countdownTick', { count: this.gameState.countdown });
+    }, 1000);
   }
 
   startGameLoop() {
@@ -137,7 +176,7 @@ class GameRoom {
   }
 
   updatePhysics() {
-    if (!this.gameState.running) return;
+    if (!this.gameState.running || this.gameState.countdownActive) return;
     
     const ball = this.gameState.ball;
     const paddles = this.gameState.paddles;
@@ -397,15 +436,15 @@ io.on('connection', socket => {
     cb && cb({ ok: true, player: playerNum });
   });
 
-  socket.on('startGame', ({ room, mode }) => {
+  socket.on('startGame', ({ room, mode, winScore }) => {
     if (!rooms[room]) return;
     const gameRoom = rooms[room];
-    gameRoom.startGame(mode || 2);
-    io.to(room).emit('startGame', { mode: mode || 2 });
+    gameRoom.startGame(mode || 2, winScore || 5);
+    io.to(room).emit('startGame', { mode: mode || 2, winScore: winScore || 5 });
     
     // Send game state at 30 FPS
     const stateInterval = setInterval(() => {
-      if (!rooms[room] || !gameRoom.gameState.running) {
+      if (!rooms[room] || (!gameRoom.gameState.running && !gameRoom.gameState.countdownActive)) {
         clearInterval(stateInterval);
         return;
       }

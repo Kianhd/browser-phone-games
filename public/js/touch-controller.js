@@ -51,6 +51,8 @@ let playerNumber = null;
 let touchActive = false;
 let currentPosition = 0.5; // 0 to 1 normalized
 let sendInterval = null;
+let countdownActive = false;
+let countdownNumber = null;
 
 // Check URL params for room code
 window.addEventListener('DOMContentLoaded', () => {
@@ -306,6 +308,34 @@ socket.on('disconnect', () => {
   }
 });
 
+socket.on('countdownTick', ({ count }) => {
+  countdownActive = true;
+  countdownNumber = count;
+  showCountdownOverlay(count);
+  
+  if (count === 1) {
+    playControllerSound(660, 0.4, 0.08); // Final countdown sound
+    if ('vibrate' in navigator) {
+      navigator.vibrate([200, 100, 200]);
+    }
+  } else {
+    playControllerSound(440, 0.2, 0.05); // Regular countdown sound
+    if ('vibrate' in navigator) {
+      navigator.vibrate(100);
+    }
+  }
+});
+
+socket.on('countdownComplete', () => {
+  countdownActive = false;
+  countdownNumber = null;
+  hideCountdownOverlay();
+  playControllerSound(880, 0.3, 0.08); // Game start sound
+  if ('vibrate' in navigator) {
+    navigator.vibrate([50, 50, 50, 50, 300]); // Victory pattern
+  }
+});
+
 socket.on('gameOver', () => {
   if ('vibrate' in navigator) {
     navigator.vibrate([100, 100, 100, 100, 200]);
@@ -320,6 +350,62 @@ document.addEventListener('touchmove', (e) => {
 document.addEventListener('gesturestart', (e) => {
   e.preventDefault();
 });
+
+// Countdown overlay functions
+function showCountdownOverlay(count) {
+  let overlay = document.getElementById('countdownOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'countdownOverlay';
+    overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    `;
+    document.body.appendChild(overlay);
+  }
+  
+  const countdownText = count === 0 ? 'GO!' : count.toString();
+  const color = count === 1 ? '#ff3b3b' : count === 0 ? '#00ff00' : '#ffffff';
+  
+  overlay.innerHTML = `
+    <div style="
+      font-size: ${count === 0 ? '80px' : '120px'};
+      font-weight: bold;
+      text-align: center;
+      color: ${color};
+      text-shadow: 0 0 30px ${color};
+      animation: pulse 0.5s ease-in-out;
+    ">
+      ${countdownText}
+    </div>
+    <style>
+      @keyframes pulse {
+        0% { transform: scale(0.8); opacity: 0; }
+        50% { transform: scale(1.1); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+    </style>
+  `;
+  
+  overlay.style.display = 'flex';
+}
+
+function hideCountdownOverlay() {
+  const overlay = document.getElementById('countdownOverlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+}
 
 // Enter key to join
 roomInput.addEventListener('keypress', (e) => {
