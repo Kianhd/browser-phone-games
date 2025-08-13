@@ -4,90 +4,58 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>Premium Controller</title>
-  <link rel="stylesheet" href="/premium-style.css" />
+  <title>Touch Controller</title>
+  <link rel="stylesheet" href="/touch-controller.css" />
 </head>
-<body class="controller-body">
-  <div class="controller-wrapper">
-    <!-- Join screen with liquid glass -->
+<body>
+  <div class="controller-container">
+    <!-- Join Screen -->
     <div class="join-screen" id="joinScreen">
-      <div class="glass-card compact">
-        <h2 class="controller-title">GAME CONTROLLER</h2>
-        
-        <div class="input-group">
+      <div class="join-card">
+        <h1>GAME CONTROLLER</h1>
+        <div class="join-form">
           <input 
             type="text" 
             id="roomInput" 
-            class="room-input" 
             placeholder="ROOM CODE" 
             maxlength="6"
             autocapitalize="characters"
             autocomplete="off"
           />
-          <button class="join-btn" id="joinBtn">
-            <span>JOIN</span>
-            <div class="btn-pulse"></div>
-          </button>
+          <button id="joinBtn">JOIN GAME</button>
         </div>
-        
-        <div class="status-message" id="statusMessage"></div>
+        <div class="status" id="status"></div>
       </div>
     </div>
 
-    <!-- Game controller with smooth touch areas -->
-    <div class="game-controller hidden" id="gameController">
-      <div class="controller-header">
-        <div class="player-info" id="playerInfo">
-          <span class="player-badge">P1</span>
-          <div class="connection-status"></div>
-        </div>
+    <!-- Touch Slider Controller -->
+    <div class="game-screen hidden" id="gameScreen">
+      <div class="player-header">
+        <span class="player-label" id="playerLabel">PLAYER 1</span>
+        <span class="room-label" id="roomLabel">ROOM: ------</span>
       </div>
 
-      <div class="control-surface">
-        <!-- D-Pad style controls with continuous input -->
-        <div class="dpad-container">
-          <button class="dpad-btn up" id="upBtn" data-dir="up">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M7 14l5-5 5 5z"/>
-            </svg>
-          </button>
-          
-          <div class="dpad-center">
-            <button class="dpad-btn left" id="leftBtn" data-dir="left">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M15 7l-5 5 5 5z"/>
-              </svg>
-            </button>
-            
-            <div class="dpad-middle"></div>
-            
-            <button class="dpad-btn right" id="rightBtn" data-dir="right">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M9 7l5 5-5 5z"/>
-              </svg>
-            </button>
-          </div>
-          
-          <button class="dpad-btn down" id="downBtn" data-dir="down">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M7 10l5 5 5-5z"/>
-            </svg>
-          </button>
+      <!-- Vertical Touch Slider for Players 1 & 2 -->
+      <div class="touch-area vertical" id="verticalController">
+        <div class="track-bg"></div>
+        <div class="paddle-indicator" id="paddleIndicator">
+          <div class="paddle-visual"></div>
         </div>
-
-        <!-- Action button with haptic feedback -->
-        <button class="action-button" id="actionBtn">
-          <span class="action-text">BOOST</span>
-          <div class="action-ripple"></div>
-        </button>
+        <div class="touch-hint">SLIDE UP & DOWN</div>
       </div>
 
-      <!-- Visual feedback indicator -->
-      <div class="feedback-indicator" id="feedbackIndicator"></div>
+      <!-- Horizontal Touch Slider for Players 3 & 4 -->
+      <div class="touch-area horizontal hidden" id="horizontalController">
+        <div class="track-bg"></div>
+        <div class="paddle-indicator horizontal" id="paddleIndicatorH">
+          <div class="paddle-visual"></div>
+        </div>
+        <div class="touch-hint">SLIDE LEFT & RIGHT</div>
+      </div>
     </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/premium-controller.js"></script>
+  <script src="/js/touch-controller.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-// Premium TV Display with Advanced Graphics
+// Optimized TV Display with Power-ups
 const socket = io();
 
 // DOM Elements
@@ -11,17 +11,19 @@ const startGameBtn = document.getElementById('startGame');
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Optimize canvas
+ctx.imageSmoothingEnabled = false;
+
 // Game State
 let currentRoom = null;
 let gameMode = 2;
 let gameState = null;
 let animationId = null;
-let particles = [];
 
 // Player Colors
 const playerColors = {
   1: '#ff3b3b',
-  2: '#ffffff',
+  2: '#ffffff', 
   3: '#ffd700',
   4: '#00bfff'
 };
@@ -35,8 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width = 1280;
+  canvas.height = 720;
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
 }
 
 // Mode Selection
@@ -87,6 +91,13 @@ function setupSocketListeners() {
   socket.on('gameState', (state) => {
     gameState = state;
   });
+
+  socket.on('gameOver', ({ winner }) => {
+    setTimeout(() => {
+      alert(`Player ${winner} Wins! 🏆`);
+      location.reload();
+    }, 1000);
+  });
 }
 
 function updatePlayerStatus(slots) {
@@ -108,10 +119,10 @@ function updatePlayerStatus(slots) {
   startGameBtn.disabled = connectedCount < 2;
 }
 
-// Game Rendering
+// Optimized Game Rendering
 function startRenderLoop() {
   if (animationId) cancelAnimationFrame(animationId);
-  animationId = requestAnimationFrame(render);
+  render();
 }
 
 function render() {
@@ -120,37 +131,33 @@ function render() {
     return;
   }
 
-  // Clear canvas with trail effect
-  ctx.fillStyle = 'rgba(10, 10, 15, 0.1)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Clear canvas
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, 1280, 720);
 
   // Draw game elements
   drawField();
   drawPaddles();
+  drawPowerUp();
   drawBall();
-  drawParticles();
-  updateLocalParticles();
+  drawScores();
+  drawPowerUpTimer();
 
   animationId = requestAnimationFrame(render);
 }
 
 function drawField() {
-  // Center line with glow
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+  // Draw borders
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
   ctx.lineWidth = 2;
+  ctx.strokeRect(10, 10, 1260, 700);
+  
+  // Center lines
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
   ctx.setLineDash([20, 20]);
   ctx.beginPath();
-  
-  if (gameMode >= 2) {
-    ctx.moveTo(canvas.width / 2, 0);
-    ctx.lineTo(canvas.width / 2, canvas.height);
-  }
-  
-  if (gameMode >= 3) {
-    ctx.moveTo(0, canvas.height / 2);
-    ctx.lineTo(canvas.width, canvas.height / 2);
-  }
-  
+  ctx.moveTo(640, 10);
+  ctx.lineTo(640, 710);
   ctx.stroke();
   ctx.setLineDash([]);
 }
@@ -164,26 +171,26 @@ function drawPaddles() {
     
     if (playerNum > gameMode) return;
     
-    // Scale positions to canvas size
-    const x = (paddle.x / 1280) * canvas.width;
-    const y = (paddle.y / 720) * canvas.height;
-    const w = (paddle.w / 1280) * canvas.width;
-    const h = (paddle.h / 720) * canvas.height;
-    
-    // Draw paddle glow
-    const gradient = ctx.createRadialGradient(x, y, 0, x, y, Math.max(w, h));
-    gradient.addColorStop(0, hexToRgba(playerColors[playerNum], 0.3));
-    gradient.addColorStop(1, 'transparent');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(x - w, y - h, w * 2, h * 2);
-    
-    // Draw paddle
+    // Draw paddle with player color
     ctx.fillStyle = playerColors[playerNum];
-    ctx.fillRect(x - w/2, y - h/2, w, h);
+    ctx.fillRect(
+      paddle.x - paddle.w/2, 
+      paddle.y - paddle.h/2, 
+      paddle.w, 
+      paddle.h
+    );
     
-    // Add glass effect
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-    ctx.fillRect(x - w/2, y - h/2, w, h/3);
+    // Add glow effect for powered-up paddle
+    if (gameState.activePowerUp && gameState.activePowerUp.player === playerNum) {
+      ctx.strokeStyle = playerColors[playerNum];
+      ctx.lineWidth = 3;
+      ctx.strokeRect(
+        paddle.x - paddle.w/2 - 5, 
+        paddle.y - paddle.h/2 - 5, 
+        paddle.w + 10, 
+        paddle.h + 10
+      );
+    }
   });
 }
 
@@ -191,103 +198,99 @@ function drawBall() {
   if (!gameState.ball) return;
   
   const ball = gameState.ball;
-  const x = (ball.x / 1280) * canvas.width;
-  const y = (ball.y / 720) * canvas.height;
-  const radius = 12;
-  
-  // Draw trail
-  if (ball.trail) {
-    ball.trail.forEach((point, i) => {
-      const px = (point.x / 1280) * canvas.width;
-      const py = (point.y / 720) * canvas.height;
-      const alpha = (i / ball.trail.length) * 0.5;
-      
-      ctx.beginPath();
-      ctx.arc(px, py, radius * (i / ball.trail.length), 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-      ctx.fill();
-    });
-  }
-  
-  // Draw ball glow
-  const glowGradient = ctx.createRadialGradient(x, y, 0, x, y, radius * 3);
-  glowGradient.addColorStop(0, 'rgba(255, 59, 59, 0.4)');
-  glowGradient.addColorStop(1, 'transparent');
-  ctx.fillStyle = glowGradient;
-  ctx.beginPath();
-  ctx.arc(x, y, radius * 3, 0, Math.PI * 2);
-  ctx.fill();
   
   // Draw ball
   ctx.fillStyle = '#ffffff';
   ctx.beginPath();
-  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2);
   ctx.fill();
   
-  // Inner glow
-  const innerGradient = ctx.createRadialGradient(x - radius/3, y - radius/3, 0, x, y, radius);
-  innerGradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
-  innerGradient.addColorStop(1, 'rgba(255, 255, 255, 0.2)');
-  ctx.fillStyle = innerGradient;
-  ctx.beginPath();
-  ctx.arc(x, y, radius * 0.9, 0, Math.PI * 2);
-  ctx.fill();
+  // Add glow
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
 }
 
-function drawParticles() {
-  if (!gameState.particles) return;
+function drawPowerUp() {
+  if (!gameState.powerUp) return;
   
-  gameState.particles.forEach(p => {
-    const x = (p.x / 1280) * canvas.width;
-    const y = (p.y / 720) * canvas.height;
-    
-    ctx.globalAlpha = p.alpha;
-    ctx.fillStyle = p.color || '#ffffff';
-    ctx.beginPath();
-    ctx.arc(x, y, p.size, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.globalAlpha = 1;
-  });
-}
-
-function updateLocalParticles() {
-  // Add ambient particles
-  if (Math.random() < 0.02) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: canvas.height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: -Math.random() * 2 - 1,
-      size: Math.random() * 3 + 1,
-      alpha: 0.5,
-      color: hexToRgba('#ff3b3b', 0.3)
-    });
+  const powerUp = gameState.powerUp;
+  const elapsed = Date.now() - powerUp.spawnTime;
+  const timeLeft = 10000 - elapsed;
+  
+  // Blink in last 3 seconds
+  if (timeLeft < 3000 && Math.floor(timeLeft / 200) % 2 === 0) {
+    return;
   }
   
-  // Update and draw local particles
-  particles = particles.filter(p => {
-    p.x += p.vx;
-    p.y += p.vy;
-    p.alpha -= 0.01;
-    p.size *= 0.99;
-    
-    if (p.alpha > 0) {
-      ctx.globalAlpha = p.alpha;
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-      return true;
-    }
-    return false;
-  });
+  // Draw power-up box
+  ctx.fillStyle = '#ffd700';
+  ctx.fillRect(
+    powerUp.x - powerUp.size,
+    powerUp.y - powerUp.size,
+    powerUp.size * 2,
+    powerUp.size * 2
+  );
+  
+  // Draw question mark
+  ctx.fillStyle = '#0a0a0f';
+  ctx.font = 'bold 32px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('?', powerUp.x, powerUp.y);
 }
 
-// Utility Functions
-function hexToRgba(hex, alpha) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+function drawScores() {
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 48px Arial';
+  ctx.textAlign = 'center';
+  
+  // Draw scores based on mode
+  if (gameMode >= 2) {
+    // Player 1 score (left)
+    ctx.fillStyle = playerColors[1];
+    ctx.fillText(gameState.scores[0], 320, 60);
+    
+    // Player 2 score (right)
+    ctx.fillStyle = playerColors[2];
+    ctx.fillText(gameState.scores[1], 960, 60);
+  }
+  
+  if (gameMode >= 3) {
+    // Player 3 score (top)
+    ctx.fillStyle = playerColors[3];
+    ctx.fillText(gameState.scores[2], 640, 60);
+  }
+  
+  if (gameMode >= 4) {
+    // Player 4 score (bottom)
+    ctx.fillStyle = playerColors[4];
+    ctx.fillText(gameState.scores[3], 640, 680);
+  }
+  
+  // Win score indicator
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+  ctx.font = '20px Arial';
+  ctx.fillText(`First to ${gameState.winScore}`, 640, 30);
+}
+
+function drawPowerUpTimer() {
+  if (!gameState.activePowerUp) return;
+  
+  const elapsed = Date.now() - gameState.activePowerUp.startTime;
+  const timeLeft = Math.max(0, 10 - Math.floor(elapsed / 1000));
+  const playerColor = playerColors[gameState.activePowerUp.player];
+  
+  // Draw timer
+  ctx.fillStyle = playerColor;
+  ctx.font = 'bold 32px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(`POWER: ${timeLeft}s`, 640, 360);
+  
+  // Draw timer bar
+  const barWidth = (timeLeft / 10) * 200;
+  ctx.fillStyle = playerColor;
+  ctx.fillRect(540, 380, barWidth, 10);
+  ctx.strokeStyle = playerColor;
+  ctx.strokeRect(540, 380, 200, 10);
 }

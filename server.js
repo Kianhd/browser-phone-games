@@ -12,14 +12,14 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Enhanced room structure with game state
+// Game rooms storage
 const rooms = {};
 
 function makeRoomCode() {
   return Math.random().toString(36).slice(2, 8).toUpperCase();
 }
 
-// Game state management
+// Optimized Game Room Class
 class GameRoom {
   constructor(code, ownerSocket) {
     this.code = code;
@@ -30,13 +30,17 @@ class GameRoom {
       running: false,
       mode: 2,
       paddles: {},
-      ball: { x: 640, y: 360, vx: 0, vy: 0, speed: 8 },
+      ball: { x: 640, y: 360, vx: 0, vy: 0, speed: 10 },
       scores: [0, 0, 0, 0],
-      particles: [],
-      lastUpdate: Date.now()
+      powerUp: null,
+      powerUpTimer: 0,
+      activePowerUp: null,
+      lastHitPlayer: null,
+      winScore: 5
     };
     this.inputBuffer = {};
     this.gameLoop = null;
+    this.powerUpInterval = null;
   }
 
   addPlayer(socketId) {
@@ -44,7 +48,7 @@ class GameRoom {
     if (idx === -1) return null;
     this.slots[idx] = socketId;
     this.socketToPlayer[socketId] = idx + 1;
-    this.inputBuffer[socketId] = { left: false, right: false, up: false, down: false, action: false };
+    this.inputBuffer[socketId] = { position: 0.5 }; // 0 to 1 normalized position
     return idx + 1;
   }
 
@@ -59,46 +63,74 @@ class GameRoom {
   startGame(mode) {
     this.gameState.mode = mode;
     this.gameState.running = true;
+    this.gameState.scores = [0, 0, 0, 0];
     this.initPaddles();
     this.resetBall();
     this.startGameLoop();
+    this.startPowerUpSystem();
   }
 
   initPaddles() {
-    // Initialize smooth paddle positions based on mode
     this.gameState.paddles = {
-      1: { x: 40, y: 360, w: 20, h: 120, vx: 0, vy: 0, targetY: 360 },
-      2: { x: 1240, y: 360, w: 20, h: 120, vx: 0, vy: 0, targetY: 360 },
-      3: { x: 640, y: 30, w: 200, h: 20, vx: 0, vy: 0, targetX: 640 },
-      4: { x: 640, y: 690, w: 200, h: 20, vx: 0, vy: 0, targetX: 640 }
+      1: { x: 40, y: 360, w: 15, h: 100 },
+      2: { x: 1240, y: 360, w: 15, h: 100 },
+      3: { x: 640, y: 30, w: 180, h: 15 },
+      4: { x: 640, y: 690, w: 180, h: 15 }
     };
   }
 
   resetBall() {
-    const angle = (Math.random() * Math.PI / 4) - Math.PI / 8 + (Math.random() > 0.5 ? 0 : Math.PI);
+    const angle = (Math.random() * Math.PI / 3) - Math.PI / 6 + (Math.random() > 0.5 ? 0 : Math.PI);
     this.gameState.ball = {
       x: 640,
       y: 360,
-      vx: Math.cos(angle) * 8,
-      vy: Math.sin(angle) * 8,
-      speed: 8,
-      trail: []
+      vx: Math.cos(angle) * 10,
+      vy: Math.sin(angle) * 10,
+      speed: 10
     };
+    this.gameState.lastHitPlayer = null;
   }
 
   startGameLoop() {
     if (this.gameLoop) clearInterval(this.gameLoop);
-    this.gameLoop = setInterval(() => this.updatePhysics(), 1000 / 60); // 60 FPS
+    this.gameLoop = setInterval(() => this.updatePhysics(), 1000 / 60);
+  }
+
+  startPowerUpSystem() {
+    if (this.powerUpInterval) clearInterval(this.powerUpInterval);
+    
+    // Spawn first power-up after 10 seconds
+    setTimeout(() => {
+      this.spawnPowerUp();
+      // Then spawn every 10-20 seconds depending on state
+      this.powerUpInterval = setInterval(() => {
+        if (!this.gameState.powerUp && !this.gameState.activePowerUp) {
+          this.spawnPowerUp();
+        }
+      }, 10000);
+    }, 10000);
+  }
+
+  spawnPowerUp() {
+    if (this.gameState.powerUp || this.gameState.activePowerUp) return;
+    
+    // Random position avoiding edges
+    this.gameState.powerUp = {
+      x: 200 + Math.random() * 880,
+      y: 150 + Math.random() * 420,
+      size: 30,
+      lifetime: 10000,
+      spawnTime: Date.now()
+    };
   }
 
   updatePhysics() {
     if (!this.gameState.running) return;
     
-    const dt = 1 / 60; // Fixed timestep
     const ball = this.gameState.ball;
     const paddles = this.gameState.paddles;
 
-    // Update paddle positions with smooth interpolation
+    // Update paddle positions from input (direct mapping)
     Object.keys(paddles).forEach(key => {
       const paddle = paddles[key];
       const playerSocket = this.slots[key - 1];
@@ -107,93 +139,164 @@ class GameRoom {
       const input = this.inputBuffer[playerSocket];
       if (!input) return;
 
+      // Direct position mapping from touch input
       if (key <= 2) {
-        // Vertical paddles - smooth movement
-        if (input.up) paddle.targetY = Math.max(60, paddle.targetY - 12);
-        if (input.down) paddle.targetY = Math.min(660, paddle.targetY + 12);
-        paddle.y += (paddle.targetY - paddle.y) * 0.15; // Smooth interpolation
+        // Vertical paddles
+        paddle.y = 60 + (input.position * 600); // Map 0-1 to game height
       } else {
         // Horizontal paddles
-        if (input.left) paddle.targetX = Math.max(100, paddle.targetX - 12);
-        if (input.right) paddle.targetX = Math.min(1180, paddle.targetX + 12);
-        paddle.x += (paddle.targetX - paddle.x) * 0.15;
+        paddle.x = 100 + (input.position * 1080); // Map 0-1 to game width
       }
     });
 
-    // Update ball with trail
-    ball.trail = ball.trail || [];
-    ball.trail.push({ x: ball.x, y: ball.y, alpha: 1 });
-    if (ball.trail.length > 12) ball.trail.shift();
-    
+    // Update ball position
     ball.x += ball.vx;
     ball.y += ball.vy;
 
-    // Enhanced ball collisions with walls
-    if (ball.y <= 15 || ball.y >= 705) {
-      ball.vy *= -1;
-      this.createImpactParticles(ball.x, ball.y);
-    }
-    if (ball.x <= 15 || ball.x >= 1265) {
-      ball.vx *= -1;
-      this.createImpactParticles(ball.x, ball.y);
-    }
+    // Check wall collisions and scoring
+    this.checkWallCollisions();
 
-    // Paddle collisions with spin effect
+    // Check paddle collisions
     Object.keys(paddles).forEach(key => {
       const paddle = paddles[key];
-      if (!this.slots[key - 1]) return; // Skip if no player
+      if (!this.slots[key - 1]) return;
       
-      if (this.checkPaddleCollision(ball, paddle, key)) {
+      if (this.checkPaddleCollision(ball, paddle)) {
         this.handlePaddleHit(ball, paddle, key);
+        this.gameState.lastHitPlayer = parseInt(key);
       }
     });
 
-    // Update particles
-    this.gameState.particles = this.gameState.particles.filter(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.alpha -= 0.02;
-      p.size *= 0.98;
-      return p.alpha > 0;
-    });
+    // Check power-up collision
+    if (this.gameState.powerUp && this.gameState.lastHitPlayer) {
+      const powerUp = this.gameState.powerUp;
+      const dist = Math.sqrt(
+        Math.pow(ball.x - powerUp.x, 2) + 
+        Math.pow(ball.y - powerUp.y, 2)
+      );
+      
+      if (dist < powerUp.size + 10) {
+        this.collectPowerUp(this.gameState.lastHitPlayer);
+      }
+    }
+
+    // Update power-up lifetime
+    if (this.gameState.powerUp) {
+      const elapsed = Date.now() - this.gameState.powerUp.spawnTime;
+      if (elapsed > 10000) {
+        this.gameState.powerUp = null;
+      }
+    }
+
+    // Update active power-up
+    if (this.gameState.activePowerUp) {
+      const elapsed = Date.now() - this.gameState.activePowerUp.startTime;
+      if (elapsed > 10000) {
+        // Remove power-up effect
+        const paddle = this.gameState.paddles[this.gameState.activePowerUp.player];
+        if (paddle) {
+          if (this.gameState.activePowerUp.player <= 2) {
+            paddle.h = 100;
+          } else {
+            paddle.w = 180;
+          }
+        }
+        this.gameState.activePowerUp = null;
+      }
+    }
+
+    // Check win condition
+    const winner = this.gameState.scores.findIndex(score => score >= this.gameState.winScore);
+    if (winner !== -1) {
+      this.gameState.running = false;
+      io.to(this.code).emit('gameOver', { winner: winner + 1 });
+      this.stopGame();
+    }
   }
 
-  checkPaddleCollision(ball, paddle, playerNum) {
-    return ball.x > paddle.x - paddle.w/2 && 
-           ball.x < paddle.x + paddle.w/2 &&
-           ball.y > paddle.y - paddle.h/2 && 
-           ball.y < paddle.y + paddle.h/2;
+  checkWallCollisions() {
+    const ball = this.gameState.ball;
+    
+    // Left wall - Player 1 loses point
+    if (ball.x <= 10) {
+      if (this.gameState.mode >= 2 && this.slots[1]) {
+        this.gameState.scores[1]++;
+      }
+      this.resetBall();
+    }
+    
+    // Right wall - Player 2 loses point
+    if (ball.x >= 1270) {
+      if (this.slots[0]) {
+        this.gameState.scores[0]++;
+      }
+      this.resetBall();
+    }
+    
+    // Top wall - Player 3 loses point (if playing)
+    if (ball.y <= 10) {
+      if (this.gameState.mode >= 3 && this.slots[2]) {
+        this.gameState.scores[0]++;
+      } else {
+        ball.vy *= -1;
+      }
+    }
+    
+    // Bottom wall - Player 4 loses point (if playing)
+    if (ball.y >= 710) {
+      if (this.gameState.mode >= 4 && this.slots[3]) {
+        this.gameState.scores[0]++;
+      } else {
+        ball.vy *= -1;
+      }
+    }
+  }
+
+  checkPaddleCollision(ball, paddle) {
+    return ball.x - 10 < paddle.x + paddle.w/2 && 
+           ball.x + 10 > paddle.x - paddle.w/2 &&
+           ball.y - 10 < paddle.y + paddle.h/2 && 
+           ball.y + 10 > paddle.y - paddle.h/2;
   }
 
   handlePaddleHit(ball, paddle, playerNum) {
     const relativeIntersectY = (paddle.y - ball.y) / (paddle.h / 2);
     const bounceAngle = relativeIntersectY * Math.PI / 4;
     
-    ball.speed = Math.min(ball.speed * 1.05, 20); // Gradual speed increase
+    ball.speed = Math.min(ball.speed * 1.03, 25);
     
     if (playerNum <= 2) {
-      ball.vx = (playerNum === '1' ? 1 : -1) * ball.speed * Math.cos(bounceAngle);
+      ball.vx = (playerNum == 1 ? 1 : -1) * ball.speed * Math.cos(bounceAngle);
       ball.vy = ball.speed * -Math.sin(bounceAngle);
     } else {
-      ball.vy = (playerNum === '3' ? 1 : -1) * ball.speed * Math.cos(bounceAngle);
+      ball.vy = (playerNum == 3 ? 1 : -1) * ball.speed * Math.cos(bounceAngle);
       ball.vx = ball.speed * -Math.sin(bounceAngle);
     }
-    
-    this.createImpactParticles(ball.x, ball.y, true);
   }
 
-  createImpactParticles(x, y, isPaddle = false) {
-    const count = isPaddle ? 8 : 5;
-    for (let i = 0; i < count; i++) {
-      const angle = (Math.PI * 2 * i) / count;
-      this.gameState.particles.push({
-        x, y,
-        vx: Math.cos(angle) * (isPaddle ? 4 : 2),
-        vy: Math.sin(angle) * (isPaddle ? 4 : 2),
-        size: isPaddle ? 8 : 5,
-        alpha: 1,
-        color: isPaddle ? '#ff2b2b' : '#ffffff'
-      });
+  collectPowerUp(playerNum) {
+    // Apply power-up
+    const paddle = this.gameState.paddles[playerNum];
+    if (paddle) {
+      if (playerNum <= 2) {
+        paddle.h = 130; // 1.3x size
+      } else {
+        paddle.w = 234; // 1.3x size
+      }
+      
+      this.gameState.activePowerUp = {
+        player: playerNum,
+        startTime: Date.now()
+      };
+      
+      this.gameState.powerUp = null;
+      
+      // Next power-up in 20 seconds
+      setTimeout(() => {
+        if (this.gameState.running) {
+          this.spawnPowerUp();
+        }
+      }, 20000);
     }
   }
 
@@ -202,10 +305,15 @@ class GameRoom {
       clearInterval(this.gameLoop);
       this.gameLoop = null;
     }
+    if (this.powerUpInterval) {
+      clearInterval(this.powerUpInterval);
+      this.powerUpInterval = null;
+    }
     this.gameState.running = false;
   }
 }
 
+// Socket handling
 io.on('connection', socket => {
   console.log('connect', socket.id);
 
@@ -237,21 +345,21 @@ io.on('connection', socket => {
     gameRoom.startGame(mode || 2);
     io.to(room).emit('startGame', { mode: mode || 2 });
     
-    // Start sending game state updates
+    // Send game state at 30 FPS
     const stateInterval = setInterval(() => {
       if (!rooms[room] || !gameRoom.gameState.running) {
         clearInterval(stateInterval);
         return;
       }
       io.to(room).emit('gameState', gameRoom.gameState);
-    }, 1000 / 30); // 30 FPS for network updates
+    }, 1000 / 30);
   });
 
-  socket.on('input', ({ room, input }) => {
+  socket.on('input', ({ room, position }) => {
     if (!rooms[room]) return;
     const gameRoom = rooms[room];
-    if (gameRoom.inputBuffer[socket.id]) {
-      gameRoom.inputBuffer[socket.id] = input;
+    if (gameRoom.inputBuffer[socket.id] !== undefined) {
+      gameRoom.inputBuffer[socket.id].position = position;
     }
   });
 
@@ -262,7 +370,6 @@ io.on('connection', socket => {
       room.removePlayer(socket.id);
       io.to(code).emit('roomUpdate', getRoomState(code));
       
-      // Clean up empty rooms
       if (!room.slots.some(s => s)) {
         room.stopGame();
         delete rooms[code];
@@ -281,4 +388,4 @@ function getRoomState(room) {
   };
 }
 
-http.listen(PORT, () => console.log('Premium server running on', PORT));
+http.listen(PORT, () => console.log('Optimized server running on', PORT));

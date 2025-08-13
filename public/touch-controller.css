@@ -1,0 +1,273 @@
+/* Touch Controller Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+  color: #ffffff;
+  height: 100vh;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.controller-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+/* Join Screen */
+.join-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+.join-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.join-card h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  color: #ff3b3b;
+}
+
+.join-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#roomInput {
+  width: 100%;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+#roomInput:focus {
+  outline: none;
+  border-color: #ff3b3b;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#joinBtn {
+  width: 100%;
+  padding: 18px;
+  background: #ff3b3b;
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#joinBtn:active {
+  transform: scale(0.98);
+  background: #ff5555;
+}
+
+.status {
+  margin-top: 15px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  min-height: 20px;
+}
+
+.status.error {
+  color: #ff3b3b;
+}
+
+/* Game Screen */
+.game-screen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.player-header {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-label {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ff3b3b;
+  letter-spacing: 1px;
+}
+
+.room-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Touch Area - Vertical */
+.touch-area {
+  flex: 1;
+  position: relative;
+  margin: 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.touch-area.vertical {
+  max-width: 200px;
+  margin: 20px auto;
+  width: calc(100% - 40px);
+}
+
+.track-bg {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.touch-area.vertical .track-bg {
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+}
+
+.paddle-indicator {
+  position: absolute;
+  background: #ff3b3b;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(255, 59, 59, 0.5);
+  transition: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.touch-area.vertical .paddle-indicator {
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 100px;
+  top: 50%;
+  margin-top: -50px;
+}
+
+.paddle-visual {
+  width: 60%;
+  height: 80%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+}
+
+.touch-hint {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Touch Area - Horizontal */
+.touch-area.horizontal {
+  height: 200px;
+  width: calc(100% - 40px);
+  margin: auto 20px;
+}
+
+.touch-area.horizontal .track-bg {
+  top: 50%;
+  transform: translateY(-50%);
+  height: 4px;
+  width: 100%;
+}
+
+.touch-area.horizontal .paddle-indicator {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 80px;
+  left: 50%;
+  margin-left: -50px;
+}
+
+/* Player-specific colors */
+.player-1 .paddle-indicator { background: #ff3b3b; }
+.player-2 .paddle-indicator { background: #ffffff; }
+.player-3 .paddle-indicator { background: #ffd700; }
+.player-4 .paddle-indicator { background: #00bfff; }
+
+.player-1 .player-label { color: #ff3b3b; }
+.player-2 .player-label { color: #ffffff; }
+.player-3 .player-label { color: #ffd700; }
+.player-4 .player-label { color: #00bfff; }
+
+/* Utilities */
+.hidden {
+  display: none !important;
+}
+
+/* Prevent scrolling and zooming */
+html, body {
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-height: 600px) {
+  .player-header {
+    padding: 15px;
+  }
+  
+  .touch-area.vertical .paddle-indicator {
+    height: 80px;
+    margin-top: -40px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .touch-area.vertical {
+    max-width: none;
+    width: 150px;
+    margin: 10px auto;
+  }
+}
