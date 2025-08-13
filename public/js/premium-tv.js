@@ -24,6 +24,10 @@ let animationId = null;
 let countdownActive = false;
 let countdownNumber = null;
 
+// Interpolation for smooth paddle movement
+let interpolatedPaddles = {};
+let lastUpdateTime = Date.now();
+
 // Player Colors
 const playerColors = {
   1: '#ff3b3b',
@@ -165,6 +169,24 @@ function setupSocketListeners() {
     previousGameState = gameState;
     gameState = state;
     
+    // Set up interpolation targets for smooth paddle movement
+    if (gameState && gameState.paddles) {
+      const now = Date.now();
+      Object.keys(gameState.paddles).forEach(key => {
+        const newPaddle = gameState.paddles[key];
+        if (!interpolatedPaddles[key]) {
+          // First time, set directly
+          interpolatedPaddles[key] = { ...newPaddle };
+        } else {
+          // Store target for interpolation
+          interpolatedPaddles[key].targetX = newPaddle.x;
+          interpolatedPaddles[key].targetY = newPaddle.y;
+          interpolatedPaddles[key].lastUpdate = now;
+        }
+      });
+      lastUpdateTime = now;
+    }
+    
     // Detect game events and play sounds
     if (previousGameState) {
       detectGameEvents(previousGameState, gameState);
@@ -260,6 +282,9 @@ function render() {
   ctx.fillStyle = '#0a0a0f';
   ctx.fillRect(0, 0, 1280, 720);
 
+  // Update interpolations for smooth movement
+  updateInterpolation();
+  
   // Draw game elements
   drawField();
   drawPaddles();
@@ -270,6 +295,28 @@ function render() {
   drawCountdown();
 
   animationId = requestAnimationFrame(render);
+}
+
+// Smooth interpolation for paddle movement
+function updateInterpolation() {
+  if (!gameState || !gameState.paddles) return;
+  
+  const now = Date.now();
+  const lerpSpeed = 0.3; // Interpolation speed (0 = no movement, 1 = instant)
+  
+  Object.keys(interpolatedPaddles).forEach(key => {
+    const interpolated = interpolatedPaddles[key];
+    if (interpolated.targetX !== undefined && interpolated.targetY !== undefined) {
+      // Smooth interpolation (lerp) towards target position
+      interpolated.x = lerp(interpolated.x, interpolated.targetX, lerpSpeed);
+      interpolated.y = lerp(interpolated.y, interpolated.targetY, lerpSpeed);
+    }
+  });
+}
+
+// Linear interpolation helper
+function lerp(start, end, factor) {
+  return start + (end - start) * factor;
 }
 
 function drawField() {
@@ -293,9 +340,14 @@ function drawPaddles() {
 
   Object.keys(gameState.paddles).forEach(key => {
     const paddle = gameState.paddles[key];
+    const interpolated = interpolatedPaddles[key];
     const playerNum = parseInt(key);
     
     if (playerNum > gameMode) return;
+    
+    // Use interpolated position for smooth movement, but original paddle for other properties
+    const drawX = interpolated ? interpolated.x : paddle.x;
+    const drawY = interpolated ? interpolated.y : paddle.y;
     
     ctx.fillStyle = playerColors[playerNum];
     
@@ -307,15 +359,15 @@ function drawPaddles() {
         const gapHalf = paddle.gapSize / 2;
         // Top part
         ctx.fillRect(
-          paddle.x - paddle.w/2,
-          paddle.y - paddle.h/2,
+          drawX - paddle.w/2,
+          drawY - paddle.h/2,
           paddle.w,
           (paddle.h/2) - gapHalf
         );
         // Bottom part
         ctx.fillRect(
-          paddle.x - paddle.w/2,
-          paddle.y + gapHalf,
+          drawX - paddle.w/2,
+          drawY + gapHalf,
           paddle.w,
           (paddle.h/2) - gapHalf
         );
@@ -324,15 +376,15 @@ function drawPaddles() {
         const gapHalf = paddle.gapSize / 2;
         // Left part
         ctx.fillRect(
-          paddle.x - paddle.w/2,
-          paddle.y - paddle.h/2,
+          drawX - paddle.w/2,
+          drawY - paddle.h/2,
           (paddle.w/2) - gapHalf,
           paddle.h
         );
         // Right part
         ctx.fillRect(
-          paddle.x + gapHalf,
-          paddle.y - paddle.h/2,
+          drawX + gapHalf,
+          drawY - paddle.h/2,
           (paddle.w/2) - gapHalf,
           paddle.h
         );
@@ -340,8 +392,8 @@ function drawPaddles() {
     } else {
       // Draw normal paddle
       ctx.fillRect(
-        paddle.x - paddle.w/2, 
-        paddle.y - paddle.h/2, 
+        drawX - paddle.w/2, 
+        drawY - paddle.h/2, 
         paddle.w, 
         paddle.h
       );
@@ -352,8 +404,8 @@ function drawPaddles() {
       ctx.strokeStyle = playerColors[playerNum];
       ctx.lineWidth = 3;
       ctx.strokeRect(
-        paddle.x - paddle.w/2 - 5, 
-        paddle.y - paddle.h/2 - 5, 
+        drawX - paddle.w/2 - 5, 
+        drawY - paddle.h/2 - 5, 
         paddle.w + 10, 
         paddle.h + 10
       );

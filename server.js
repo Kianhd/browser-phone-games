@@ -442,14 +442,14 @@ io.on('connection', socket => {
     gameRoom.startGame(mode || 2, winScore || 5);
     io.to(room).emit('startGame', { mode: mode || 2, winScore: winScore || 5 });
     
-    // Send game state at 30 FPS
+    // Send game state at 60 FPS for ultra-responsive controls
     const stateInterval = setInterval(() => {
       if (!rooms[room] || (!gameRoom.gameState.running && !gameRoom.gameState.countdownActive)) {
         clearInterval(stateInterval);
         return;
       }
       io.to(room).emit('gameState', gameRoom.gameState);
-    }, 1000 / 30);
+    }, 1000 / 60);
   });
 
   socket.on('input', ({ room, position }) => {

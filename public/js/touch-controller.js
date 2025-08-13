@@ -190,11 +190,8 @@ function handleVerticalTouch(touch, touchArea, indicator) {
   // Calculate normalized position (0 at top, 1 at bottom)
   currentPosition = Math.max(0, Math.min(1, y / height));
   
-  // Update visual indicator
-  const indicatorHeight = 100;
-  const maxTop = height - indicatorHeight;
-  indicator.style.top = (currentPosition * maxTop) + 'px';
-  indicator.style.marginTop = '0';
+  // Immediately update visual indicator (client-side prediction)
+  updatePaddleIndicator(indicator, currentPosition, height, true);
 }
 
 function handleVerticalMouse(e, touchArea, indicator) {
@@ -204,10 +201,8 @@ function handleVerticalMouse(e, touchArea, indicator) {
   
   currentPosition = Math.max(0, Math.min(1, y / height));
   
-  const indicatorHeight = 100;
-  const maxTop = height - indicatorHeight;
-  indicator.style.top = (currentPosition * maxTop) + 'px';
-  indicator.style.marginTop = '0';
+  // Immediately update visual indicator (client-side prediction)
+  updatePaddleIndicator(indicator, currentPosition, height, true);
 }
 
 // Horizontal Touch Control (Players 3 & 4)
@@ -263,11 +258,8 @@ function handleHorizontalTouch(touch, touchArea, indicator) {
   // Calculate normalized position (0 at left, 1 at right)
   currentPosition = Math.max(0, Math.min(1, x / width));
   
-  // Update visual indicator
-  const indicatorWidth = 100;
-  const maxLeft = width - indicatorWidth;
-  indicator.style.left = (currentPosition * maxLeft) + 'px';
-  indicator.style.marginLeft = '0';
+  // Immediately update visual indicator (client-side prediction)
+  updatePaddleIndicator(indicator, currentPosition, width, false);
 }
 
 function handleHorizontalMouse(e, touchArea, indicator) {
@@ -277,15 +269,30 @@ function handleHorizontalMouse(e, touchArea, indicator) {
   
   currentPosition = Math.max(0, Math.min(1, x / width));
   
-  const indicatorWidth = 100;
-  const maxLeft = width - indicatorWidth;
-  indicator.style.left = (currentPosition * maxLeft) + 'px';
-  indicator.style.marginLeft = '0';
+  // Immediately update visual indicator (client-side prediction)
+  updatePaddleIndicator(indicator, currentPosition, width, false);
+}
+
+// Optimized paddle indicator update function
+function updatePaddleIndicator(indicator, position, containerSize, isVertical) {
+  const indicatorSize = 100;
+  
+  if (isVertical) {
+    // Vertical movement (players 1 & 2)
+    const maxTop = containerSize - indicatorSize;
+    indicator.style.top = (position * maxTop) + 'px';
+    indicator.style.marginTop = '0';
+  } else {
+    // Horizontal movement (players 3 & 4) 
+    const maxLeft = containerSize - indicatorSize;
+    indicator.style.left = (position * maxLeft) + 'px';
+    indicator.style.marginLeft = '0';
+  }
 }
 
 // Send Position Updates
 function startPositionUpdates() {
-  // Send position at 60 FPS for smooth movement
+  // Send position at 120 FPS for maximum responsiveness
   if (sendInterval) clearInterval(sendInterval);
   sendInterval = setInterval(() => {
     if (joinedRoom) {
@@ -294,7 +301,7 @@ function startPositionUpdates() {
         position: currentPosition
       });
     }
-  }, 10); // ~100 FPS for ultra-responsive controls
+  }, 8); // ~125 FPS for maximum responsiveness
 }
 
 // Socket Events
