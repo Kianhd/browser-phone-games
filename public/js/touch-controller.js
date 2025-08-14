@@ -229,6 +229,7 @@ function setupVerticalTouch() {
   touchArea.addEventListener('touchstart', (e) => {
     e.preventDefault();
     touchActive = true;
+    indicator.classList.add('active'); // Add visual feedback
     handleVerticalTouch(e.touches[0], touchArea, indicator);
   });
   
@@ -242,11 +243,13 @@ function setupVerticalTouch() {
   touchArea.addEventListener('touchend', (e) => {
     e.preventDefault();
     touchActive = false;
+    indicator.classList.remove('active'); // Remove visual feedback
   });
   
   // Mouse events for testing
   touchArea.addEventListener('mousedown', (e) => {
     touchActive = true;
+    indicator.classList.add('active'); // Add visual feedback
     handleVerticalMouse(e, touchArea, indicator);
   });
   
@@ -258,10 +261,12 @@ function setupVerticalTouch() {
   
   touchArea.addEventListener('mouseup', () => {
     touchActive = false;
+    indicator.classList.remove('active'); // Remove visual feedback
   });
   
   touchArea.addEventListener('mouseleave', () => {
     touchActive = false;
+    indicator.classList.remove('active'); // Remove visual feedback
   });
 }
 
@@ -297,6 +302,7 @@ function setupHorizontalTouch() {
   touchArea.addEventListener('touchstart', (e) => {
     e.preventDefault();
     touchActive = true;
+    indicator.classList.add('active'); // Add visual feedback
     handleHorizontalTouch(e.touches[0], touchArea, indicator);
   });
   
@@ -310,11 +316,13 @@ function setupHorizontalTouch() {
   touchArea.addEventListener('touchend', (e) => {
     e.preventDefault();
     touchActive = false;
+    indicator.classList.remove('active'); // Remove visual feedback
   });
   
   // Mouse events for testing
   touchArea.addEventListener('mousedown', (e) => {
     touchActive = true;
+    indicator.classList.add('active'); // Add visual feedback
     handleHorizontalMouse(e, touchArea, indicator);
   });
   
@@ -326,10 +334,12 @@ function setupHorizontalTouch() {
   
   touchArea.addEventListener('mouseup', () => {
     touchActive = false;
+    indicator.classList.remove('active'); // Remove visual feedback
   });
   
   touchArea.addEventListener('mouseleave', () => {
     touchActive = false;
+    indicator.classList.remove('active'); // Remove visual feedback
   });
 }
 

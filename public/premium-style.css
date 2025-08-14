@@ -739,8 +739,24 @@ html, body {
 .player-card.connected .player-indicator {
   opacity: 0.8;
   filter: grayscale(0) brightness(1);
-  transform: scale(1.05);
   animation: plateGlow 3s ease-in-out infinite alternate;
+}
+
+/* Maintain upward rotation when connected */
+.player-card[data-player="1"].connected .player-indicator {
+  transform: rotate(0deg) scale(1.05);
+}
+.player-card[data-player="2"].connected .player-indicator {
+  transform: rotate(0deg) scale(1.05);
+}
+.player-card[data-player="3"].connected .player-indicator {
+  transform: rotate(0deg) scale(1.05);
+}
+.player-card[data-player="4"].connected .player-indicator {
+  transform: rotate(0deg) scale(1.05);
+}
+.player-card[data-player="5"].connected .player-indicator {
+  transform: rotate(0deg) scale(1.05);
 }
 
 .player-card.connected .player-indicator::after {
@@ -763,8 +779,24 @@ html, body {
 .player-card.ready .player-indicator {
   opacity: 1;
   filter: grayscale(0) brightness(1.2) hue-rotate(15deg);
-  transform: scale(1.1);
   animation: readyPlate 2s ease-in-out infinite alternate;
+}
+
+/* Maintain upward rotation when ready */
+.player-card[data-player="1"].ready .player-indicator {
+  transform: rotate(0deg) scale(1.1);
+}
+.player-card[data-player="2"].ready .player-indicator {
+  transform: rotate(0deg) scale(1.1);
+}
+.player-card[data-player="3"].ready .player-indicator {
+  transform: rotate(0deg) scale(1.1);
+}
+.player-card[data-player="4"].ready .player-indicator {
+  transform: rotate(0deg) scale(1.1);
+}
+.player-card[data-player="5"].ready .player-indicator {
+  transform: rotate(0deg) scale(1.1);
 }
 
 .player-card.ready .player-indicator::after {
@@ -809,23 +841,23 @@ html, body {
 
 /* Player-specific plate rotations */
 .player-card[data-player="1"] .player-indicator {
-  transform: rotate(0deg);
+  transform: rotate(0deg); /* All plates face upward in lobby */
 }
 
 .player-card[data-player="2"] .player-indicator {
-  transform: rotate(-90deg);
+  transform: rotate(0deg); /* All plates face upward in lobby */
 }
 
 .player-card[data-player="3"] .player-indicator {
-  transform: rotate(180deg);
+  transform: rotate(0deg); /* All plates face upward in lobby */
 }
 
 .player-card[data-player="4"] .player-indicator {
-  transform: rotate(90deg);
+  transform: rotate(0deg); /* All plates face upward in lobby */
 }
 
 .player-card[data-player="5"] .player-indicator {
-  transform: rotate(0deg);
+  transform: rotate(0deg); /* All plates face upward in lobby */
   filter: hue-rotate(40deg) brightness(1.1);
 }
 

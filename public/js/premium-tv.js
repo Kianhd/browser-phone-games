@@ -1005,42 +1005,73 @@ function drawPaddles() {
       }
     }
     
+    // Calculate subtle dynamic rotation for movement effect (very small)
+    let dynamicRotation = 0;
+    if (interpolated && paddle) {
+      const movementDelta = Math.abs((interpolated.x - paddle.x) + (interpolated.y - paddle.y));
+      dynamicRotation = Math.sin(Date.now() * 0.01 + playerNum) * movementDelta * 0.0005; // Reduced for subtlety
+    }
+    
     ctx.save();
     ctx.translate(drawX, drawY);
-    ctx.rotate(rotation);
+    // Apply both the player-specific rotation AND the subtle dynamic rotation
+    ctx.rotate(rotation + dynamicRotation);
     
     // Draw plate image if loaded, otherwise fallback to rectangle
     if (plateImageLoaded) {
-      // Apply player color tint (except for P1 which keeps original)
-      if (playerNum !== 1) {
-        ctx.globalAlpha = 0.8;
-        ctx.fillStyle = gameMode === 5 ? '#ffd700' : playerColors[playerNum];
-        ctx.fillRect(-paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
-        ctx.globalCompositeOperation = 'multiply';
+      // Calculate proper plate dimensions - make plates bigger and maintain aspect ratio
+      const plateScale = 1.8; // Make plates 80% bigger for better visibility
+      const plateWidth = Math.max(paddle.w, paddle.h) * plateScale;
+      const plateHeight = plateWidth; // Keep plates circular
+      
+      // Apply subtle color tint using a more sophisticated method
+      if (playerNum !== 1 && gameMode !== 5) {
+        // Create a subtle colored overlay
+        ctx.fillStyle = playerColors[playerNum];
+        ctx.globalAlpha = 0.15; // Very subtle tint
+        ctx.beginPath();
+        ctx.ellipse(0, 0, plateWidth/2, plateHeight/2, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
       }
       
-      // Draw the plate image
-      ctx.drawImage(plateImage, -paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
+      // Special golden glow for pentagon mode
+      if (gameMode === 5) {
+        ctx.fillStyle = '#ffd700';
+        ctx.globalAlpha = 0.2;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, plateWidth/2 + 5, plateHeight/2 + 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
       
-      // Reset composite operation and alpha
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.globalAlpha = 1;
+      // Draw the plate image with high quality
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(plateImage, -plateWidth/2, -plateHeight/2, plateWidth, plateHeight); // Keep plates perfectly circular
       
       // Add glow effect for powered-up paddle
       if (gameState.activePowerUp && gameState.activePowerUp.player === playerNum) {
         ctx.strokeStyle = playerColors[playerNum];
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 4;
         ctx.shadowColor = playerColors[playerNum];
-        ctx.shadowBlur = 15;
-        ctx.strokeRect(-paddle.w/2 - 5, -paddle.h/2 - 5, paddle.w + 10, paddle.h + 10);
+        ctx.shadowBlur = 20;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, plateWidth/2 + 8, plateHeight/2 + 8, 0, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.shadowBlur = 0;
       }
       
       // Add golden glow for pentagon paddles
       if (gameMode === 5) {
         ctx.strokeStyle = '#ffd700';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(-paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#ffd700';
+        ctx.shadowBlur = 15;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, plateWidth/2 + 3, plateHeight/2 + 3, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
       }
     } else {
       // Fallback to regular rectangle
@@ -1062,72 +1093,78 @@ function drawPaddles() {
       return;
     }
     
-    // Draw split paddle if needed (only for non-pentagon mode as it's already handled above)
+    // Handle split paddle effect for power-ups
     if (paddle.split && paddle.gapSize > 0) {
-      // For split paddles, we need to handle them specially
+      // For split plates, we draw two separate plates with a gap
+      const plateScale = 1.8;
+      const plateSize = Math.max(paddle.w, paddle.h) * plateScale * 0.7; // Smaller individual plates
+      const gapDistance = paddle.gapSize + 20; // Extra spacing for plate visibility
+      
       ctx.save();
       ctx.translate(drawX, drawY);
       ctx.rotate(rotation);
       
-      if (paddle.h > paddle.w) {
-        // Vertical paddle split
-        const gapHalf = paddle.gapSize / 2;
-        // Draw two plate parts
-        if (plateImageLoaded) {
-          // Top part
-          ctx.drawImage(plateImage, 
-            0, 0, plateImage.width, plateImage.height/2 - 10,
-            -paddle.w/2, -paddle.h/2, paddle.w, (paddle.h/2) - gapHalf
-          );
-          // Bottom part
-          ctx.drawImage(plateImage,
-            0, plateImage.height/2 + 10, plateImage.width, plateImage.height/2 - 10,
-            -paddle.w/2, gapHalf, paddle.w, (paddle.h/2) - gapHalf
-          );
-        } else {
-          // Fallback rectangles
-          ctx.fillStyle = playerColors[playerNum];
-          ctx.fillRect(-paddle.w/2, -paddle.h/2, paddle.w, (paddle.h/2) - gapHalf);
-          ctx.fillRect(-paddle.w/2, gapHalf, paddle.w, (paddle.h/2) - gapHalf);
+      if (plateImageLoaded) {
+        // Draw first plate
+        ctx.translate(0, -gapDistance/2);
+        if (gameMode === 5) {
+          ctx.fillStyle = '#ffd700';
+          ctx.globalAlpha = 0.2;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, plateSize/2 + 3, plateSize/2 + 3, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(plateImage, -plateSize/2, -plateSize/2, plateSize, plateSize);
+        
+        // Draw second plate
+        ctx.translate(0, gapDistance);
+        if (gameMode === 5) {
+          ctx.fillStyle = '#ffd700';
+          ctx.globalAlpha = 0.2;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, plateSize/2 + 3, plateSize/2 + 3, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+        ctx.drawImage(plateImage, -plateSize/2, -plateSize/2, plateSize, plateSize);
+        
+        // Add glow effects for both plates if powered up
+        if (gameState.activePowerUp && gameState.activePowerUp.player === playerNum) {
+          ctx.strokeStyle = playerColors[playerNum];
+          ctx.lineWidth = 3;
+          ctx.shadowColor = playerColors[playerNum];
+          ctx.shadowBlur = 15;
+          
+          // Glow for second plate
+          ctx.beginPath();
+          ctx.ellipse(0, 0, plateSize/2 + 5, plateSize/2 + 5, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          
+          // Glow for first plate
+          ctx.translate(0, -gapDistance);
+          ctx.beginPath();
+          ctx.ellipse(0, 0, plateSize/2 + 5, plateSize/2 + 5, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.shadowBlur = 0;
         }
       } else {
-        // Horizontal paddle split
-        const gapHalf = paddle.gapSize / 2;
-        if (plateImageLoaded) {
-          // Left part
-          ctx.drawImage(plateImage,
-            0, 0, plateImage.width/2 - 10, plateImage.height,
-            -paddle.w/2, -paddle.h/2, (paddle.w/2) - gapHalf, paddle.h
-          );
-          // Right part
-          ctx.drawImage(plateImage,
-            plateImage.width/2 + 10, 0, plateImage.width/2 - 10, plateImage.height,
-            gapHalf, -paddle.h/2, (paddle.w/2) - gapHalf, paddle.h
-          );
+        // Fallback rectangles for split mode
+        ctx.fillStyle = gameMode === 5 ? '#ffd700' : playerColors[playerNum];
+        if (paddle.h > paddle.w) {
+          const segmentHeight = (paddle.h - paddle.gapSize) / 2;
+          ctx.fillRect(-paddle.w/2, -paddle.h/2, paddle.w, segmentHeight);
+          ctx.fillRect(-paddle.w/2, paddle.gapSize/2, paddle.w, segmentHeight);
         } else {
-          // Fallback rectangles
-          ctx.fillStyle = playerColors[playerNum];
-          ctx.fillRect(-paddle.w/2, -paddle.h/2, (paddle.w/2) - gapHalf, paddle.h);
-          ctx.fillRect(gapHalf, -paddle.h/2, (paddle.w/2) - gapHalf, paddle.h);
+          const segmentWidth = (paddle.w - paddle.gapSize) / 2;
+          ctx.fillRect(-paddle.w/2, -paddle.h/2, segmentWidth, paddle.h);
+          ctx.fillRect(paddle.gapSize/2, -paddle.h/2, segmentWidth, paddle.h);
         }
       }
       
       ctx.restore();
-      
-      // Add glow effect for powered-up paddle
-      if (gameState.activePowerUp && gameState.activePowerUp.player === playerNum) {
-        ctx.strokeStyle = playerColors[playerNum];
-        ctx.lineWidth = 3;
-        ctx.shadowColor = playerColors[playerNum];
-        ctx.shadowBlur = 15;
-        ctx.strokeRect(
-          drawX - paddle.w/2 - 5, 
-          drawY - paddle.h/2 - 5, 
-          paddle.w + 10, 
-          paddle.h + 10
-        );
-        ctx.shadowBlur = 0;
-      }
     }
   });
 }
