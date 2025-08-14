@@ -38,7 +38,23 @@ class GameRoom {
       powerUpTimer: 0,
       activePowerUp: null,
       lastHitPlayer: null,
-      winScore: 5
+      winScore: 5,
+      // New funny power-up states
+      drunkBallActive: false,
+      drunkBallOffset: 0,
+      paddleHiccupsActive: false,
+      paddleHiccupsPlayer: null,
+      paddleHiccupsLastTime: 0,
+      bigHeadActive: false,
+      butterflyActive: false,
+      sneezeAttackActive: false,
+      sneezeAttackCount: 0,
+      echoBallActive: false,
+      echoBallTrail: [],
+      ballTantrumActive: false,
+      ballTantrumStage: 'normal', // 'normal', 'angry', 'exploded'
+      sleepyTimeActive: false,
+      backgroundColorOverride: null
     };
     this.inputBuffer = {};
     this.gameLoop = null;
@@ -264,30 +280,57 @@ class GameRoom {
   startPowerUpSystem() {
     if (this.powerUpInterval) clearInterval(this.powerUpInterval);
     
-    // Spawn first power-up after 10 seconds
+    // Spawn first power-up after random time (8-15 seconds)
+    const firstSpawnDelay = 8000 + Math.random() * 7000;
     setTimeout(() => {
       this.spawnPowerUp();
-      // Then spawn every 10-20 seconds depending on state
-      this.powerUpInterval = setInterval(() => {
-        if (!this.gameState.powerUp && !this.gameState.activePowerUp) {
-          this.spawnPowerUp();
-        }
-      }, 10000);
-    }, 10000);
+      this.scheduleNextPowerUp();
+    }, firstSpawnDelay);
+  }
+  
+  scheduleNextPowerUp() {
+    // Random spawn timing between 12-25 seconds (inspired by Hit the Island pacing)
+    const nextSpawnDelay = 12000 + Math.random() * 13000;
+    this.powerUpTimeout = setTimeout(() => {
+      if (!this.gameState.powerUp && !this.gameState.activePowerUp && this.gameState.running) {
+        this.spawnPowerUp();
+        this.scheduleNextPowerUp();
+      } else {
+        // Reschedule if game state doesn't allow spawning
+        this.scheduleNextPowerUp();
+      }
+    }, nextSpawnDelay);
   }
 
   spawnPowerUp() {
     if (this.gameState.powerUp || this.gameState.activePowerUp) return;
     
-    // Random power-up type: 'grow' (50%), 'shrink' (30%), 'split' (20%)
-    const rand = Math.random();
-    let powerUpType;
-    if (rand < 0.5) {
-      powerUpType = 'grow';
-    } else if (rand < 0.8) {
-      powerUpType = 'shrink';
-    } else {
-      powerUpType = 'split';
+    // All power-up types with weights
+    const powerUpTypes = [
+      { type: 'grow', weight: 10 },
+      { type: 'shrink', weight: 10 },
+      { type: 'split', weight: 10 },
+      { type: 'drunkBall', weight: 12 },
+      { type: 'paddleHiccups', weight: 12 },
+      { type: 'bigHead', weight: 12 },
+      { type: 'butterfly', weight: 8 },
+      { type: 'sneezeAttack', weight: 10 },
+      { type: 'echoBall', weight: 8 },
+      { type: 'ballTantrum', weight: 6 },
+      { type: 'sleepyTime', weight: 8 }
+    ];
+    
+    // Weighted random selection
+    const totalWeight = powerUpTypes.reduce((sum, p) => sum + p.weight, 0);
+    let random = Math.random() * totalWeight;
+    let powerUpType = 'grow';
+    
+    for (const powerUp of powerUpTypes) {
+      random -= powerUp.weight;
+      if (random <= 0) {
+        powerUpType = powerUp.type;
+        break;
+      }
     }
     
     // Random position avoiding edges, scaled for field size
@@ -347,9 +390,66 @@ class GameRoom {
       }
     });
 
-    // Update ball position
-    ball.x += ball.vx;
-    ball.y += ball.vy;
+    // Apply power-up effects to ball movement
+    this.updatePowerUpEffects();
+    
+    // Update ball position with power-up modifications
+    let finalVx = ball.vx;
+    let finalVy = ball.vy;
+    
+    // Drunk Ball effect - wobbly movement
+    if (this.gameState.drunkBallActive) {
+      this.gameState.drunkBallOffset += 0.15;
+      const wobble = Math.sin(this.gameState.drunkBallOffset) * 2;
+      finalVx += wobble;
+      finalVy += Math.cos(this.gameState.drunkBallOffset) * 1.5;
+    }
+    
+    // Butterfly effect - slow gentle movement
+    if (this.gameState.butterflyActive) {
+      finalVx *= 0.3;
+      finalVy *= 0.3;
+      // Add gentle flutter
+      finalVx += Math.sin(Date.now() * 0.01) * 0.5;
+      finalVy += Math.cos(Date.now() * 0.008) * 0.3;
+    }
+    
+    // Sleepy Time effect - very slow movement
+    if (this.gameState.sleepyTimeActive) {
+      finalVx *= 0.1;
+      finalVy *= 0.1;
+    }
+    
+    // Sneeze Attack - random direction changes
+    if (this.gameState.sneezeAttackActive && this.gameState.sneezeAttackCount > 0) {
+      if (Math.random() < 0.02) { // 2% chance per frame
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.sqrt(finalVx * finalVx + finalVy * finalVy);
+        finalVx = Math.cos(angle) * speed;
+        finalVy = Math.sin(angle) * speed;
+        this.gameState.sneezeAttackCount--;
+        io.to(this.code).emit('ballSneeze');
+        if (this.gameState.sneezeAttackCount <= 0) {
+          this.gameState.sneezeAttackActive = false;
+        }
+      }
+    }
+    
+    ball.x += finalVx;
+    ball.y += finalVy;
+    
+    // Update echo ball trail
+    if (this.gameState.echoBallActive) {
+      this.gameState.echoBallTrail.push({
+        x: ball.x,
+        y: ball.y,
+        timestamp: Date.now()
+      });
+      // Keep only last 4 trail points (1 second at 60fps)
+      if (this.gameState.echoBallTrail.length > 60) {
+        this.gameState.echoBallTrail.shift();
+      }
+    }
 
     // Check wall collisions and scoring
     this.checkWallCollisions();
@@ -389,20 +489,13 @@ class GameRoom {
     // Update active power-up
     if (this.gameState.activePowerUp) {
       const elapsed = Date.now() - this.gameState.activePowerUp.startTime;
-      if (elapsed > 10000) {
-        // Remove power-up effect and restore original size
-        const paddle = this.gameState.paddles[this.gameState.activePowerUp.player];
-        if (paddle) {
-          if (this.gameState.activePowerUp.player <= 2) {
-            paddle.h = 100; // Restore original height
-          } else {
-            paddle.w = 180; // Restore original width
-          }
-          // Remove split effect
-          paddle.split = false;
-          paddle.gapSize = 0;
-        }
+      const powerUpDuration = this.getPowerUpDuration(this.gameState.activePowerUp.type);
+      
+      if (elapsed > powerUpDuration) {
+        this.cleanupPowerUp(this.gameState.activePowerUp.type);
         this.gameState.activePowerUp = null;
+        this.gameState.backgroundColorOverride = null;
+        io.to(this.code).emit('powerUpEnded');
       }
     }
 
@@ -584,6 +677,7 @@ class GameRoom {
   collectPowerUp(playerNum) {
     const powerUpType = this.gameState.powerUp.type;
     const paddle = this.gameState.paddles[playerNum];
+    
     if (paddle) {
       // Apply power-up effect based on type
       if (powerUpType === 'grow') {
@@ -606,6 +700,60 @@ class GameRoom {
         } else {
           paddle.gapSize = 60; // Gap size for horizontal paddles
         }
+      } else if (powerUpType === 'drunkBall') {
+        this.gameState.drunkBallActive = true;
+        this.gameState.drunkBallOffset = 0;
+        this.gameState.backgroundColorOverride = 'rgba(255, 192, 203, 0.3)'; // Pink
+        io.to(this.code).emit('powerUpSound', { type: 'drunkBall' });
+      } else if (powerUpType === 'paddleHiccups') {
+        this.gameState.paddleHiccupsActive = true;
+        this.gameState.paddleHiccupsPlayer = playerNum;
+        this.gameState.paddleHiccupsLastTime = Date.now();
+        this.gameState.backgroundColorOverride = 'rgba(255, 255, 0, 0.2)'; // Yellow
+        io.to(this.code).emit('powerUpSound', { type: 'paddleHiccups' });
+      } else if (powerUpType === 'bigHead') {
+        this.gameState.bigHeadActive = true;
+        // Make all paddles bigger
+        Object.keys(this.gameState.paddles).forEach(key => {
+          const p = this.gameState.paddles[key];
+          p.originalW = p.w;
+          p.originalH = p.h;
+          p.w *= 3;
+          p.h *= 3;
+        });
+        this.gameState.backgroundColorOverride = 'rgba(255, 165, 0, 0.25)'; // Orange
+        io.to(this.code).emit('powerUpSound', { type: 'bigHead' });
+      } else if (powerUpType === 'butterfly') {
+        this.gameState.butterflyActive = true;
+        this.gameState.backgroundColorOverride = 'rgba(144, 238, 144, 0.3)'; // Light green
+        io.to(this.code).emit('powerUpSound', { type: 'butterfly' });
+      } else if (powerUpType === 'sneezeAttack') {
+        this.gameState.sneezeAttackActive = true;
+        this.gameState.sneezeAttackCount = 3;
+        this.gameState.backgroundColorOverride = 'rgba(255, 20, 147, 0.25)'; // Deep pink
+        io.to(this.code).emit('powerUpSound', { type: 'sneezeAttack' });
+      } else if (powerUpType === 'echoBall') {
+        this.gameState.echoBallActive = true;
+        this.gameState.echoBallTrail = [];
+        this.gameState.backgroundColorOverride = 'rgba(138, 43, 226, 0.25)'; // Blue violet
+        io.to(this.code).emit('powerUpSound', { type: 'echoBall' });
+      } else if (powerUpType === 'ballTantrum') {
+        this.gameState.ballTantrumActive = true;
+        this.gameState.ballTantrumStage = 'angry';
+        this.gameState.ball.vx = 0;
+        this.gameState.ball.vy = 0;
+        this.gameState.backgroundColorOverride = 'rgba(255, 0, 0, 0.3)'; // Red
+        io.to(this.code).emit('powerUpSound', { type: 'ballTantrum' });
+        // Ball explodes after 2 seconds
+        setTimeout(() => {
+          if (this.gameState.ballTantrumActive) {
+            this.explodeBall();
+          }
+        }, 2000);
+      } else if (powerUpType === 'sleepyTime') {
+        this.gameState.sleepyTimeActive = true;
+        this.gameState.backgroundColorOverride = 'rgba(75, 0, 130, 0.3)'; // Indigo
+        io.to(this.code).emit('powerUpSound', { type: 'sleepyTime' });
       }
       
       this.gameState.activePowerUp = {
@@ -616,13 +764,128 @@ class GameRoom {
       
       this.gameState.powerUp = null;
       
-      // Next power-up in 15-25 seconds (random)
-      const nextSpawnTime = 15000 + Math.random() * 10000;
-      setTimeout(() => {
-        if (this.gameState.running) {
-          this.spawnPowerUp();
+      // Schedule next power-up
+      this.scheduleNextPowerUp();
+    }
+  }
+  
+  explodeBall() {
+    // Create 3 balls from tantrum explosion
+    const originalBall = this.gameState.ball;
+    this.gameState.ballTantrumStage = 'exploded';
+    
+    // Create additional balls (simulate multiple balls)
+    this.gameState.extraBalls = [
+      {
+        x: originalBall.x + 20,
+        y: originalBall.y,
+        vx: Math.random() * 8 - 4,
+        vy: Math.random() * 8 - 4,
+        speed: 6
+      },
+      {
+        x: originalBall.x - 20,
+        y: originalBall.y,
+        vx: Math.random() * 8 - 4,
+        vy: Math.random() * 8 - 4,
+        speed: 6
+      }
+    ];
+    
+    // Reset main ball with new velocity
+    this.gameState.ball.vx = Math.random() * 8 - 4;
+    this.gameState.ball.vy = Math.random() * 8 - 4;
+    
+    io.to(this.code).emit('ballExplosion');
+  }
+  
+  updatePowerUpEffects() {
+    // Handle paddle hiccups
+    if (this.gameState.paddleHiccupsActive && this.gameState.paddleHiccupsPlayer) {
+      const now = Date.now();
+      if (now - this.gameState.paddleHiccupsLastTime > 2000) { // Every 2 seconds
+        const paddle = this.gameState.paddles[this.gameState.paddleHiccupsPlayer];
+        if (paddle) {
+          // Random jerk movement
+          if (this.gameState.paddleHiccupsPlayer <= 2) {
+            paddle.y += (Math.random() - 0.5) * 60;
+            paddle.y = Math.max(60, Math.min(this.gameState.fieldHeight - 60, paddle.y));
+          } else {
+            paddle.x += (Math.random() - 0.5) * 80;
+            paddle.x = Math.max(60, Math.min(this.gameState.fieldWidth - 60, paddle.x));
+          }
+          io.to(this.code).emit('paddleHiccup');
         }
-      }, nextSpawnTime);
+        this.gameState.paddleHiccupsLastTime = now;
+      }
+    }
+  }
+  
+  getPowerUpDuration(type) {
+    const durations = {
+      'grow': 10000,
+      'shrink': 10000,
+      'split': 10000,
+      'drunkBall': 8000,
+      'paddleHiccups': 10000,
+      'bigHead': 12000,
+      'butterfly': 6000,
+      'sneezeAttack': 8000, // Or until 3 sneezes
+      'echoBall': 10000,
+      'ballTantrum': 4000, // Includes 2s anger + 2s explosion effect
+      'sleepyTime': 8000
+    };
+    return durations[type] || 10000;
+  }
+  
+  cleanupPowerUp(type) {
+    const paddle = this.gameState.paddles[this.gameState.activePowerUp.player];
+    
+    if (type === 'grow' || type === 'shrink') {
+      if (paddle) {
+        if (this.gameState.activePowerUp.player <= 2) {
+          paddle.h = 100; // Restore original height
+        } else {
+          paddle.w = 180; // Restore original width
+        }
+      }
+    } else if (type === 'split') {
+      if (paddle) {
+        paddle.split = false;
+        paddle.gapSize = 0;
+      }
+    } else if (type === 'drunkBall') {
+      this.gameState.drunkBallActive = false;
+      this.gameState.drunkBallOffset = 0;
+    } else if (type === 'paddleHiccups') {
+      this.gameState.paddleHiccupsActive = false;
+      this.gameState.paddleHiccupsPlayer = null;
+    } else if (type === 'bigHead') {
+      this.gameState.bigHeadActive = false;
+      // Restore all paddle sizes
+      Object.keys(this.gameState.paddles).forEach(key => {
+        const p = this.gameState.paddles[key];
+        if (p.originalW && p.originalH) {
+          p.w = p.originalW;
+          p.h = p.originalH;
+          delete p.originalW;
+          delete p.originalH;
+        }
+      });
+    } else if (type === 'butterfly') {
+      this.gameState.butterflyActive = false;
+    } else if (type === 'sneezeAttack') {
+      this.gameState.sneezeAttackActive = false;
+      this.gameState.sneezeAttackCount = 0;
+    } else if (type === 'echoBall') {
+      this.gameState.echoBallActive = false;
+      this.gameState.echoBallTrail = [];
+    } else if (type === 'ballTantrum') {
+      this.gameState.ballTantrumActive = false;
+      this.gameState.ballTantrumStage = 'normal';
+      this.gameState.extraBalls = [];
+    } else if (type === 'sleepyTime') {
+      this.gameState.sleepyTimeActive = false;
     }
   }
 
@@ -634,6 +897,10 @@ class GameRoom {
     if (this.powerUpInterval) {
       clearInterval(this.powerUpInterval);
       this.powerUpInterval = null;
+    }
+    if (this.powerUpTimeout) {
+      clearTimeout(this.powerUpTimeout);
+      this.powerUpTimeout = null;
     }
     if (this.speedProgressionInterval) {
       clearInterval(this.speedProgressionInterval);

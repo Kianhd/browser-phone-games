@@ -208,7 +208,40 @@ const sounds = {
     playSound(262, 0.15, 0.06, 'square');
     setTimeout(() => playSound(330, 0.15, 0.06, 'square'), 150);
     setTimeout(() => playSound(392, 0.25, 0.08, 'square'), 300);
-  }
+  },
+  // New funny power-up sounds
+  drunkBall: () => {
+    playSound(200, 0.3, 0.08, 'sine');
+    setTimeout(() => playSound(180, 0.2, 0.06, 'sine'), 200);
+    setTimeout(() => playSound(220, 0.2, 0.06, 'sine'), 400);
+  },
+  paddleHiccups: () => playSound(400, 0.1, 0.08, 'square'),
+  bigHead: () => {
+    playSound(100, 0.4, 0.1, 'sawtooth');
+    setTimeout(() => playSound(120, 0.3, 0.08, 'sawtooth'), 200);
+  },
+  butterfly: () => {
+    playSound(800, 0.1, 0.04, 'sine');
+    setTimeout(() => playSound(900, 0.1, 0.04, 'sine'), 100);
+    setTimeout(() => playSound(700, 0.1, 0.04, 'sine'), 200);
+  },
+  sneezeAttack: () => playSound(300, 0.2, 0.1, 'noise'),
+  echoBall: () => {
+    playSound(500, 0.3, 0.06, 'triangle');
+    setTimeout(() => playSound(500, 0.2, 0.04, 'triangle'), 200);
+    setTimeout(() => playSound(500, 0.1, 0.03, 'triangle'), 400);
+  },
+  ballTantrum: () => playSound(150, 0.5, 0.12, 'sawtooth'),
+  sleepyTime: () => {
+    playSound(200, 0.8, 0.06, 'sine');
+    setTimeout(() => playSound(180, 0.6, 0.05, 'sine'), 400);
+  },
+  ballSneeze: () => playSound(600, 0.15, 0.08, 'square'),
+  ballExplosion: () => {
+    playSound(100, 0.3, 0.15, 'noise');
+    setTimeout(() => playSound(80, 0.2, 0.1, 'noise'), 100);
+  },
+  paddleHiccup: () => playSound(350, 0.1, 0.06, 'square')
 };
 
 // Background Game Canvas
@@ -523,6 +556,30 @@ function setupSocketListeners() {
 
   socket.on('speedIncreased', ({ newSpeed }) => {
     showSpeedIncrease(newSpeed);
+    showSpeedIncreaseBackground(newSpeed);
+  });
+
+  socket.on('powerUpSound', ({ type }) => {
+    if (sounds[type]) {
+      sounds[type]();
+    }
+  });
+
+  socket.on('ballSneeze', () => {
+    sounds.ballSneeze();
+  });
+
+  socket.on('ballExplosion', () => {
+    sounds.ballExplosion();
+  });
+
+  socket.on('paddleHiccup', () => {
+    sounds.paddleHiccup();
+  });
+
+  socket.on('powerUpEnded', () => {
+    // Clear any background color override
+    document.body.style.backgroundColor = '';
   });
 }
 
@@ -766,8 +823,17 @@ function render() {
     return;
   }
 
-  // Clear canvas
-  ctx.fillStyle = '#0a0a0f';
+  // Apply background color override for power-ups
+  let backgroundColor = '#0a0a0f';
+  if (gameState.backgroundColorOverride) {
+    const overlay = gameState.backgroundColorOverride;
+    ctx.fillStyle = overlay;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    backgroundColor = '#0a0a0f';
+  }
+
+  // Clear canvas with background color
+  ctx.fillStyle = backgroundColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Update interpolations for smooth movement
@@ -778,6 +844,8 @@ function render() {
   drawPaddles();
   drawPowerUp();
   drawBall();
+  drawEchoBallTrail();
+  drawExtraBalls();
   updateHTMLScoreboard();
   drawPowerUpTimer();
   drawCountdown();
@@ -956,15 +1024,61 @@ function drawBall() {
   
   const ball = gameState.ball;
   
-  // Draw ball
-  ctx.fillStyle = '#ffffff';
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2);
-  ctx.fill();
+  // Special effects for different power-ups
+  if (gameState.butterflyActive) {
+    // Draw butterfly wings
+    ctx.fillStyle = 'rgba(255, 192, 203, 0.6)';
+    ctx.beginPath();
+    ctx.ellipse(ball.x - 8, ball.y - 3, 6, 3, Math.PI / 6, 0, Math.PI * 2);
+    ctx.ellipse(ball.x + 8, ball.y - 3, 6, 3, -Math.PI / 6, 0, Math.PI * 2);
+    ctx.fill();
+  }
   
-  // Add glow
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-  ctx.lineWidth = 2;
+  if (gameState.ballTantrumActive && gameState.ballTantrumStage === 'angry') {
+    // Angry ball - red and shaking
+    ctx.fillStyle = '#ff0000';
+    const shake = (Math.random() - 0.5) * 4;
+    ctx.beginPath();
+    ctx.arc(ball.x + shake, ball.y + shake, 12, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Add angry face
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '16px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('😠', ball.x + shake, ball.y + shake + 2);
+    return;
+  }
+  
+  if (gameState.sleepyTimeActive) {
+    // Sleepy ball - darker and with ZZZ
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Add ZZZ
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('ZZZ', ball.x + 15, ball.y - 15);
+  } else {
+    // Normal ball
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  
+  // Add glow effect
+  if (gameState.drunkBallActive) {
+    // Rainbow trail for drunk ball
+    ctx.strokeStyle = `hsl(${(Date.now() * 0.1) % 360}, 70%, 60%)`;
+    ctx.lineWidth = 3;
+  } else {
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.lineWidth = 2;
+  }
   ctx.stroke();
 }
 
@@ -979,27 +1093,59 @@ function drawPowerUp() {
   const pulseOpacity = 0.7 + 0.3 * Math.sin(elapsed * 0.008);
   const finalOpacity = timeLeft < 3000 ? pulseOpacity : 1;
   
-  // Subtle, professional colors
+  // Power-up colors and symbols
   let boxColor, symbol, shadowColor;
   if (powerUp.type === 'grow') {
-    boxColor = `rgba(46, 204, 113, ${finalOpacity})`; // Subtle green
+    boxColor = `rgba(46, 204, 113, ${finalOpacity})`;
     shadowColor = 'rgba(46, 204, 113, 0.3)';
     symbol = '+';
   } else if (powerUp.type === 'shrink') {
-    boxColor = `rgba(231, 76, 60, ${finalOpacity})`; // Subtle red
+    boxColor = `rgba(231, 76, 60, ${finalOpacity})`;
     shadowColor = 'rgba(231, 76, 60, 0.3)';
     symbol = '−';
   } else if (powerUp.type === 'split') {
-    boxColor = `rgba(155, 89, 182, ${finalOpacity})`; // Subtle purple
+    boxColor = `rgba(155, 89, 182, ${finalOpacity})`;
     shadowColor = 'rgba(155, 89, 182, 0.3)';
     symbol = '⟐';
+  } else if (powerUp.type === 'drunkBall') {
+    boxColor = `rgba(255, 192, 203, ${finalOpacity})`;
+    shadowColor = 'rgba(255, 192, 203, 0.3)';
+    symbol = '🍺';
+  } else if (powerUp.type === 'paddleHiccups') {
+    boxColor = `rgba(255, 255, 0, ${finalOpacity})`;
+    shadowColor = 'rgba(255, 255, 0, 0.3)';
+    symbol = '😵';
+  } else if (powerUp.type === 'bigHead') {
+    boxColor = `rgba(255, 165, 0, ${finalOpacity})`;
+    shadowColor = 'rgba(255, 165, 0, 0.3)';
+    symbol = '🎈';
+  } else if (powerUp.type === 'butterfly') {
+    boxColor = `rgba(144, 238, 144, ${finalOpacity})`;
+    shadowColor = 'rgba(144, 238, 144, 0.3)';
+    symbol = '🦋';
+  } else if (powerUp.type === 'sneezeAttack') {
+    boxColor = `rgba(255, 20, 147, ${finalOpacity})`;
+    shadowColor = 'rgba(255, 20, 147, 0.3)';
+    symbol = '🤧';
+  } else if (powerUp.type === 'echoBall') {
+    boxColor = `rgba(138, 43, 226, ${finalOpacity})`;
+    shadowColor = 'rgba(138, 43, 226, 0.3)';
+    symbol = '👻';
+  } else if (powerUp.type === 'ballTantrum') {
+    boxColor = `rgba(255, 0, 0, ${finalOpacity})`;
+    shadowColor = 'rgba(255, 0, 0, 0.3)';
+    symbol = '😠';
+  } else if (powerUp.type === 'sleepyTime') {
+    boxColor = `rgba(75, 0, 130, ${finalOpacity})`;
+    shadowColor = 'rgba(75, 0, 130, 0.3)';
+    symbol = '😴';
   } else {
-    boxColor = `rgba(241, 196, 15, ${finalOpacity})`; // Subtle gold
+    boxColor = `rgba(241, 196, 15, ${finalOpacity})`;
     shadowColor = 'rgba(241, 196, 15, 0.3)';
     symbol = '?';
   }
   
-  const size = powerUp.size * 0.8; // Slightly smaller, more elegant
+  const size = powerUp.size * 0.8;
   
   // Draw subtle shadow first
   ctx.save();
@@ -1013,7 +1159,7 @@ function drawPowerUp() {
   );
   ctx.filter = 'none';
   
-  // Draw main power-up box with rounded corners effect
+  // Draw main power-up box
   const gradient = ctx.createLinearGradient(
     powerUp.x - size, powerUp.y - size,
     powerUp.x + size, powerUp.y + size
@@ -1039,9 +1185,9 @@ function drawPowerUp() {
     size * 2
   );
   
-  // Draw symbol with subtle styling
+  // Draw symbol
   ctx.fillStyle = `rgba(255, 255, 255, ${finalOpacity})`;
-  ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, sans-serif';
+  ctx.font = 'bold 20px -apple-system, BlinkMacSystemFont, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(symbol, powerUp.x, powerUp.y);
@@ -1077,13 +1223,14 @@ function updateSpeedIndicator() {
   
   let speedIndicator = document.getElementById('speedIndicator');
   if (!speedIndicator) {
-    // Create speed indicator
+    // Create speed indicator - positioned under score display
     speedIndicator = document.createElement('div');
     speedIndicator.id = 'speedIndicator';
     speedIndicator.style.cssText = `
       position: absolute;
-      top: 8px;
-      right: 20px;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 12px;
       color: rgba(255, 255, 255, 0.6);
       font-weight: 500;
@@ -1107,6 +1254,67 @@ function updateSpeedIndicator() {
     speedIndicator.style.color = 'rgba(255, 255, 255, 0.6)';
     speedIndicator.style.borderColor = 'rgba(255, 255, 255, 0.1)';
   }
+}
+
+// Add the missing drawing functions
+function drawEchoBallTrail() {
+  if (!gameState.echoBallActive || !gameState.echoBallTrail) return;
+  
+  gameState.echoBallTrail.forEach((trail, index) => {
+    const opacity = 0.3 * (index / gameState.echoBallTrail.length);
+    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+    ctx.beginPath();
+    ctx.arc(trail.x, trail.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+function drawExtraBalls() {
+  if (!gameState.extraBalls) return;
+  
+  gameState.extraBalls.forEach(ball => {
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Add glow
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+}
+
+function showSpeedIncreaseBackground(newSpeed) {
+  // Create background text overlay
+  let speedOverlay = document.getElementById('speedIncreaseOverlay');
+  if (!speedOverlay) {
+    speedOverlay = document.createElement('div');
+    speedOverlay.id = 'speedIncreaseOverlay';
+    speedOverlay.style.cssText = `
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 120px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+      z-index: 5;
+      white-space: nowrap;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    `;
+    document.getElementById('gameContainer').appendChild(speedOverlay);
+  }
+  
+  speedOverlay.textContent = `SPEED ${newSpeed.toFixed(1)}X`;
+  speedOverlay.style.opacity = '1';
+  
+  // Fade out after 3 seconds
+  setTimeout(() => {
+    speedOverlay.style.transition = 'opacity 2s ease-out';
+    speedOverlay.style.opacity = '0';
+  }, 1000);
 }
 
 // Show speed warning before increase
