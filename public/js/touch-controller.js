@@ -280,6 +280,14 @@ function handleVerticalTouch(touch, touchArea, indicator) {
   
   // Immediately update visual indicator (client-side prediction)
   updatePaddleIndicator(indicator, currentPosition, height, true);
+  
+  // IMMEDIATE position send for ultra-low latency
+  sendPositionImmediate();
+  
+  // Haptic feedback for responsive feel
+  if ('vibrate' in navigator) {
+    navigator.vibrate(1); // Micro-vibration for touch feedback
+  }
 }
 
 function handleVerticalMouse(e, touchArea, indicator) {
@@ -291,6 +299,14 @@ function handleVerticalMouse(e, touchArea, indicator) {
   
   // Immediately update visual indicator (client-side prediction)
   updatePaddleIndicator(indicator, currentPosition, height, true);
+  
+  // IMMEDIATE position send for ultra-low latency
+  sendPositionImmediate();
+  
+  // Haptic feedback for responsive feel
+  if ('vibrate' in navigator) {
+    navigator.vibrate(1); // Micro-vibration for touch feedback
+  }
 }
 
 // Horizontal Touch Control (Players 3 & 4)
@@ -353,6 +369,14 @@ function handleHorizontalTouch(touch, touchArea, indicator) {
   
   // Immediately update visual indicator (client-side prediction)
   updatePaddleIndicator(indicator, currentPosition, width, false);
+  
+  // IMMEDIATE position send for ultra-low latency
+  sendPositionImmediate();
+  
+  // Haptic feedback for responsive feel
+  if ('vibrate' in navigator) {
+    navigator.vibrate(1); // Micro-vibration for touch feedback
+  }
 }
 
 function handleHorizontalMouse(e, touchArea, indicator) {
@@ -364,6 +388,14 @@ function handleHorizontalMouse(e, touchArea, indicator) {
   
   // Immediately update visual indicator (client-side prediction)
   updatePaddleIndicator(indicator, currentPosition, width, false);
+  
+  // IMMEDIATE position send for ultra-low latency
+  sendPositionImmediate();
+  
+  // Haptic feedback for responsive feel
+  if ('vibrate' in navigator) {
+    navigator.vibrate(1); // Micro-vibration for touch feedback
+  }
 }
 
 // BeanPong paddle indicator update function
@@ -383,18 +415,24 @@ function updatePaddleIndicator(indicator, position, containerSize, isVertical) {
   }
 }
 
-// Send Position Updates
+// Immediate position update for ultra-low latency
+function sendPositionImmediate() {
+  if (joinedRoom && currentPosition !== null) {
+    socket.emit('input', {
+      room: joinedRoom,
+      position: currentPosition,
+      timestamp: Date.now() // Add timestamp for latency tracking
+    });
+  }
+}
+
+// Send Position Updates - Optimized for real-time gaming
 function startPositionUpdates() {
-  // Send position at 120 FPS for maximum responsiveness
+  // Send position at 144 FPS for maximum responsiveness (gaming monitor standard)
   if (sendInterval) clearInterval(sendInterval);
   sendInterval = setInterval(() => {
-    if (joinedRoom) {
-      socket.emit('input', {
-        room: joinedRoom,
-        position: currentPosition
-      });
-    }
-  }, 8); // ~125 FPS for maximum responsiveness
+    sendPositionImmediate();
+  }, 7); // ~144 FPS for ultra-responsive gaming
 }
 
 // Socket Events

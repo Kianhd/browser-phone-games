@@ -46,6 +46,37 @@ plateImage.onload = () => plateImageLoaded = true;
 let interpolatedPaddles = {};
 let lastUpdateTime = Date.now();
 
+// Plate impact physics system
+let plateImpacts = {}; // Track impact animations for each paddle
+
+// Trigger subtle plate impact animation
+function triggerPlateImpact(playerNum, impactVelocity) {
+  plateImpacts[playerNum] = {
+    startTime: Date.now(),
+    pushDistance: Math.min(impactVelocity * 0.3, 8), // Max 8px push
+    duration: 150, // Very quick 150ms animation
+    direction: Math.random() * Math.PI * 2 // Random subtle direction
+  };
+}
+
+// Update plate impact animations
+function updatePlateImpacts() {
+  const currentTime = Date.now();
+  Object.keys(plateImpacts).forEach(playerNum => {
+    const impact = plateImpacts[playerNum];
+    const elapsed = currentTime - impact.startTime;
+    
+    if (elapsed > impact.duration) {
+      delete plateImpacts[playerNum]; // Animation finished
+    } else {
+      // Spring physics for natural movement
+      const progress = elapsed / impact.duration;
+      const springBack = 1 - Math.pow(progress - 1, 2); // Easing out
+      impact.currentPush = impact.pushDistance * springBack;
+    }
+  });
+}
+
 // Für Elise note sequence
 let furEliseIndex = 0;
 // Notes: E5, D#5, E5, D#5, E5, B4, D5, C5, A4... (continuing the famous melody)
@@ -324,7 +355,7 @@ function animateBackground() {
     
     // Draw kidney bean ball
     if (ballImageLoaded && ballImage.complete) {
-      const ballSize = ball.radius * 2.5; // Make balls slightly larger
+      const ballSize = 32; // Same size as game balls for consistency
       backgroundCtx.save();
       backgroundCtx.translate(ball.x, ball.y);
       backgroundCtx.rotate(ball.rotation);
@@ -334,7 +365,7 @@ function animateBackground() {
       backgroundCtx.restore();
     } else {
       // Fallback: draw using the same kidney bean shape as the main game
-      const ballSize = ball.radius * 2.5;
+      const ballSize = 32; // Same size as game balls for consistency
       backgroundCtx.save();
       backgroundCtx.translate(ball.x, ball.y);
       backgroundCtx.rotate(ball.rotation);
@@ -548,6 +579,38 @@ function setupSocketListeners() {
   });
 
   socket.on('gameState', (state) => {
+    // Check for ball-paddle collisions to trigger impact animations
+    if (gameState && gameState.ball && state.ball) {
+      const prevBall = gameState.ball;
+      const currBall = state.ball;
+      
+      // Simple collision detection by velocity change
+      const velocityChange = Math.abs(currBall.vx - prevBall.vx) + Math.abs(currBall.vy - prevBall.vy);
+      if (velocityChange > 2) { // Ball bounced significantly
+        // Find closest paddle and trigger impact
+        if (state.paddles) {
+          Object.keys(state.paddles).forEach(key => {
+            const paddle = state.paddles[key];
+            const playerNum = parseInt(key);
+            const distance = Math.sqrt(
+              Math.pow(currBall.x - paddle.x, 2) + 
+              Math.pow(currBall.y - paddle.y, 2)
+            );
+            
+            // If ball is close to this paddle, trigger impact
+            if (distance < 100) {
+              triggerPlateImpact(playerNum, velocityChange);
+              
+              // Send haptic feedback to controller for this player's impact
+              if (playerNumber === playerNum && 'vibrate' in navigator) {
+                navigator.vibrate(Math.min(velocityChange * 10, 50)); // Stronger vibration for harder hits
+              }
+            }
+          });
+        }
+      }
+    }
+    
     previousGameState = gameState;
     gameState = state;
     
@@ -889,6 +952,7 @@ function render() {
 
   // Update interpolations for smooth movement
   updateInterpolation();
+  updatePlateImpacts(); // Update impact animations
   
   // Draw game elements
   drawField();
@@ -987,8 +1051,17 @@ function drawPaddles() {
     if (playerNum > gameMode) return;
     
     // Use interpolated position for smooth movement, but original paddle for other properties
-    const drawX = interpolated ? interpolated.x : paddle.x;
-    const drawY = interpolated ? interpolated.y : paddle.y;
+    let drawX = interpolated ? interpolated.x : paddle.x;
+    let drawY = interpolated ? interpolated.y : paddle.y;
+    
+    // Apply subtle impact physics movement
+    const impact = plateImpacts[playerNum];
+    if (impact && impact.currentPush) {
+      const pushX = Math.cos(impact.direction) * impact.currentPush;
+      const pushY = Math.sin(impact.direction) * impact.currentPush;
+      drawX += pushX;
+      drawY += pushY;
+    }
     
     // Determine rotation based on player position
     let rotation = 0;
@@ -997,10 +1070,10 @@ function drawPaddles() {
     } else {
       // Standard rotations for each player position
       switch(playerNum) {
-        case 1: rotation = 0; break;        // Bottom - upward facing (0°)
-        case 2: rotation = -Math.PI/2; break; // Right - left facing (-90°)
-        case 3: rotation = Math.PI; break;    // Top - downward facing (180°)
-        case 4: rotation = Math.PI/2; break;  // Left - right facing (+90°)
+        case 1: rotation = Math.PI/2; break;  // Left - plate faces right (+90°)
+        case 2: rotation = -Math.PI/2; break; // Right - plate faces left (-90°)
+        case 3: rotation = Math.PI; break;    // Top - plate faces down (180°)
+        case 4: rotation = 0; break;          // Bottom - plate faces up (0°)
         case 5: rotation = 0; break;          // Center - upward facing (0°)
       }
     }
@@ -1173,7 +1246,7 @@ function drawBall() {
   if (!gameState.ball) return;
   
   const ball = gameState.ball;
-  const ballSize = 20; // Size of the kidney bean ball
+  const ballSize = 32; // Bigger kidney bean ball for better visibility
   
   // Special effects for different power-ups
   if (gameState.butterflyActive) {
@@ -1284,36 +1357,7 @@ function drawBall() {
     ctx.fillText('ZZZ', ball.x + 15, ball.y - 15);
   }
   
-  // Add glow effect
-  if (gameState.drunkBallActive) {
-    // Rainbow glow for drunk ball - kidney bean shaped
-    ctx.save();
-    ctx.translate(ball.x, ball.y);
-    if (ball.rotation !== undefined) {
-      ctx.rotate(ball.rotation);
-    }
-    ctx.strokeStyle = `hsl(${(Date.now() * 0.1) % 360}, 70%, 60%)`;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    // Draw kidney bean-shaped glow
-    ctx.ellipse(0, 0, 14, 12, 0, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.restore();
-  } else if (!gameState.sleepyTimeActive) {
-    // Normal glow - kidney bean shaped
-    ctx.save();
-    ctx.translate(ball.x, ball.y);
-    if (ball.rotation !== undefined) {
-      ctx.rotate(ball.rotation);
-    }
-    ctx.strokeStyle = 'rgba(196, 91, 92, 0.5)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    // Draw kidney bean-shaped glow
-    ctx.ellipse(0, 0, 14, 12, 0, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.restore();
-  }
+  // No glow effects - keep beans in their pure natural form
 }
 
 function drawPowerUp() {
