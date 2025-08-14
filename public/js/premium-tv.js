@@ -1,4 +1,4 @@
-// Optimized TV Display with Power-ups
+// BeanPong TV Display with Power-ups
 const socket = io();
 
 // DOM Elements
@@ -23,6 +23,24 @@ let previousGameState = null;
 let animationId = null;
 let countdownActive = false;
 let countdownNumber = null;
+
+// Load kidney bean ball image
+const ballImage = new Image();
+ballImage.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNzYgMTI4QzEwNC4zIDEyOCA0NiAxODYuMyA0NiAyNThDNDYgMzI5LjcgMTA0LjMgMzg4IDE3NiAzODhIMzM2QzQwNy43IDM4OCA0NjYgMzI5LjcgNDY2IDI1OEM0NjYgMTg2LjMgNDA3LjcgMTI4IDMzNiAxMjhIMTc2WiIgZmlsbD0iIzlCNEY5NiIvPgo8cGF0aCBkPSJNMTc2IDEyOEM5MS4xIDEyOCAyMCAxOTkuMSAyMCAyODRDMjAgMzY4LjkgOTEuMSA0NDAgMTc2IDQ0MEgzMzZDNDIwLjkgNDQwIDQ5MiAzNjguOSA0OTIgMjg0QzQ5MiAxOTkuMSA0MjAuOSAxMjggMzM2IDEyOEgxNzZaIiBmaWxsPSIjQzQ1QjVDIi8+CjxwYXRoIGQ9Ik0zMjAgMTYwQzMzNi40IDE2MCAzNTIgMTc1LjYgMzUyIDE5MkMzNTIgMjA4LjQgMzM2LjQgMjI0IDMyMCAyMjRDMzAzLjYgMjI0IDI4OCAyMDguNCAyODggMTkyQzI4OCAxNzUuNiAzMDMuNiAxNjAgMzIwIDE2MFoiIGZpbGw9IiNGRkZGRkYiIGZpbGwtb3BhY2l0eT0iMC4zIi8+CjxwYXRoIGQ9Ik0xOTIgMTc2QzE5Mi4yIDE4MS40IDE5Ni42IDE4NS44IDIwMiAxODZDMjA3LjQgMTg1LjggMjExLjggMTgxLjQgMjEyIDE3NkMyMTEuOCAxNzAuNiAyMDcuNCAxNjYuMiAyMDIgMTY2QzE5Ni42IDE2Ni4yIDE5Mi4yIDE3MC42IDE5MiAxNzZaIiBmaWxsPSIjRkZGRkZGIi8+CjxwYXRoIGQ9Ik0yODAgMjQwQzMwMS42IDI0MCAzMjAgMjU4LjQgMzIwIDI4MEMzMjAgMzAxLjYgMzAxLjYgMzIwIDI4MCAzMjBDMjU4LjQgMzIwIDI0MCAzMDEuNiAyNDAgMjgwQzI4MCAyNTguNCAyNTguNCAyNDAgMjgwIDI0MFoiIGZpbGw9IiNGRkQ3MDAiLz4KPC9zdmc+Cg==';
+let ballImageLoaded = false;
+ballImage.onload = () => {
+  ballImageLoaded = true;
+  console.log('Ball image loaded successfully');
+};
+ballImage.onerror = () => {
+  console.warn('Ball image failed to load, using fallback shapes');
+};
+
+// Load plate image for paddles
+const plateImage = new Image();
+plateImage.src = '/Plate.png'; // Use the actual image file
+let plateImageLoaded = false;
+plateImage.onload = () => plateImageLoaded = true;
 
 // Interpolation for smooth paddle movement
 let interpolatedPaddles = {};
@@ -263,7 +281,9 @@ function initBackgroundGame() {
       vx: (Math.random() - 0.5) * 4,
       vy: (Math.random() - 0.5) * 4,
       radius: 8,
-      color: '#ffffff'
+      color: '#ffffff',
+      rotation: Math.random() * Math.PI * 2,
+      angularVelocity: (Math.random() - 0.5) * 0.1
     });
   }
   
@@ -285,26 +305,56 @@ function animateBackground() {
     ball.x += ball.vx;
     ball.y += ball.vy;
     
+    // Update rotation
+    ball.rotation += ball.angularVelocity;
+    
     // Bounce off walls
     if (ball.x <= ball.radius || ball.x >= backgroundCanvas.width - ball.radius) {
       ball.vx *= -1;
       ball.x = Math.max(ball.radius, Math.min(backgroundCanvas.width - ball.radius, ball.x));
+      // Add slight rotation change on bounce
+      ball.angularVelocity += (Math.random() - 0.5) * 0.02;
     }
     if (ball.y <= ball.radius || ball.y >= backgroundCanvas.height - ball.radius) {
       ball.vy *= -1;
       ball.y = Math.max(ball.radius, Math.min(backgroundCanvas.height - ball.radius, ball.y));
+      // Add slight rotation change on bounce
+      ball.angularVelocity += (Math.random() - 0.5) * 0.02;
     }
     
-    // Draw ball
-    backgroundCtx.fillStyle = ball.color;
-    backgroundCtx.beginPath();
-    backgroundCtx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-    backgroundCtx.fill();
+    // Draw kidney bean ball
+    if (ballImageLoaded && ballImage.complete) {
+      const ballSize = ball.radius * 2.5; // Make balls slightly larger
+      backgroundCtx.save();
+      backgroundCtx.translate(ball.x, ball.y);
+      backgroundCtx.rotate(ball.rotation);
+      backgroundCtx.globalAlpha = 0.4; // Make background balls more transparent
+      backgroundCtx.drawImage(ballImage, -ballSize/2, -ballSize/2, ballSize, ballSize);
+      backgroundCtx.globalAlpha = 1; // Reset alpha
+      backgroundCtx.restore();
+    } else {
+      // Fallback: draw using the same kidney bean shape as the main game
+      const ballSize = ball.radius * 2.5;
+      backgroundCtx.save();
+      backgroundCtx.translate(ball.x, ball.y);
+      backgroundCtx.rotate(ball.rotation);
+      backgroundCtx.globalAlpha = 0.4;
+      backgroundCtx.fillStyle = '#C45B5C'; // Same color as main game bean
+      backgroundCtx.beginPath();
+      // Use the exact same kidney bean shape as game balls
+      const scale = ballSize / 20; // Scale to match ball size
+      backgroundCtx.moveTo(-10 * scale, -4 * scale);
+      backgroundCtx.bezierCurveTo(-14 * scale, -10 * scale, -14 * scale, 10 * scale, -10 * scale, 4 * scale);
+      backgroundCtx.bezierCurveTo(-4 * scale, 10 * scale, 4 * scale, 10 * scale, 10 * scale, 4 * scale);
+      backgroundCtx.bezierCurveTo(14 * scale, 1 * scale, 14 * scale, -1 * scale, 10 * scale, -4 * scale);
+      backgroundCtx.bezierCurveTo(4 * scale, -10 * scale, -4 * scale, -10 * scale, -10 * scale, -4 * scale);
+      backgroundCtx.closePath();
+      backgroundCtx.fill();
+      backgroundCtx.globalAlpha = 1;
+      backgroundCtx.restore();
+    }
     
-    // Add subtle glow
-    backgroundCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-    backgroundCtx.lineWidth = 1;
-    backgroundCtx.stroke();
+    // No glow effects - keep beans in their pure natural form
   });
   
   backgroundAnimationId = requestAnimationFrame(animateBackground);
@@ -345,15 +395,16 @@ function updatePlayerCountDisplay(count) {
   if (playerCountEl) {
     playerCountEl.textContent = `${count} / 5`;
     
-    // Change styling based on mode
+    // Reset any inline styles to let CSS handle the styling
+    playerCountEl.style.color = '';
+    playerCountEl.style.borderColor = '';
+    playerCountEl.style.background = '';
+    
+    // Add special class for pentagon mode
     if (count === 5) {
-      playerCountEl.style.color = '#ffd700';
-      playerCountEl.style.borderColor = 'rgba(255, 215, 0, 0.3)';
-      playerCountEl.style.background = 'rgba(255, 215, 0, 0.1)';
+      playerCountEl.classList.add('pentagon-mode');
     } else {
-      playerCountEl.style.color = 'var(--accent-red)';
-      playerCountEl.style.borderColor = 'rgba(255, 59, 59, 0.2)';
-      playerCountEl.style.background = 'rgba(255, 59, 59, 0.1)';
+      playerCountEl.classList.remove('pentagon-mode');
     }
   }
 }
@@ -760,9 +811,9 @@ function updatePlayerStatus(slots, readyStates = []) {
     }
   } else {
     if (connectedCount === 5 && readyCount === 5) {
-      startGameBtn.textContent = '🌟 START PENTAGON MODE';
+      startGameBtn.textContent = '🌟 START BEAN PENTAGON';
     } else {
-      startGameBtn.textContent = `START ${readyCount} PLAYER GAME`;
+      startGameBtn.textContent = `START ${readyCount} PLAYER BEANPONG`;
     }
   }
   
@@ -811,7 +862,7 @@ function detectGameEvents(prevState, currState) {
   }
 }
 
-// Optimized Game Rendering
+// BeanPong Game Rendering
 function startRenderLoop() {
   if (animationId) cancelAnimationFrame(animationId);
   render();
@@ -939,82 +990,144 @@ function drawPaddles() {
     const drawX = interpolated ? interpolated.x : paddle.x;
     const drawY = interpolated ? interpolated.y : paddle.y;
     
-    ctx.fillStyle = gameMode === 5 ? '#ffd700' : playerColors[playerNum];
-    
-    // Handle pentagon mode rotation
+    // Determine rotation based on player position
+    let rotation = 0;
     if (gameMode === 5 && paddle.angle !== undefined) {
-      ctx.save();
-      ctx.translate(drawX, drawY);
-      ctx.rotate(paddle.angle);
+      rotation = paddle.angle;
+    } else {
+      // Standard rotations for each player position
+      switch(playerNum) {
+        case 1: rotation = 0; break;        // Bottom - upward facing (0°)
+        case 2: rotation = -Math.PI/2; break; // Right - left facing (-90°)
+        case 3: rotation = Math.PI; break;    // Top - downward facing (180°)
+        case 4: rotation = Math.PI/2; break;  // Left - right facing (+90°)
+        case 5: rotation = 0; break;          // Center - upward facing (0°)
+      }
+    }
+    
+    ctx.save();
+    ctx.translate(drawX, drawY);
+    ctx.rotate(rotation);
+    
+    // Draw plate image if loaded, otherwise fallback to rectangle
+    if (plateImageLoaded) {
+      // Apply player color tint (except for P1 which keeps original)
+      if (playerNum !== 1) {
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = gameMode === 5 ? '#ffd700' : playerColors[playerNum];
+        ctx.fillRect(-paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
+        ctx.globalCompositeOperation = 'multiply';
+      }
+      
+      // Draw the plate image
+      ctx.drawImage(plateImage, -paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
+      
+      // Reset composite operation and alpha
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+      
+      // Add glow effect for powered-up paddle
+      if (gameState.activePowerUp && gameState.activePowerUp.player === playerNum) {
+        ctx.strokeStyle = playerColors[playerNum];
+        ctx.lineWidth = 3;
+        ctx.shadowColor = playerColors[playerNum];
+        ctx.shadowBlur = 15;
+        ctx.strokeRect(-paddle.w/2 - 5, -paddle.h/2 - 5, paddle.w + 10, paddle.h + 10);
+        ctx.shadowBlur = 0;
+      }
+      
+      // Add golden glow for pentagon paddles
+      if (gameMode === 5) {
+        ctx.strokeStyle = '#ffd700';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(-paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
+      }
+    } else {
+      // Fallback to regular rectangle
+      ctx.fillStyle = gameMode === 5 ? '#ffd700' : playerColors[playerNum];
       ctx.fillRect(-paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
       
       // Add golden glow for pentagon paddles
-      ctx.strokeStyle = '#ffd700';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(-paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
-      
-      ctx.restore();
-      return; // Skip normal paddle drawing
+      if (gameMode === 5) {
+        ctx.strokeStyle = '#ffd700';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(-paddle.w/2, -paddle.h/2, paddle.w, paddle.h);
+      }
     }
     
-    // Draw split paddle or normal paddle
+    ctx.restore();
+    
+    // Skip the split paddle drawing below if we've already drawn
+    if (gameMode === 5 && paddle.angle !== undefined) {
+      return;
+    }
+    
+    // Draw split paddle if needed (only for non-pentagon mode as it's already handled above)
     if (paddle.split && paddle.gapSize > 0) {
-      // Draw two parts with gap
+      // For split paddles, we need to handle them specially
+      ctx.save();
+      ctx.translate(drawX, drawY);
+      ctx.rotate(rotation);
+      
       if (paddle.h > paddle.w) {
         // Vertical paddle split
         const gapHalf = paddle.gapSize / 2;
-        // Top part
-        ctx.fillRect(
-          drawX - paddle.w/2,
-          drawY - paddle.h/2,
-          paddle.w,
-          (paddle.h/2) - gapHalf
-        );
-        // Bottom part
-        ctx.fillRect(
-          drawX - paddle.w/2,
-          drawY + gapHalf,
-          paddle.w,
-          (paddle.h/2) - gapHalf
-        );
+        // Draw two plate parts
+        if (plateImageLoaded) {
+          // Top part
+          ctx.drawImage(plateImage, 
+            0, 0, plateImage.width, plateImage.height/2 - 10,
+            -paddle.w/2, -paddle.h/2, paddle.w, (paddle.h/2) - gapHalf
+          );
+          // Bottom part
+          ctx.drawImage(plateImage,
+            0, plateImage.height/2 + 10, plateImage.width, plateImage.height/2 - 10,
+            -paddle.w/2, gapHalf, paddle.w, (paddle.h/2) - gapHalf
+          );
+        } else {
+          // Fallback rectangles
+          ctx.fillStyle = playerColors[playerNum];
+          ctx.fillRect(-paddle.w/2, -paddle.h/2, paddle.w, (paddle.h/2) - gapHalf);
+          ctx.fillRect(-paddle.w/2, gapHalf, paddle.w, (paddle.h/2) - gapHalf);
+        }
       } else {
         // Horizontal paddle split
         const gapHalf = paddle.gapSize / 2;
-        // Left part
-        ctx.fillRect(
-          drawX - paddle.w/2,
-          drawY - paddle.h/2,
-          (paddle.w/2) - gapHalf,
-          paddle.h
-        );
-        // Right part
-        ctx.fillRect(
-          drawX + gapHalf,
-          drawY - paddle.h/2,
-          (paddle.w/2) - gapHalf,
-          paddle.h
-        );
+        if (plateImageLoaded) {
+          // Left part
+          ctx.drawImage(plateImage,
+            0, 0, plateImage.width/2 - 10, plateImage.height,
+            -paddle.w/2, -paddle.h/2, (paddle.w/2) - gapHalf, paddle.h
+          );
+          // Right part
+          ctx.drawImage(plateImage,
+            plateImage.width/2 + 10, 0, plateImage.width/2 - 10, plateImage.height,
+            gapHalf, -paddle.h/2, (paddle.w/2) - gapHalf, paddle.h
+          );
+        } else {
+          // Fallback rectangles
+          ctx.fillStyle = playerColors[playerNum];
+          ctx.fillRect(-paddle.w/2, -paddle.h/2, (paddle.w/2) - gapHalf, paddle.h);
+          ctx.fillRect(gapHalf, -paddle.h/2, (paddle.w/2) - gapHalf, paddle.h);
+        }
       }
-    } else {
-      // Draw normal paddle
-      ctx.fillRect(
-        drawX - paddle.w/2, 
-        drawY - paddle.h/2, 
-        paddle.w, 
-        paddle.h
-      );
-    }
-    
-    // Add glow effect for powered-up paddle
-    if (gameState.activePowerUp && gameState.activePowerUp.player === playerNum) {
-      ctx.strokeStyle = playerColors[playerNum];
-      ctx.lineWidth = 3;
-      ctx.strokeRect(
-        drawX - paddle.w/2 - 5, 
-        drawY - paddle.h/2 - 5, 
-        paddle.w + 10, 
-        paddle.h + 10
-      );
+      
+      ctx.restore();
+      
+      // Add glow effect for powered-up paddle
+      if (gameState.activePowerUp && gameState.activePowerUp.player === playerNum) {
+        ctx.strokeStyle = playerColors[playerNum];
+        ctx.lineWidth = 3;
+        ctx.shadowColor = playerColors[playerNum];
+        ctx.shadowBlur = 15;
+        ctx.strokeRect(
+          drawX - paddle.w/2 - 5, 
+          drawY - paddle.h/2 - 5, 
+          paddle.w + 10, 
+          paddle.h + 10
+        );
+        ctx.shadowBlur = 0;
+      }
     }
   });
 }
@@ -1023,24 +1136,55 @@ function drawBall() {
   if (!gameState.ball) return;
   
   const ball = gameState.ball;
+  const ballSize = 20; // Size of the kidney bean ball
   
   // Special effects for different power-ups
   if (gameState.butterflyActive) {
     // Draw butterfly wings
     ctx.fillStyle = 'rgba(255, 192, 203, 0.6)';
     ctx.beginPath();
-    ctx.ellipse(ball.x - 8, ball.y - 3, 6, 3, Math.PI / 6, 0, Math.PI * 2);
-    ctx.ellipse(ball.x + 8, ball.y - 3, 6, 3, -Math.PI / 6, 0, Math.PI * 2);
+    ctx.ellipse(ball.x - 12, ball.y - 3, 8, 4, Math.PI / 6, 0, Math.PI * 2);
+    ctx.ellipse(ball.x + 12, ball.y - 3, 8, 4, -Math.PI / 6, 0, Math.PI * 2);
     ctx.fill();
   }
   
   if (gameState.ballTantrumActive && gameState.ballTantrumStage === 'angry') {
-    // Angry ball - red and shaking
-    ctx.fillStyle = '#ff0000';
+    // Angry ball - red kidney bean shaking
     const shake = (Math.random() - 0.5) * 4;
-    ctx.beginPath();
-    ctx.arc(ball.x + shake, ball.y + shake, 12, 0, Math.PI * 2);
-    ctx.fill();
+    
+    if (ballImageLoaded) {
+      ctx.save();
+      ctx.translate(ball.x + shake, ball.y + shake);
+      
+      // Apply rotation even during tantrum
+      if (ball.rotation !== undefined) {
+        ctx.rotate(ball.rotation);
+      }
+      
+      // Apply red tint filter
+      ctx.filter = 'hue-rotate(200deg) saturate(2) brightness(0.8)';
+      ctx.drawImage(ballImage, -ballSize/2, -ballSize/2, ballSize, ballSize);
+      ctx.filter = 'none';
+      ctx.restore();
+    } else {
+      // Fallback angry kidney bean shape
+      ctx.save();
+      ctx.translate(ball.x + shake, ball.y + shake);
+      if (ball.rotation !== undefined) {
+        ctx.rotate(ball.rotation);
+      }
+      ctx.fillStyle = '#ff0000';
+      ctx.beginPath();
+      // Draw kidney bean shape
+      ctx.moveTo(-10, -4);
+      ctx.bezierCurveTo(-14, -10, -14, 10, -10, 4);
+      ctx.bezierCurveTo(-4, 10, 4, 10, 10, 4);
+      ctx.bezierCurveTo(14, 1, 14, -1, 10, -4);
+      ctx.bezierCurveTo(4, -10, -4, -10, -10, -4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
     
     // Add angry face
     ctx.fillStyle = '#ffffff';
@@ -1050,36 +1194,89 @@ function drawBall() {
     return;
   }
   
-  if (gameState.sleepyTimeActive) {
-    // Sleepy ball - darker and with ZZZ
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2);
-    ctx.fill();
+  // Draw the kidney bean ball
+  if (ballImageLoaded) {
+    ctx.save();
+    ctx.translate(ball.x, ball.y);
     
-    // Add ZZZ
+    // Apply rotation
+    if (ball.rotation !== undefined) {
+      ctx.rotate(ball.rotation);
+    }
+    
+    // Apply special effects
+    if (gameState.sleepyTimeActive) {
+      ctx.globalAlpha = 0.6; // Make it more transparent when sleepy
+      ctx.filter = 'brightness(0.7) saturate(0.5)'; // Darker and desaturated
+    } else if (gameState.drunkBallActive) {
+      // Add rainbow hue rotation for drunk effect
+      const hue = (Date.now() * 0.1) % 360;
+      ctx.filter = `hue-rotate(${hue}deg) saturate(1.5) brightness(1.2)`;
+    }
+    
+    ctx.drawImage(ballImage, -ballSize/2, -ballSize/2, ballSize, ballSize);
+    
+    ctx.filter = 'none';
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  } else {
+    // Fallback to kidney bean shape if image hasn't loaded
+    ctx.save();
+    ctx.translate(ball.x, ball.y);
+    if (ball.rotation !== undefined) {
+      ctx.rotate(ball.rotation);
+    }
+    ctx.fillStyle = gameState.sleepyTimeActive ? 'rgba(196, 91, 92, 0.6)' : '#C45B5C';
+    ctx.beginPath();
+    // Draw kidney bean shape
+    ctx.moveTo(-10, -4);
+    ctx.bezierCurveTo(-14, -10, -14, 10, -10, 4);
+    ctx.bezierCurveTo(-4, 10, 4, 10, 10, 4);
+    ctx.bezierCurveTo(14, 1, 14, -1, 10, -4);
+    ctx.bezierCurveTo(4, -10, -4, -10, -10, -4);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+  
+  // Add ZZZ for sleepy time
+  if (gameState.sleepyTimeActive) {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     ctx.font = '12px Arial';
     ctx.textAlign = 'center';
     ctx.fillText('ZZZ', ball.x + 15, ball.y - 15);
-  } else {
-    // Normal ball
-    ctx.fillStyle = '#ffffff';
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2);
-    ctx.fill();
   }
   
   // Add glow effect
   if (gameState.drunkBallActive) {
-    // Rainbow trail for drunk ball
+    // Rainbow glow for drunk ball - kidney bean shaped
+    ctx.save();
+    ctx.translate(ball.x, ball.y);
+    if (ball.rotation !== undefined) {
+      ctx.rotate(ball.rotation);
+    }
     ctx.strokeStyle = `hsl(${(Date.now() * 0.1) % 360}, 70%, 60%)`;
     ctx.lineWidth = 3;
-  } else {
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.beginPath();
+    // Draw kidney bean-shaped glow
+    ctx.ellipse(0, 0, 14, 12, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  } else if (!gameState.sleepyTimeActive) {
+    // Normal glow - kidney bean shaped
+    ctx.save();
+    ctx.translate(ball.x, ball.y);
+    if (ball.rotation !== undefined) {
+      ctx.rotate(ball.rotation);
+    }
+    ctx.strokeStyle = 'rgba(196, 91, 92, 0.5)';
     ctx.lineWidth = 2;
+    ctx.beginPath();
+    // Draw kidney bean-shaped glow
+    ctx.ellipse(0, 0, 14, 12, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
   }
-  ctx.stroke();
 }
 
 function drawPowerUp() {
@@ -1262,10 +1459,43 @@ function drawEchoBallTrail() {
   
   gameState.echoBallTrail.forEach((trail, index) => {
     const opacity = 0.3 * (index / gameState.echoBallTrail.length);
-    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-    ctx.beginPath();
-    ctx.arc(trail.x, trail.y, 8, 0, Math.PI * 2);
-    ctx.fill();
+    const trailSize = 16;
+    
+    if (ballImageLoaded) {
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      ctx.translate(trail.x, trail.y);
+      
+      // Apply rotation with a slight delay effect
+      if (trail.rotation !== undefined) {
+        ctx.rotate(trail.rotation);
+      } else if (gameState.ball && gameState.ball.rotation) {
+        // Use slightly delayed rotation for trail effect
+        const rotationDelay = index * 0.1;
+        ctx.rotate(gameState.ball.rotation - rotationDelay);
+      }
+      
+      ctx.drawImage(ballImage, -trailSize/2, -trailSize/2, trailSize, trailSize);
+      ctx.restore();
+    } else {
+      // Fallback to kidney bean shape
+      ctx.save();
+      ctx.translate(trail.x, trail.y);
+      if (trail.rotation !== undefined) {
+        ctx.rotate(trail.rotation);
+      }
+      ctx.fillStyle = `rgba(196, 91, 92, ${opacity})`;
+      ctx.beginPath();
+      // Draw small kidney bean shape
+      ctx.moveTo(-6, -3);
+      ctx.bezierCurveTo(-8, -6, -8, 6, -6, 3);
+      ctx.bezierCurveTo(-3, 6, 3, 6, 6, 3);
+      ctx.bezierCurveTo(8, 1, 8, -1, 6, -3);
+      ctx.bezierCurveTo(3, -6, -3, -6, -6, -3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
   });
 }
 
@@ -1273,15 +1503,52 @@ function drawExtraBalls() {
   if (!gameState.extraBalls) return;
   
   gameState.extraBalls.forEach(ball => {
-    ctx.fillStyle = '#ffffff';
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2);
-    ctx.fill();
+    const extraBallSize = 18;
+    
+    if (ballImageLoaded) {
+      ctx.save();
+      ctx.translate(ball.x, ball.y);
+      
+      // Apply rotation if available
+      if (ball.rotation !== undefined) {
+        ctx.rotate(ball.rotation);
+      }
+      
+      ctx.drawImage(ballImage, -extraBallSize/2, -extraBallSize/2, extraBallSize, extraBallSize);
+      ctx.restore();
+    } else {
+      // Fallback to kidney bean shape
+      ctx.save();
+      ctx.translate(ball.x, ball.y);
+      if (ball.rotation !== undefined) {
+        ctx.rotate(ball.rotation);
+      }
+      ctx.fillStyle = '#C45B5C';
+      ctx.beginPath();
+      // Draw small kidney bean shape
+      ctx.moveTo(-6, -3);
+      ctx.bezierCurveTo(-8, -6, -8, 6, -6, 3);
+      ctx.bezierCurveTo(-3, 6, 3, 6, 6, 3);
+      ctx.bezierCurveTo(8, 1, 8, -1, 6, -3);
+      ctx.bezierCurveTo(3, -6, -3, -6, -6, -3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
     
     // Add glow
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.save();
+    ctx.translate(ball.x, ball.y);
+    if (ball.rotation !== undefined) {
+      ctx.rotate(ball.rotation);
+    }
+    ctx.strokeStyle = 'rgba(196, 91, 92, 0.5)';
     ctx.lineWidth = 1;
+    ctx.beginPath();
+    // Draw kidney bean-shaped glow
+    ctx.ellipse(0, 0, 12, 10, 0, 0, Math.PI * 2);
     ctx.stroke();
+    ctx.restore();
   });
 }
 

@@ -57,7 +57,7 @@ socket.on('startGame', ({ mode: serverMode }) => {
 });
 
 
-// --- Simple QuadPong game implementation ---
+// --- Simple BeanPong game implementation ---
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');

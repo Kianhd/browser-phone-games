@@ -356,7 +356,7 @@ function handleHorizontalMouse(e, touchArea, indicator) {
   updatePaddleIndicator(indicator, currentPosition, width, false);
 }
 
-// Optimized paddle indicator update function
+// BeanPong paddle indicator update function
 function updatePaddleIndicator(indicator, position, containerSize, isVertical) {
   const indicatorSize = 100;
   
@@ -419,9 +419,9 @@ socket.on('roomUpdate', (data) => {
   
   if (canStart) {
     if (readyCount === 5) {
-      startGameBtnController.textContent = '🌟 START PENTAGON MODE';
+      startGameBtnController.textContent = '🌟 START BEAN PENTAGON';
     } else {
-      startGameBtnController.textContent = `START ${readyCount} PLAYER GAME`;
+      startGameBtnController.textContent = `START ${readyCount} PLAYER BEANPONG`;
     }
   } else {
     startGameBtnController.textContent = 'WAITING FOR PLAYERS...';

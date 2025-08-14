@@ -1,4 +1,4 @@
-// Premium Controller with Smooth Continuous Input
+// BeanPong Controller with Smooth Continuous Input
 const socket = io();
 
 // DOM Elements

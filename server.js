@@ -19,7 +19,7 @@ function makeRoomCode() {
   return Math.random().toString(36).slice(2, 8).toUpperCase();
 }
 
-// Optimized Game Room Class
+// BeanPong Game Room Class
 class GameRoom {
   constructor(code, ownerSocket) {
     this.code = code;
@@ -32,7 +32,7 @@ class GameRoom {
       running: false,
       mode: 2,
       paddles: {},
-      ball: { x: 640, y: 360, vx: 0, vy: 0, speed: 6 },
+      ball: { x: 640, y: 360, vx: 0, vy: 0, speed: 6, rotation: 0, angularVelocity: 0 },
       scores: [0, 0, 0, 0],
       powerUp: null,
       powerUpTimer: 0,
@@ -110,7 +110,9 @@ class GameRoom {
       y: centerY,
       vx: 0,
       vy: 0,
-      speed: 6
+      speed: 6,
+      rotation: this.gameState.ball ? this.gameState.ball.rotation : 0, // Preserve rotation if exists
+      angularVelocity: 0 // Stop spinning during countdown
     };
     this.gameState.lastHitPlayer = null;
   }
@@ -176,7 +178,9 @@ class GameRoom {
       y: centerY,
       vx: Math.cos(angle) * baseSpeed,
       vy: Math.sin(angle) * baseSpeed,
-      speed: baseSpeed
+      speed: baseSpeed,
+      rotation: Math.random() * Math.PI * 2, // Random starting rotation
+      angularVelocity: (Math.random() - 0.5) * 0.2 // Small initial spin
     };
     this.gameState.lastHitPlayer = null;
   }
@@ -438,6 +442,29 @@ class GameRoom {
     ball.x += finalVx;
     ball.y += finalVy;
     
+    // Update ball rotation based on velocity
+    const speed = Math.sqrt(finalVx * finalVx + finalVy * finalVy);
+    if (speed > 0) {
+      // Calculate angular velocity based on linear velocity
+      // Higher speed = faster rotation
+      const rotationFactor = 0.1; // Adjust this to control rotation speed
+      ball.angularVelocity = speed * rotationFactor;
+      
+      // Apply rotation
+      ball.rotation += ball.angularVelocity;
+      
+      // Keep rotation within 0-2π range
+      if (ball.rotation > Math.PI * 2) {
+        ball.rotation -= Math.PI * 2;
+      } else if (ball.rotation < 0) {
+        ball.rotation += Math.PI * 2;
+      }
+    } else {
+      // Gradually slow down rotation when ball is stationary
+      ball.angularVelocity *= 0.95;
+      ball.rotation += ball.angularVelocity;
+    }
+    
     // Update echo ball trail
     if (this.gameState.echoBallActive) {
       this.gameState.echoBallTrail.push({
@@ -551,6 +578,8 @@ class GameRoom {
         this.handleScore();
       } else {
         ball.vy *= -1;
+        // Add wall bounce rotation effect
+        this.addWallBounceRotation(ball, 'horizontal');
       }
     }
     
@@ -562,6 +591,8 @@ class GameRoom {
         this.handleScore();
       } else {
         ball.vy *= -1;
+        // Add wall bounce rotation effect
+        this.addWallBounceRotation(ball, 'horizontal');
       }
     }
   }
@@ -672,6 +703,17 @@ class GameRoom {
       ball.vy = (playerNum == 3 ? 1 : -1) * ball.speed * Math.cos(bounceAngle);
       ball.vx = ball.speed * -Math.sin(bounceAngle);
     }
+    
+    // Add rotational effects on paddle hit
+    const impactStrength = ball.speed * 0.8;
+    const spinDirection = relativeIntersectY > 0 ? -1 : 1; // Spin direction based on hit location
+    
+    // Add spin based on where the ball hit the paddle
+    ball.angularVelocity += spinDirection * impactStrength * 0.15;
+    
+    // Limit maximum angular velocity
+    const maxAngularVel = 0.8;
+    ball.angularVelocity = Math.max(-maxAngularVel, Math.min(maxAngularVel, ball.angularVelocity));
   }
 
   collectPowerUp(playerNum) {
@@ -799,6 +841,20 @@ class GameRoom {
     io.to(this.code).emit('ballExplosion');
   }
   
+  addWallBounceRotation(ball, wallType) {
+    // Add rotation effect when ball bounces off walls
+    const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+    const rotationBoost = speed * 0.08;
+    
+    // Add some randomness to make it look more natural
+    const randomFactor = (Math.random() - 0.5) * 0.3;
+    ball.angularVelocity += (rotationBoost + randomFactor) * (Math.random() > 0.5 ? 1 : -1);
+    
+    // Limit maximum angular velocity
+    const maxAngularVel = 0.8;
+    ball.angularVelocity = Math.max(-maxAngularVel, Math.min(maxAngularVel, ball.angularVelocity));
+  }
+
   updatePowerUpEffects() {
     // Handle paddle hiccups
     if (this.gameState.paddleHiccupsActive && this.gameState.paddleHiccupsPlayer) {
@@ -1001,4 +1057,4 @@ function getRoomState(room) {
   };
 }
 
-http.listen(PORT, () => console.log('Optimized server running on', PORT));
+http.listen(PORT, () => console.log('BeanPong server running on', PORT));

@@ -1,4 +1,4 @@
-/* Premium Design System - iOS Liquid Glass Inspired */
+/* BeanPong Design System - iOS Liquid Glass Inspired */
 :root {
   --primary-dark: #0a0a0f;
   --secondary-dark: #16161f;
@@ -18,6 +18,15 @@
   
   --animation-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* BeanPong Brand Colors - Organic & Premium */
+  --bean-primary: #8B4513;     /* Rich coffee bean brown */
+  --bean-light: #D2B48C;       /* Light sandy bean */
+  --bean-accent: #CD853F;      /* Peru bean accent */
+  --bean-green: #6B8E23;       /* Olive drab green bean */
+  --bean-cream: #F5E6D3;       /* Cream bean highlight */
+  --bean-shadow: rgba(139, 69, 19, 0.3);
+  --bean-glow: rgba(205, 133, 63, 0.6);
 }
 
 * {
@@ -115,34 +124,109 @@ html, body {
 }
 
 
-/* Game Title */
+/* BeanPong Game Title - Premium Bean-Inspired Design */
 .game-title {
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   position: relative;
-}
-
-.title-glow {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 4px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  opacity: 0.7;
+  padding: 20px 0;
 }
 
 .title-main {
   display: block;
-  font-size: 32px;
-  font-weight: 700;
-  letter-spacing: -1px;
-  background: linear-gradient(135deg, var(--pure-white) 0%, rgba(255, 255, 255, 0.8) 100%);
+  font-size: clamp(32px, 8vw, 48px);
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, 
+    var(--bean-cream) 0%, 
+    var(--bean-light) 20%, 
+    var(--bean-accent) 60%, 
+    var(--bean-primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 20px var(--bean-glow));
+  animation: beanGlow 4s ease-in-out infinite alternate;
+  position: relative;
   margin-bottom: 4px;
+}
+
+.bean-accent {
+  background: linear-gradient(135deg, 
+    var(--bean-accent) 0%, 
+    var(--bean-green) 50%, 
+    var(--bean-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: beanPulse 2s ease-in-out infinite;
+  display: inline-block;
+}
+
+/* Bean-inspired glow animation */
+@keyframes beanGlow {
+  0% {
+    filter: drop-shadow(0 0 10px var(--bean-glow)) brightness(1) saturate(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 25px var(--bean-glow)) brightness(1.1) saturate(1.3);
+  }
+  100% {
+    filter: drop-shadow(0 0 15px var(--bean-glow)) brightness(1.05) saturate(1.1);
+  }
+}
+
+@keyframes beanPulse {
+  0%, 100% { 
+    transform: scale(1);
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  50% { 
+    transform: scale(1.03);
+    filter: hue-rotate(15deg) brightness(1.1);
+  }
+}
+
+/* Add organic bean decorative elements */
+.game-title::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 15%;
+  width: 18px;
+  height: 12px;
+  background: radial-gradient(ellipse 60% 40% at 30% 50%, 
+    var(--bean-accent), 
+    var(--bean-primary));
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity: 0.7;
+  animation: floatBean 3s ease-in-out infinite;
+}
+
+.game-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 20%;
+  width: 14px;
+  height: 9px;
+  background: radial-gradient(ellipse 60% 40% at 70% 50%, 
+    var(--bean-light), 
+    var(--bean-accent));
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity: 0.6;
+  animation: floatBean 4s ease-in-out infinite reverse;
+}
+
+@keyframes floatBean {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% { 
+    transform: translateY(-3px) rotate(8deg);
+    opacity: 0.8;
+  }
 }
 
 
@@ -233,8 +317,8 @@ html, body {
 .mode-label {
   display: block;
   font-size: 12px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+  color: var(--bean-light);
   margin-bottom: 16px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
@@ -242,39 +326,58 @@ html, body {
 
 .mode-buttons {
   display: flex;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 4px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 8px;
+  background: linear-gradient(135deg, 
+    rgba(139, 69, 19, 0.08) 0%,
+    rgba(205, 133, 63, 0.05) 50%,
+    rgba(139, 69, 19, 0.08) 100%);
+  padding: 6px;
+  border-radius: 16px;
+  border: 1px solid rgba(205, 133, 63, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .mode-btn, .score-btn {
   flex: 1;
-  padding: 8px 16px;
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.6);
-  font-weight: 500;
-  font-size: 13px;
-  border-radius: 8px;
+  padding: 10px 16px;
+  border: 1px solid rgba(205, 133, 63, 0.3);
+  background: linear-gradient(135deg, 
+    rgba(139, 69, 19, 0.05) 0%,
+    rgba(205, 133, 63, 0.03) 100%);
+  color: var(--bean-light);
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s var(--animation-smooth);
+  transition: all 0.3s var(--animation-bounce);
+  backdrop-filter: blur(10px);
 }
 
 .mode-btn:hover, .score-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.8);
+  background: linear-gradient(135deg, 
+    rgba(205, 133, 63, 0.12) 0%,
+    rgba(139, 69, 19, 0.08) 100%);
+  color: var(--bean-cream);
+  border-color: var(--bean-accent);
+  transform: translateY(-1px);
 }
 
 .mode-btn.active, .score-btn.active {
-  background: rgba(255, 59, 59, 0.9);
-  color: var(--pure-white);
-  box-shadow: 0 2px 8px rgba(255, 59, 59, 0.3);
+  background: linear-gradient(135deg, 
+    var(--bean-accent) 0%,
+    var(--bean-primary) 100%);
+  color: var(--bean-cream);
+  border-color: var(--bean-primary);
+  box-shadow: 
+    0 0 15px var(--bean-glow);
+  font-weight: 700;
 }
 
 .mode-btn.active:hover, .score-btn.active:hover {
-  background: rgba(255, 59, 59, 1);
+  background: linear-gradient(135deg, 
+    var(--bean-light) 0%,
+    var(--bean-accent) 100%);
+  transform: translateY(-2px) scale(1.02);
 }
 
 /* Player Count Display */
@@ -288,14 +391,59 @@ html, body {
 .player-count {
   font-size: 28px;
   font-weight: 700;
-  color: var(--accent-red);
-  margin: 6px 0;
+  background: linear-gradient(135deg, 
+    var(--bean-cream) 0%, 
+    var(--bean-accent) 50%, 
+    var(--bean-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 8px 0;
   text-align: center;
-  background: rgba(255, 59, 59, 0.1);
-  border: 1px solid rgba(255, 59, 59, 0.2);
-  border-radius: 10px;
-  padding: 10px 16px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  border: 1px solid var(--bean-glow);
+  position: relative;
   backdrop-filter: blur(10px);
+  box-shadow: 
+    inset 0 1px 0 rgba(245, 230, 211, 0.1);
+}
+
+.player-count::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(139, 69, 19, 0.08) 0%,
+    rgba(205, 133, 63, 0.05) 50%,
+    rgba(139, 69, 19, 0.08) 100%);
+  border-radius: 14px;
+  z-index: -1;
+}
+
+.player-count.pentagon-mode {
+  background: linear-gradient(135deg, 
+    #ffd700 0%, 
+    #ffed4e 50%, 
+    #ffb347 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  border-color: rgba(255, 215, 0, 0.4);
+  box-shadow: 
+    0 4px 20px rgba(255, 215, 0, 0.2),
+    inset 0 1px 0 rgba(255, 237, 78, 0.3);
+  animation: pentagonGlow 2s ease-in-out infinite alternate;
+}
+
+.player-count.pentagon-mode::before {
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 0.15) 0%,
+    rgba(255, 237, 78, 0.08) 50%,
+    rgba(255, 215, 0, 0.15) 100%);
 }
 
 .auto-mode-text {
@@ -327,26 +475,38 @@ html, body {
   transform: scale(1.02);
 }
 
-/* Action Buttons */
+/* BeanPong Action Buttons - Bean-Inspired Design */
 .action-btn {
   position: relative;
   width: 100%;
-  padding: 14px 28px;
-  border: none;
-  border-radius: 12px;
+  padding: 16px 28px;
+  border: 1px solid var(--bean-glow);
+  border-radius: 18px;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.2s var(--animation-smooth);
+  transition: all 0.3s var(--animation-bounce);
+  background: linear-gradient(135deg, 
+    rgba(139, 69, 19, 0.12) 0%,
+    rgba(205, 133, 63, 0.08) 50%,
+    rgba(139, 69, 19, 0.12) 100%);
+  color: var(--bean-cream);
+  box-shadow: 
+    inset 0 1px 0 rgba(245, 230, 211, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .create-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(135deg, 
+    rgba(139, 69, 19, 0.15) 0%,
+    rgba(205, 133, 63, 0.12) 50%,
+    rgba(139, 69, 19, 0.15) 100%);
+  border: 1px solid var(--bean-accent);
+  color: var(--bean-cream);
   margin: 0 auto 12px auto;
   width: 250px !important;
   min-width: 250px !important;
@@ -356,51 +516,137 @@ html, body {
   text-overflow: ellipsis;
   display: block;
   flex-shrink: 0;
+  position: relative;
+}
+
+.create-btn::before {
+  content: '🌱';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  opacity: 0.7;
 }
 
 .create-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, 
+    rgba(205, 133, 63, 0.2) 0%,
+    rgba(139, 69, 19, 0.18) 50%,
+    rgba(205, 133, 63, 0.2) 100%);
+  border-color: var(--bean-light);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 
+    0 0 15px var(--bean-glow);
+  color: var(--pure-white);
 }
 
 .start-btn {
-  background: linear-gradient(135deg, #ff3b3b 0%, #ff5555 100%);
-  color: var(--pure-white);
-  box-shadow: 0 4px 16px rgba(255, 59, 59, 0.25);
+  background: linear-gradient(135deg, 
+    var(--bean-accent) 0%, 
+    var(--bean-primary) 50%,
+    var(--bean-accent) 100%);
+  color: var(--bean-cream);
+  border: 1px solid var(--bean-primary);
+  box-shadow: 
+    0 0 10px var(--bean-glow),
+    inset 0 1px 0 rgba(245, 230, 211, 0.3);
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+}
+
+.start-btn::after {
+  content: '🔥';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  opacity: 0.8;
+  animation: flicker 2s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0.8; transform: translateY(-50%) scale(1); }
+  50% { opacity: 1; transform: translateY(-50%) scale(1.1); }
 }
 
 .start-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #ff5555 0%, #ff6666 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(255, 59, 59, 0.35);
+  background: linear-gradient(135deg, 
+    var(--bean-light) 0%, 
+    var(--bean-accent) 50%,
+    var(--bean-light) 100%);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 0 25px var(--bean-glow),
+    inset 0 1px 0 rgba(245, 230, 211, 0.4);
+  color: var(--pure-white);
 }
 
 .start-btn:disabled {
-  opacity: 0.3;
+  opacity: 0.4;
   cursor: not-allowed;
   transform: none;
+  filter: grayscale(0.6);
 }
 
 
-/* Players Grid */
+/* BeanPong Players Grid - Organic Bean Garden Theme */
 .players-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 12px;
-  margin-bottom: 12px;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
+  gap: 12px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, 
+    rgba(139, 69, 19, 0.08) 0%,
+    rgba(107, 142, 35, 0.05) 50%,
+    rgba(139, 69, 19, 0.08) 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(205, 133, 63, 0.2);
+  transition: all 0.4s var(--animation-bounce);
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.players-grid::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    var(--bean-accent), 
+    var(--bean-green), 
+    var(--bean-accent));
+  border-radius: 16px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
 }
 
 .players-grid.pentagon-mode {
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.05) 100%);
-  border-color: rgba(255, 215, 0, 0.3);
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 0.15) 0%, 
+    rgba(107, 142, 35, 0.1) 50%,
+    rgba(255, 215, 0, 0.15) 100%);
+  border-color: rgba(255, 215, 0, 0.4);
+  box-shadow: 
+    0 0 25px rgba(255, 215, 0, 0.3),
+    0 0 50px rgba(255, 215, 0, 0.1);
+  animation: pentagonGlow 3s ease-in-out infinite alternate;
+}
+
+.players-grid.pentagon-mode::before {
+  opacity: 0.3;
+}
+
+@keyframes pentagonGlow {
+  0% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.3), 0 0 50px rgba(255, 215, 0, 0.1); }
+  100% { box-shadow: 0 0 35px rgba(255, 215, 0, 0.4), 0 0 70px rgba(255, 215, 0, 0.15); }
 }
 
 .players-grid.five-players {
@@ -409,10 +655,13 @@ html, body {
 
 .player-card {
   position: relative;
-  padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, 
+    rgba(139, 69, 19, 0.06) 0%,
+    rgba(205, 133, 63, 0.04) 50%,
+    rgba(139, 69, 19, 0.06) 100%);
+  border: 1px solid var(--bean-glow);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -421,34 +670,130 @@ html, body {
 }
 
 .player-card.connected {
-  background: linear-gradient(135deg, rgba(255, 59, 59, 0.1) 0%, transparent 100%);
-  border-color: var(--accent-red);
+  background: linear-gradient(135deg, 
+    rgba(205, 133, 63, 0.12) 0%, 
+    rgba(139, 69, 19, 0.08) 50%,
+    rgba(205, 133, 63, 0.12) 100%);
+  border-color: var(--bean-accent);
+  box-shadow: 0 0 12px var(--bean-glow);
+  transform: scale(1.02);
 }
 
 .player-card.ready {
-  background: linear-gradient(135deg, rgba(0, 255, 0, 0.1) 0%, transparent 100%);
-  border-color: #00ff00;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+  background: linear-gradient(135deg, 
+    rgba(107, 142, 35, 0.15) 0%, 
+    rgba(205, 133, 63, 0.1) 50%,
+    rgba(107, 142, 35, 0.15) 100%);
+  border-color: var(--bean-green);
+  box-shadow: 
+    0 0 20px rgba(107, 142, 35, 0.4),
+    0 0 40px rgba(107, 142, 35, 0.2);
+  transform: scale(1.03);
+  animation: readyGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes readyGlow {
+  0% { 
+    box-shadow: 
+      0 0 20px rgba(107, 142, 35, 0.4),
+      0 0 40px rgba(107, 142, 35, 0.2);
+  }
+  100% { 
+    box-shadow: 
+      0 0 25px rgba(107, 142, 35, 0.5),
+      0 0 50px rgba(107, 142, 35, 0.3);
+  }
 }
 
 .player-indicator {
+  width: 30px;
+  height: 20px;
+  border-radius: 4px;
+  background-image: url('/Plate.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  filter: grayscale(0.8) brightness(0.7);
+  transition: all 0.4s var(--animation-bounce);
+  transform: rotate(0deg);
+  position: relative;
+}
+
+/* Bean on top of plate when connected */
+.player-indicator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  transition: all 0.3s;
+  height: 5px;
+  background: radial-gradient(ellipse 60% 40% at 30% 50%, 
+    var(--bean-accent), 
+    var(--bean-primary));
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: all 0.4s var(--animation-bounce);
 }
 
 .player-card.connected .player-indicator {
-  background: var(--accent-red);
-  box-shadow: 0 0 12px var(--accent-red-glow);
-  animation: pulse 2s infinite;
+  opacity: 0.8;
+  filter: grayscale(0) brightness(1);
+  transform: scale(1.05);
+  animation: plateGlow 3s ease-in-out infinite alternate;
+}
+
+.player-card.connected .player-indicator::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: beanWiggle 2s ease-in-out infinite;
+}
+
+@keyframes plateGlow {
+  0% { filter: grayscale(0) brightness(1) drop-shadow(0 0 5px var(--bean-glow)); }
+  100% { filter: grayscale(0) brightness(1.1) drop-shadow(0 0 10px var(--bean-glow)); }
+}
+
+@keyframes beanWiggle {
+  0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) scale(1.05) rotate(-2deg); }
+  75% { transform: translate(-50%, -50%) scale(1.05) rotate(2deg); }
 }
 
 .player-card.ready .player-indicator {
-  background: #00ff00;
-  box-shadow: 0 0 12px rgba(0, 255, 0, 0.6);
-  animation: readyPulse 1.5s infinite;
+  opacity: 1;
+  filter: grayscale(0) brightness(1.2) hue-rotate(15deg);
+  transform: scale(1.1);
+  animation: readyPlate 2s ease-in-out infinite alternate;
+}
+
+.player-card.ready .player-indicator::after {
+  opacity: 1;
+  background: radial-gradient(ellipse 60% 40% at 30% 50%, 
+    var(--bean-green), 
+    var(--bean-accent));
+  transform: translate(-50%, -50%) scale(1.1);
+  animation: readyBean 1.5s ease-in-out infinite;
+}
+
+@keyframes readyPlate {
+  0% { 
+    filter: grayscale(0) brightness(1.2) hue-rotate(15deg) drop-shadow(0 0 8px var(--bean-green)); 
+  }
+  100% { 
+    filter: grayscale(0) brightness(1.3) hue-rotate(15deg) drop-shadow(0 0 15px var(--bean-green)); 
+  }
+}
+
+@keyframes readyBean {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(1.1) rotate(0deg);
+    opacity: 1;
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.2) rotate(5deg);
+    opacity: 0.9;
+  }
 }
 
 /* Special styling for P5 card (easter egg) */
@@ -462,9 +807,69 @@ html, body {
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
 }
 
+/* Player-specific plate rotations */
+.player-card[data-player="1"] .player-indicator {
+  transform: rotate(0deg);
+}
+
+.player-card[data-player="2"] .player-indicator {
+  transform: rotate(-90deg);
+}
+
+.player-card[data-player="3"] .player-indicator {
+  transform: rotate(180deg);
+}
+
+.player-card[data-player="4"] .player-indicator {
+  transform: rotate(90deg);
+}
+
+.player-card[data-player="5"] .player-indicator {
+  transform: rotate(0deg);
+  filter: hue-rotate(40deg) brightness(1.1);
+}
+
+.player-card[data-player="5"].connected .player-indicator::after {
+  background: radial-gradient(ellipse 60% 40% at 30% 50%, 
+    #ffd700, 
+    var(--bean-accent));
+}
+
+.player-card[data-player="5"].ready .player-indicator {
+  filter: hue-rotate(40deg) brightness(1.3) drop-shadow(0 0 12px gold);
+  animation: pentagonPlate 2s ease-in-out infinite alternate;
+}
+
+.player-card[data-player="5"].ready .player-indicator::after {
+  background: radial-gradient(ellipse 60% 40% at 30% 50%, 
+    #ffd700, 
+    #ffed4e);
+  animation: goldenBean 1.8s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+@keyframes pentagonPlate {
+  0% { 
+    filter: hue-rotate(40deg) brightness(1.3) drop-shadow(0 0 12px gold); 
+  }
+  100% { 
+    filter: hue-rotate(40deg) brightness(1.4) drop-shadow(0 0 18px gold); 
+  }
+}
+
+@keyframes goldenBean {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(1.1) rotate(0deg);
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.25) rotate(8deg);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+  }
+}
+
 .player-card[data-player="5"] .player-label {
   color: #ffd700;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
   font-weight: 700;
 }
 
@@ -544,7 +949,7 @@ html, body {
   text-align: center;
 }
 
-.score-item.player1 { color: var(--accent-red); }
+.score-item.player1 { color: var(--bean-accent); }
 .score-item.player2 { color: var(--pure-white); }
 .score-item.player3 { color: #ffd700; }
 .score-item.player4 { color: #00bfff; }
@@ -605,14 +1010,14 @@ html, body {
 
 .room-input:focus {
   outline: none;
-  border-color: var(--accent-red);
+  border-color: var(--bean-accent);
   box-shadow: 0 0 20px rgba(255, 59, 59, 0.2);
 }
 
 .join-btn {
   position: relative;
   padding: 16px 32px;
-  background: var(--accent-red);
+  background: var(--bean-accent);
   border: none;
   border-radius: 12px;
   color: var(--pure-white);
@@ -666,7 +1071,7 @@ html, body {
 .player-badge {
   font-size: 18px;
   font-weight: 700;
-  color: var(--accent-red);
+  color: var(--bean-accent);
 }
 
 .connection-status {
@@ -753,7 +1158,7 @@ html, body {
 }
 
 .dpad-btn:active, .dpad-btn.active {
-  background: var(--accent-red);
+  background: var(--bean-accent);
   transform: scale(0.95) translateX(-50%);
   box-shadow: 0 0 20px rgba(255, 59, 59, 0.5);
 }
@@ -773,7 +1178,7 @@ html, body {
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-red-glow) 100%);
+  background: linear-gradient(135deg, var(--bean-accent) 0%, var(--bean-light) 100%);
   border: none;
   color: var(--pure-white);
   font-size: 20px;
@@ -905,5 +1310,68 @@ html, body {
   
   .title-main {
     font-size: 48px;
+  }
+}
+
+/* BeanPong Ambient Effects - Floating Bean Garden */
+.tv-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 8%;
+  left: 3%;
+  width: 10px;
+  height: 6px;
+  background: radial-gradient(ellipse, var(--bean-accent), var(--bean-primary));
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity: 0.15;
+  animation: floatAmbient1 20s ease-in-out infinite;
+  z-index: -1;
+}
+
+.tv-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 70%;
+  right: 8%;
+  width: 8px;
+  height: 5px;
+  background: radial-gradient(ellipse, var(--bean-light), var(--bean-accent));
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity: 0.12;
+  animation: floatAmbient2 25s ease-in-out infinite reverse;
+  z-index: -1;
+}
+
+@keyframes floatAmbient1 {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+    opacity: 0.15;
+  }
+  25% { 
+    transform: translateY(-35px) translateX(20px) rotate(90deg);
+    opacity: 0.25;
+  }
+  50% { 
+    transform: translateY(-20px) translateX(-15px) rotate(180deg);
+    opacity: 0.2;
+  }
+  75% { 
+    transform: translateY(-45px) translateX(25px) rotate(270deg);
+    opacity: 0.3;
+  }
+}
+
+@keyframes floatAmbient2 {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+    opacity: 0.12;
+  }
+  33% { 
+    transform: translateY(25px) translateX(-30px) rotate(120deg);
+    opacity: 0.2;
+  }
+  66% { 
+    transform: translateY(-12px) translateX(35px) rotate(240deg);
+    opacity: 0.16;
   }
 }

@@ -1,4 +1,4 @@
-/* Touch Controller Styles */
+/* BeanPong Touch Controller - Bean-Inspired Mobile Experience */\n:root {\n  /* BeanPong Brand Colors */\n  --bean-primary: #8B4513;\n  --bean-light: #D2B48C;\n  --bean-accent: #CD853F;\n  --bean-green: #6B8E23;\n  --bean-cream: #F5E6D3;\n  --bean-shadow: rgba(139, 69, 19, 0.3);\n  --bean-glow: rgba(205, 133, 63, 0.6);\n}
 * {
   margin: 0;
   padding: 0;
@@ -11,11 +11,17 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
-  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, 
+    #0a0a0f 0%, 
+    #8B4513 15%, 
+    #1a1a2e 50%,
+    #6B8E23 85%,
+    #0a0a0f 100%);
+  color: #F5E6D3;
   height: 100vh;
   overflow: hidden;
   touch-action: none;
+  position: relative;
 }
 
 .controller-container {
@@ -37,19 +43,33 @@ body {
   width: 100%;
   max-width: 400px;
   padding: 40px 30px;
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, 
+    rgba(139, 69, 19, 0.15) 0%,
+    rgba(205, 133, 63, 0.08) 50%,
+    rgba(139, 69, 19, 0.15) 100%);
   backdrop-filter: blur(20px);
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(205, 133, 63, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(139, 69, 19, 0.2),
+    0 0 20px rgba(205, 133, 63, 0.1);
   text-align: center;
+  position: relative;
 }
 
 .join-card h1 {
   font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, 
+    #F5E6D3 0%, 
+    #D2B48C 50%, 
+    #CD853F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 30px;
-  color: #ff3b3b;
+  position: relative;
 }
 
 .join-form {
@@ -75,17 +95,17 @@ body {
 
 #roomInput:focus {
   outline: none;
-  border-color: #ff3b3b;
+  border-color: var(--bean-accent);
   background: rgba(0, 0, 0, 0.5);
 }
 
 #joinBtn {
   width: 100%;
   padding: 18px;
-  background: #ff3b3b;
+  background: linear-gradient(135deg, var(--bean-primary), var(--bean-accent));
   border: none;
   border-radius: 12px;
-  color: #ffffff;
+  color: var(--bean-cream);
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -95,7 +115,7 @@ body {
 
 #joinBtn:active {
   transform: scale(0.98);
-  background: #ff5555;
+  background: linear-gradient(135deg, var(--bean-accent), var(--bean-primary));
 }
 
 .status {
@@ -106,7 +126,7 @@ body {
 }
 
 .status.error {
-  color: #ff3b3b;
+  color: var(--bean-accent);
 }
 
 /* Ready Screen */
@@ -132,7 +152,10 @@ body {
 .ready-card h2 {
   font-size: 24px;
   font-weight: 700;
-  color: #ff3b3b;
+  background: linear-gradient(135deg, var(--bean-primary), var(--bean-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 8px;
 }
 
@@ -149,10 +172,10 @@ body {
 .ready-btn {
   width: 100%;
   padding: 18px;
-  background: #ff3b3b;
+  background: linear-gradient(135deg, var(--bean-primary), var(--bean-accent));
   border: none;
   border-radius: 12px;
-  color: #ffffff;
+  color: var(--bean-cream);
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -163,16 +186,16 @@ body {
 
 .ready-btn:active {
   transform: scale(0.98);
-  background: #ff5555;
+  background: linear-gradient(135deg, var(--bean-accent), var(--bean-primary));
 }
 
 .start-game-btn {
   width: 100%;
   padding: 18px;
-  background: #00ff00;
+  background: linear-gradient(135deg, var(--bean-green), #7FB069);
   border: none;
   border-radius: 12px;
-  color: #000000;
+  color: var(--bean-cream);
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -189,7 +212,7 @@ body {
 
 .start-game-btn:active:not(:disabled) {
   transform: scale(0.98);
-  background: #00cc00;
+  background: linear-gradient(135deg, #7FB069, var(--bean-green));
 }
 
 /* Game Screen */
@@ -210,14 +233,17 @@ body {
 
 .ready-status {
   font-size: 12px;
-  color: #00ff00;
+  color: var(--bean-green);
   font-weight: 600;
 }
 
 .player-label {
   font-size: 20px;
   font-weight: 700;
-  color: #ff3b3b;
+  background: linear-gradient(135deg, var(--bean-primary), var(--bean-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: 1px;
 }
 
@@ -258,9 +284,9 @@ body {
 
 .paddle-indicator {
   position: absolute;
-  background: #ff3b3b;
+  background: linear-gradient(135deg, var(--bean-primary), var(--bean-accent));
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(255, 59, 59, 0.5);
+  box-shadow: 0 4px 20px var(--bean-shadow);
   transition: none;
   display: flex;
   align-items: center;
@@ -318,15 +344,35 @@ body {
 }
 
 /* Player-specific colors */
-.player-1 .paddle-indicator { background: #ff3b3b; }
-.player-2 .paddle-indicator { background: #ffffff; }
-.player-3 .paddle-indicator { background: #ffd700; }
-.player-4 .paddle-indicator { background: #00bfff; }
+.player-1 .paddle-indicator { background: linear-gradient(135deg, var(--bean-primary), var(--bean-accent)); }
+.player-2 .paddle-indicator { background: linear-gradient(135deg, var(--bean-light), var(--bean-cream)); }
+.player-3 .paddle-indicator { background: linear-gradient(135deg, var(--bean-accent), #DEB887); }
+.player-4 .paddle-indicator { background: linear-gradient(135deg, var(--bean-green), #7FB069); }
 
-.player-1 .player-label { color: #ff3b3b; }
-.player-2 .player-label { color: #ffffff; }
-.player-3 .player-label { color: #ffd700; }
-.player-4 .player-label { color: #00bfff; }
+.player-1 .player-label {
+  background: linear-gradient(135deg, var(--bean-primary), var(--bean-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.player-2 .player-label {
+  background: linear-gradient(135deg, var(--bean-light), var(--bean-cream));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.player-3 .player-label {
+  background: linear-gradient(135deg, var(--bean-accent), #DEB887);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.player-4 .player-label {
+  background: linear-gradient(135deg, var(--bean-green), #7FB069);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 /* Utilities */
 .hidden {
