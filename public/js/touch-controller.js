@@ -1,6 +1,10 @@
 // Touch Slider Controller - Direct 1:1 Movement
 const socket = io();
 
+// Initialize Hybrid Connection Manager for ultra-low latency
+let hybridConnection = null;
+let useWebRTC = false;
+
 // Simple sound system for controller
 let audioCtx = null;
 
@@ -60,12 +64,21 @@ let sendInterval = null;
 let countdownActive = false;
 let countdownNumber = null;
 
-// Check URL params for room code
-window.addEventListener('DOMContentLoaded', () => {
+// Check URL params for room code and WebRTC capability
+window.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
   const roomCode = params.get('r');
+  const rtcMode = params.get('mode');
+  const rtcCode = params.get('rtc');
+  
   if (roomCode) {
     roomInput.value = roomCode.toUpperCase();
+    
+    // Initialize WebRTC if available
+    if (rtcMode === 'direct' || rtcCode) {
+      await initializeWebRTCController(rtcCode);
+    }
+    
     setTimeout(() => joinBtn.click(), 500);
   }
   
@@ -73,6 +86,41 @@ window.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('touchstart', initControllerAudio, { once: true });
   document.addEventListener('click', initControllerAudio, { once: true });
 });
+
+// Initialize WebRTC controller connection
+async function initializeWebRTCController(connectionCode) {
+  try {
+    hybridConnection = new HybridConnectionManager();
+    
+    // Set up connection monitoring
+    hybridConnection.onConnectionChange = (info) => {
+      console.log('📱 Controller connection changed:', info);
+      updateControllerConnectionDisplay(info);
+      
+      if (info.type === 'webrtc' && info.state === 'connected') {
+        useWebRTC = true;
+        console.log('🚀 WebRTC P2P connection established!');
+      }
+    };
+    
+    const result = await hybridConnection.initializeConnection(false);
+    console.log('📱 Controller connection initialized:', result);
+    
+  } catch (error) {
+    console.error('❌ WebRTC controller initialization failed:', error);
+    useWebRTC = false;
+  }
+}
+
+// Update controller connection display
+function updateControllerConnectionDisplay(info) {
+  // You could add UI elements to show connection status on controller
+  const statusText = info.type === 'webrtc' ? 
+    '🚀 Direct Connection' : 
+    '🌐 Internet Connection';
+  
+  console.log(`📱 Connection Status: ${statusText}`);
+}
 
 // Join Room
 joinBtn.addEventListener('click', () => {
@@ -418,11 +466,24 @@ function updatePaddleIndicator(indicator, position, containerSize, isVertical) {
 // Immediate position update for ultra-low latency
 function sendPositionImmediate() {
   if (joinedRoom && currentPosition !== null) {
-    socket.emit('input', {
+    const inputData = {
       room: joinedRoom,
       position: currentPosition,
+      player: playerNumber,
       timestamp: Date.now() // Add timestamp for latency tracking
-    });
+    };
+    
+    // Try WebRTC first for ultra-low latency
+    if (useWebRTC && hybridConnection) {
+      const sent = hybridConnection.sendInput(inputData);
+      if (sent) {
+        // WebRTC successful, no need for socket fallback
+        return;
+      }
+    }
+    
+    // Fallback to socket.io
+    socket.emit('input', inputData);
   }
 }
 

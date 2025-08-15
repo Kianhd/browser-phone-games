@@ -1281,6 +1281,67 @@ html, body {
   opacity: 0.8;
 }
 
+/* Connection Status Display */
+.connection-info {
+  margin: 16px 0;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.connection-status {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.connection-status.webrtc-connected {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: #000;
+}
+
+.connection-status.socket-connected {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #000;
+}
+
+.connection-status.disconnected {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.latency-display {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'SF Mono', Monaco, monospace;
+}
+
+.latency.excellent {
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.latency.good {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+.latency.fair {
+  color: #fb923c;
+  font-weight: 600;
+}
+
+.latency.poor {
+  color: #ef4444;
+  font-weight: 600;
+}
+
 /* Utilities */
 .hidden {
   display: none !important;

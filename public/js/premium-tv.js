@@ -1,6 +1,10 @@
 // BeanPong TV Display with Power-ups
 const socket = io();
 
+// Initialize Hybrid Connection Manager for ultra-low latency
+let hybridConnection = null;
+let connectionInitialized = false;
+
 // DOM Elements
 const menuPanel = document.getElementById('menuPanel');
 const gameContainer = document.getElementById('gameContainer');
@@ -484,15 +488,124 @@ createRoomBtn.addEventListener('click', async () => {
     currentRoom = null;
   }
   
-  socket.emit('createRoom', (res) => {
+  socket.emit('createRoom', async (res) => {
     currentRoom = res.room;
     roomCodeEl.textContent = res.room;
+    
+    // Initialize hybrid connection for ultra-low latency
+    await initializeWebRTCHost();
+    
     generateQR(res.room);
     
     // Change button text after first room creation
     createRoomBtn.textContent = 'CREATE NEW ROOM';
   });
 });
+
+// Initialize WebRTC host connection
+async function initializeWebRTCHost() {
+  try {
+    if (!hybridConnection) {
+      hybridConnection = new HybridConnectionManager();
+      
+      // Set up data handling for WebRTC inputs
+      hybridConnection.onDataReceived = (data) => {
+        if (data.type === 'input') {
+          handleWebRTCInput(data);
+        }
+      };
+      
+      // Monitor connection changes
+      hybridConnection.onConnectionChange = (info) => {
+        console.log('🔄 Connection changed:', info);
+        updateConnectionDisplay(info);
+      };
+    }
+    
+    const result = await hybridConnection.initializeConnection(true);
+    console.log('🚀 Host connection initialized:', result);
+    
+    connectionInitialized = true;
+    
+  } catch (error) {
+    console.error('❌ Failed to initialize WebRTC host:', error);
+    // Fallback to socket.io only
+  }
+}
+
+// Handle WebRTC input with ultra-low latency
+function handleWebRTCInput(data) {
+  // This bypasses the server entirely for minimum latency
+  const inputEvent = {
+    player: data.player,
+    input: {
+      position: data.position,
+      timestamp: data.timestamp
+    }
+  };
+  
+  // Apply input directly to game state for instant response
+  if (gameState && gameState.paddles && gameState.paddles[data.player]) {
+    const paddle = gameState.paddles[data.player];
+    
+    // Update paddle position based on player type
+    if (data.player <= 2) {
+      // Vertical paddles (P1, P2)
+      const fieldHeight = gameState.fieldHeight || 720;
+      paddle.y = data.position * (fieldHeight - paddle.h);
+    } else {
+      // Horizontal paddles (P3, P4)
+      const fieldWidth = gameState.fieldWidth || 1280;
+      paddle.x = data.position * (fieldWidth - paddle.w);
+    }
+    
+    // Update interpolation target
+    if (interpolatedPaddles[data.player]) {
+      interpolatedPaddles[data.player].targetX = paddle.x;
+      interpolatedPaddles[data.player].targetY = paddle.y;
+    }
+  }
+  
+  // Also send to server for synchronization with other clients
+  socket.emit('playerInput', inputEvent);
+}
+
+// Update connection display in UI
+function updateConnectionDisplay(info) {
+  const statusEl = document.getElementById('connectionStatus');
+  const latencyEl = document.getElementById('latencyDisplay');
+  
+  if (statusEl) {
+    let statusText = '';
+    let statusClass = '';
+    
+    if (info.type === 'webrtc') {
+      statusText = '🚀 Direct P2P Connection';
+      statusClass = 'webrtc-connected';
+    } else if (info.type === 'socket') {
+      statusText = '🌐 Internet Connection';
+      statusClass = 'socket-connected';
+    } else {
+      statusText = '❌ No Connection';
+      statusClass = 'disconnected';
+    }
+    
+    statusEl.textContent = statusText;
+    statusEl.className = `connection-status ${statusClass}`;
+  }
+  
+  if (latencyEl && info.latency !== null) {
+    latencyEl.textContent = `Latency: ${info.latency}ms`;
+    latencyEl.className = `latency-display ${getLatencyClass(info.latency)}`;
+  }
+}
+
+function getLatencyClass(latency) {
+  if (latency < 5) return 'excellent';
+  if (latency < 15) return 'good';
+  if (latency < 50) return 'fair';
+  return 'poor';
+}
 
 function resetRoomInterface() {
   // Reset player count display
@@ -527,12 +640,24 @@ function resetRoomInterface() {
 }
 
 function generateQR(code) {
-  const url = `${location.origin}/controller.html?r=${code}`;
+  let url = `${location.origin}/controller.html?r=${code}`;
+  
+  // Add WebRTC connection code if available for direct P2P connection
+  if (hybridConnection && connectionInitialized) {
+    const connectionInfo = hybridConnection.getConnectionInfo();
+    if (connectionInfo.type === 'webrtc') {
+      // Generate enhanced QR with WebRTC capability
+      url = hybridConnection.generateEnhancedQR(code, 'webrtc-enabled');
+    }
+  }
+  
   qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=0a0a0f`;
   
   // Show QR code and hide placeholder
   qrImg.classList.remove('hidden');
   document.getElementById('qrPlaceholder').style.display = 'none';
+  
+  console.log('📱 QR Code generated:', url);
 }
 
 startGameBtn.addEventListener('click', async () => {

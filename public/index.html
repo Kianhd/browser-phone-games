@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>BeanPong - TV Display</title>
   <link rel="stylesheet" href="/premium-style.css" />
+  <script src="/js/webrtc-manager.js"></script>
+  <script src="/js/hybrid-connection.js"></script>
 </head>
 <body>
   <div class="tv-wrapper">
@@ -81,6 +83,16 @@
             <div class="player-indicator"></div>
             <span class="player-label">P5</span>
             <span class="player-status">⭕</span>
+          </div>
+        </div>
+
+        <!-- Connection Status Display -->
+        <div class="connection-info">
+          <div id="connectionStatus" class="connection-status disconnected">
+            🔄 Initializing Connection...
+          </div>
+          <div id="latencyDisplay" class="latency-display">
+            Latency: Measuring...
           </div>
         </div>
 
