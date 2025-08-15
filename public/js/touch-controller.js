@@ -64,18 +64,25 @@ let sendInterval = null;
 let countdownActive = false;
 let countdownNumber = null;
 
-// Check URL params for room code and WebRTC capability
+// Initialize Universal Connection Manager for controller
+let universalController = null;
+
+// Check URL params for room code and connection data
 window.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
   const roomCode = params.get('r');
   const rtcMode = params.get('mode');
   const rtcCode = params.get('rtc');
+  const connectionData = params.get('data');
   
   if (roomCode) {
     roomInput.value = roomCode.toUpperCase();
     
-    // Initialize WebRTC if available
-    if (rtcMode === 'direct' || rtcCode) {
+    // Check for universal connection data first
+    if (connectionData && rtcMode === 'smart') {
+      await initializeUniversalConnection(connectionData);
+    } else if (rtcMode === 'direct' || rtcCode) {
+      // Fallback to WebRTC-only initialization
       await initializeWebRTCController(rtcCode);
     }
     
@@ -86,6 +93,43 @@ window.addEventListener('DOMContentLoaded', async () => {
   document.addEventListener('touchstart', initControllerAudio, { once: true });
   document.addEventListener('click', initControllerAudio, { once: true });
 });
+
+// Initialize Universal Connection for controller
+async function initializeUniversalConnection(encodedData) {
+  try {
+    universalController = new UniversalConnectionManager();
+    
+    // Decode and parse connection data
+    const decodedData = atob(encodedData);
+    const connectionInfo = JSON.parse(decodedData);
+    
+    console.log('📱 Universal connection data received:', connectionInfo);
+    
+    // Attempt connection using universal system
+    const connection = await universalController.connectFromQR(JSON.stringify(connectionInfo));
+    
+    if (connection.success) {
+      console.log('🌐 Universal connection established:', connection.type);
+      
+      // Update connection status display
+      updateControllerConnectionDisplay({
+        type: connection.type,
+        state: 'connected',
+        latency: connection.method.latency
+      });
+      
+      // Set up hybrid connection based on the successful method
+      if (connection.type === 'webrtc') {
+        useWebRTC = true;
+      }
+    }
+    
+  } catch (error) {
+    console.error('❌ Universal connection failed:', error);
+    // Fall back to standard socket.io connection
+    console.log('🔄 Falling back to standard connection...');
+  }
+}
 
 // Initialize WebRTC controller connection
 async function initializeWebRTCController(connectionCode) {
@@ -216,6 +260,66 @@ function showStatus(message, type) {
   status.className = `status ${type}`;
   if ('vibrate' in navigator && type === 'error') {
     navigator.vibrate(50);
+  }
+  
+  // Show troubleshooting section for connection errors
+  if (type === 'error' && (message.includes('Failed') || message.includes('failed') || message.includes('error'))) {
+    showTroubleshootingSection();
+  }
+}
+
+// Show troubleshooting interface
+function showTroubleshootingSection() {
+  const troubleshootSection = document.getElementById('troubleshootSection');
+  if (troubleshootSection) {
+    troubleshootSection.classList.remove('hidden');
+  }
+}
+
+// Hide troubleshooting interface
+function hideTroubleshootingSection() {
+  const troubleshootSection = document.getElementById('troubleshootSection');
+  if (troubleshootSection) {
+    troubleshootSection.classList.add('hidden');
+  }
+}
+
+// Retry connection functionality
+function retryConnection() {
+  console.log('🔄 Retrying connection...');
+  
+  // Hide troubleshooting section
+  hideTroubleshootingSection();
+  
+  // Reset status
+  showStatus('Retrying connection...', '');
+  
+  // Re-enable join button
+  joinBtn.disabled = false;
+  
+  // Check if we have universal connection data to retry
+  const params = new URLSearchParams(window.location.search);
+  const connectionData = params.get('data');
+  const rtcMode = params.get('mode');
+  
+  if (connectionData && rtcMode === 'smart') {
+    // Retry universal connection
+    initializeUniversalConnection(connectionData).then(() => {
+      // Auto-retry join if room code is available
+      if (roomInput.value.trim()) {
+        setTimeout(() => joinBtn.click(), 1000);
+      }
+    }).catch(() => {
+      showStatus('Retry failed. Please check your connection.', 'error');
+    });
+  } else {
+    // Standard retry - just re-enable joining
+    showStatus('Ready to try again', '');
+  }
+  
+  // Haptic feedback
+  if ('vibrate' in navigator) {
+    navigator.vibrate([50, 50, 100]);
   }
 }
 
@@ -832,3 +936,9 @@ roomInput.addEventListener('keypress', (e) => {
     joinBtn.click();
   }
 });
+
+// Retry connection button
+const retryBtn = document.getElementById('retryConnection');
+if (retryBtn) {
+  retryBtn.addEventListener('click', retryConnection);
+}

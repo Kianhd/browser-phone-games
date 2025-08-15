@@ -5,6 +5,9 @@ const socket = io();
 let hybridConnection = null;
 let connectionInitialized = false;
 
+// Initialize Universal Connection Manager
+let universalConnection = null;
+
 // DOM Elements
 const menuPanel = document.getElementById('menuPanel');
 const gameContainer = document.getElementById('gameContainer');
@@ -497,6 +500,9 @@ createRoomBtn.addEventListener('click', async () => {
     
     generateQR(res.room);
     
+    // Show waiting status
+    updateConnectionStatus('waiting');
+    
     // Change button text after first room creation
     createRoomBtn.textContent = 'CREATE NEW ROOM';
   });
@@ -640,25 +646,281 @@ function resetRoomInterface() {
 }
 
 function generateQR(code) {
-  let url = `${location.origin}/controller.html?r=${code}`;
-  
-  // Add WebRTC connection code if available for direct P2P connection
-  if (hybridConnection && connectionInitialized) {
-    const connectionInfo = hybridConnection.getConnectionInfo();
-    if (connectionInfo.type === 'webrtc') {
-      // Generate enhanced QR with WebRTC capability
-      url = hybridConnection.generateEnhancedQR(code, 'webrtc-enabled');
-    }
+  if (!universalConnection) {
+    // Initialize Universal Connection Manager if not already done
+    universalConnection = new UniversalConnectionManager();
   }
   
-  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=0a0a0f`;
+  // Generate host information for the universal connection
+  const hostInfo = {
+    name: 'BeanPong TV Host',
+    type: 'tv', // or 'pc', 'browser', etc.
+    platform: navigator.platform,
+    room: code
+  };
+  
+  try {
+    // Generate universal QR with multiple connection methods
+    const universalQR = universalConnection.generateUniversalQR(hostInfo);
+    
+    // Use the primary smart QR code
+    qrImg.src = universalQR.primary;
+    
+    // Store QR data for potential UI enhancements
+    window.currentQRData = {
+      primary: universalQR.primary,
+      fallback: universalQR.fallback,
+      simple: universalQR.simple,
+      metadata: universalQR.metadata,
+      instructions: universalQR.instructions
+    };
+    
+    console.log('🌐 Universal QR Generated with methods:', universalQR.metadata.connections.length);
+    console.log('📱 Connection methods available:', universalQR.metadata.connections.map(c => c.type));
+    
+  } catch (error) {
+    console.warn('❌ Universal QR generation failed, falling back to simple QR:', error);
+    
+    // Fallback to simple QR code
+    const fallbackUrl = `${location.origin}/controller.html?r=${code}`;
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(fallbackUrl)}&bgcolor=ffffff&color=0a0a0f`;
+  }
   
   // Show QR code and hide placeholder
   qrImg.classList.remove('hidden');
   document.getElementById('qrPlaceholder').style.display = 'none';
   
-  console.log('📱 QR Code generated:', url);
+  // Show connection methods if universal QR was generated successfully
+  if (window.currentQRData && window.currentQRData.metadata) {
+    displayConnectionMethods(window.currentQRData.metadata.connections);
+    displayDeviceCapabilities(window.currentQRData.metadata.capabilities);
+  }
 }
+
+// Display available connection methods to the user
+function displayConnectionMethods(methods) {
+  const connectionMethodsEl = document.getElementById('connectionMethods');
+  const methodsListEl = document.getElementById('methodsList');
+  
+  if (!methods || methods.length === 0) {
+    connectionMethodsEl.classList.add('hidden');
+    return;
+  }
+  
+  // Clear existing methods
+  methodsListEl.innerHTML = '';
+  
+  // Sort methods by priority
+  const sortedMethods = methods.sort((a, b) => a.priority - b.priority);
+  
+  sortedMethods.forEach(method => {
+    const methodEl = document.createElement('div');
+    methodEl.className = 'connection-method';
+    
+    // Add priority class for visual distinction
+    if (method.priority <= 2) {
+      methodEl.classList.add('priority-high');
+    } else if (method.priority <= 4) {
+      methodEl.classList.add('priority-medium');
+    }
+    
+    // Get method icon
+    const icon = getConnectionIcon(method.type);
+    
+    // Get latency class
+    const latencyClass = getLatencyClass(method.latency);
+    
+    methodEl.innerHTML = `
+      <div class="method-info">
+        <div class="method-icon">${icon}</div>
+        <div class="method-details">
+          <div class="method-name">${method.description}</div>
+          <div class="method-description">${getMethodRequirements(method.requirements)}</div>
+        </div>
+      </div>
+      <div class="method-latency ${latencyClass}">${method.latency}</div>
+    `;
+    
+    methodsListEl.appendChild(methodEl);
+  });
+  
+  // Show the connection methods section
+  connectionMethodsEl.classList.remove('hidden');
+  
+  console.log('📱 Displayed', methods.length, 'connection methods');
+}
+
+// Get icon for connection method type
+function getConnectionIcon(type) {
+  const icons = {
+    'webrtc-direct': '🚀',
+    'local-websocket': '🏠',
+    'wifi-direct': '📶',
+    'bluetooth': '🔵',
+    'hotspot': '📱',
+    'internet-websocket': '🌐',
+    'nfc': '📲'
+  };
+  return icons[type] || '🔗';
+}
+
+// Get latency class for styling
+function getLatencyClass(latency) {
+  if (latency.includes('1-5ms')) return 'ultra-low';
+  if (latency.includes('5-15ms') || latency.includes('10-20ms')) return 'low';
+  if (latency.includes('20-50ms') || latency.includes('15-30ms')) return 'medium';
+  return 'high';
+}
+
+// Get user-friendly requirements description
+function getMethodRequirements(requirements) {
+  if (!requirements || requirements.length === 0) return 'No special requirements';
+  
+  const requirementDescriptions = {
+    'webrtc': 'WebRTC support',
+    'same-network': 'Same WiFi network',
+    'same-wifi': 'Same WiFi network',
+    'bluetooth': 'Bluetooth enabled',
+    'nfc': 'NFC support',
+    'internet': 'Internet connection',
+    'proximity': 'Close range',
+    'touch-distance': 'Touch device',
+    'mobile-data': 'Mobile data',
+    'wifi-direct': 'WiFi Direct support'
+  };
+  
+  const descriptions = requirements
+    .map(req => requirementDescriptions[req] || req)
+    .join(', ');
+  
+  return descriptions;
+}
+
+// Display device capabilities
+function displayDeviceCapabilities(capabilities) {
+  const capabilitiesGridEl = document.getElementById('capabilitiesGrid');
+  
+  if (!capabilities || !capabilitiesGridEl) {
+    return;
+  }
+  
+  // Clear existing capabilities
+  capabilitiesGridEl.innerHTML = '';
+  
+  // Define capability information
+  const capabilityInfo = {
+    webrtc: { name: 'WebRTC P2P', icon: '🚀', description: 'Direct peer-to-peer connection' },
+    websocket: { name: 'WebSocket', icon: '🔗', description: 'Real-time communication' },
+    localNetwork: { name: 'Local Network', icon: '🏠', description: 'Same WiFi network' },
+    wifi: { name: 'WiFi', icon: '📶', description: 'Wireless networking' },
+    bluetooth: { name: 'Bluetooth', icon: '🔵', description: 'Short-range connection' },
+    nfc: { name: 'NFC', icon: '📲', description: 'Near-field communication' },
+    hotspot: { name: 'Hotspot', icon: '📱', description: 'Mobile hotspot capability' },
+    p2p: { name: 'P2P Direct', icon: '🤝', description: 'Device-to-device connection' }
+  };
+  
+  // Create capability items
+  Object.entries(capabilities).forEach(([key, supported]) => {
+    const info = capabilityInfo[key];
+    if (!info) return;
+    
+    const capabilityEl = document.createElement('div');
+    capabilityEl.className = `capability-item ${supported ? 'supported' : 'not-supported'}`;
+    capabilityEl.title = info.description;
+    
+    const statusIcon = supported ? '✓' : '✗';
+    
+    capabilityEl.innerHTML = `
+      <div class="capability-icon">${info.icon}</div>
+      <div class="capability-name">${info.name}</div>
+      <div class="capability-status">${statusIcon}</div>
+    `;
+    
+    capabilitiesGridEl.appendChild(capabilityEl);
+  });
+  
+  console.log('🔍 Displayed device capabilities');
+}
+
+// Update connection status indicator
+function updateConnectionStatus(status, details = {}) {
+  const connectionStatusEl = document.getElementById('connectionStatus');
+  const statusDotEl = document.getElementById('statusDot');
+  const statusTextEl = document.getElementById('statusText');
+  const connectionDetailsEl = document.getElementById('connectionDetails');
+  const connectionTypeEl = document.getElementById('connectionType');
+  const connectionLatencyEl = document.getElementById('connectionLatency');
+  
+  if (!connectionStatusEl) return;
+  
+  // Show connection status section
+  connectionStatusEl.classList.remove('hidden');
+  
+  // Update status dot
+  statusDotEl.className = 'status-dot';
+  statusDotEl.classList.add(status);
+  
+  // Update status text and details
+  switch (status) {
+    case 'waiting':
+      statusTextEl.textContent = 'Waiting for connections...';
+      connectionDetailsEl.classList.add('hidden');
+      break;
+      
+    case 'connected':
+      const playerCount = details.playerCount || 1;
+      statusTextEl.textContent = `${playerCount} player${playerCount > 1 ? 's' : ''} connected`;
+      
+      if (details.connectionType) {
+        connectionTypeEl.innerHTML = `${getConnectionIcon(details.connectionType)} ${getConnectionDisplayName(details.connectionType)}`;
+        connectionLatencyEl.textContent = details.latency || '~100ms latency';
+        connectionDetailsEl.classList.remove('hidden');
+      }
+      break;
+      
+    case 'error':
+      statusTextEl.textContent = 'Connection error';
+      connectionDetailsEl.classList.add('hidden');
+      break;
+      
+    case 'webrtc':
+      statusTextEl.textContent = `Ultra-low latency active (${details.playerCount || 1} players)`;
+      connectionTypeEl.innerHTML = `🚀 WebRTC P2P Connection`;
+      connectionLatencyEl.textContent = details.latency || '1-5ms latency';
+      connectionDetailsEl.classList.remove('hidden');
+      statusDotEl.classList.add('webrtc');
+      break;
+  }
+  
+  console.log('📊 Updated connection status:', status, details);
+}
+
+// Get display name for connection type
+function getConnectionDisplayName(type) {
+  const names = {
+    'webrtc-direct': 'WebRTC P2P',
+    'local-websocket': 'Local Network',
+    'wifi-direct': 'WiFi Direct',
+    'bluetooth': 'Bluetooth',
+    'hotspot': 'Mobile Hotspot',
+    'internet-websocket': 'Internet',
+    'nfc': 'NFC Connection'
+  };
+  return names[type] || 'Unknown Connection';
+}
+
+// Toggle connection details on click
+document.addEventListener('DOMContentLoaded', () => {
+  const statusIndicator = document.getElementById('connectionStatus');
+  if (statusIndicator) {
+    statusIndicator.querySelector('.status-indicator').addEventListener('click', () => {
+      const details = document.getElementById('connectionDetails');
+      if (details) {
+        details.classList.toggle('hidden');
+      }
+    });
+  }
+});
 
 startGameBtn.addEventListener('click', async () => {
   if (!currentRoom) return;
@@ -677,6 +939,18 @@ function setupSocketListeners() {
     console.log('Room update received:', data); // Debug log
     if (!data) return;
     updatePlayerStatus(data.slots, data.readyStates);
+    
+    // Update connection status based on connected players
+    const connectedCount = data.slots.filter(slot => slot).length;
+    if (connectedCount > 0) {
+      updateConnectionStatus('connected', { 
+        playerCount: connectedCount,
+        connectionType: 'internet-websocket',
+        latency: '~100ms latency'
+      });
+    } else {
+      updateConnectionStatus('waiting');
+    }
   });
 
   socket.on('startGame', ({ mode }) => {

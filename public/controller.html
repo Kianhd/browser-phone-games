@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/touch-controller.css" />
   <script src="/js/webrtc-manager.js"></script>
   <script src="/js/hybrid-connection.js"></script>
+  <script src="/js/universal-connection.js"></script>
 </head>
 <body>
   <div class="controller-container">
@@ -27,6 +28,18 @@
           <button id="joinBtn">JOIN BEANPONG</button>
         </div>
         <div class="status" id="status"></div>
+        
+        <!-- Connection Troubleshooting -->
+        <div class="troubleshoot-section hidden" id="troubleshootSection">
+          <h4>Having connection issues?</h4>
+          <div class="troubleshoot-tips">
+            <div class="tip">📶 Check WiFi connection</div>
+            <div class="tip">🔄 Try refreshing the page</div>
+            <div class="tip">📱 Move closer to the host device</div>
+            <div class="tip">🌐 Check internet connection</div>
+          </div>
+          <button class="retry-btn" id="retryConnection">Retry Connection</button>
+        </div>
       </div>
     </div>
 

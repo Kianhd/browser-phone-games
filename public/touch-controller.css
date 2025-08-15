@@ -129,6 +129,75 @@ body {
   color: var(--bean-accent);
 }
 
+/* Connection Troubleshooting */
+.troubleshoot-section {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(139, 69, 19, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(205, 133, 63, 0.3);
+  animation: slideInUp 0.3s ease-out;
+}
+
+.troubleshoot-section h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--bean-cream);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.troubleshoot-tips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tip {
+  font-size: 13px;
+  color: rgba(245, 230, 211, 0.8);
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  border-left: 3px solid var(--bean-accent);
+}
+
+.retry-btn {
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--bean-accent) 0%, var(--bean-primary) 100%);
+  color: var(--bean-cream);
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.retry-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(205, 133, 63, 0.4);
+}
+
+.retry-btn:active {
+  transform: translateY(0);
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Ready Screen */
 .ready-screen {
   display: flex;
