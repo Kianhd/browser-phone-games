@@ -210,12 +210,40 @@ body {
 .ready-card {
   width: 100%;
   max-width: 400px;
-  padding: 40px 30px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 48px 32px;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 100%);
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   text-align: center;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 100px rgba(139, 69, 19, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.ready-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
 .ready-card h2 {
@@ -240,48 +268,123 @@ body {
 
 .ready-btn {
   width: 100%;
-  padding: 18px;
-  background: linear-gradient(135deg, var(--bean-primary), var(--bean-accent));
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #4ade80, #22c55e);
   border: none;
-  border-radius: 12px;
-  color: var(--bean-cream);
+  border-radius: 16px;
+  color: #ffffff;
   font-size: 18px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.ready-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.ready-btn:hover::before {
+  left: 100%;
 }
 
 .ready-btn:active {
-  transform: scale(0.98);
-  background: linear-gradient(135deg, var(--bean-accent), var(--bean-primary));
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.2);
+}
+
+.ready-btn:disabled {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.ready-btn.ready-active {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 30px rgba(245, 158, 11, 0.5);
+  }
 }
 
 .start-game-btn {
   width: 100%;
-  padding: 18px;
-  background: linear-gradient(135deg, var(--bean-green), #7FB069);
-  border: none;
-  border-radius: 12px;
-  color: var(--bean-cream);
-  font-size: 18px;
+  padding: 22px 24px;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  border: 2px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  color: #ffffff;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 16px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+  position: relative;
+  animation: glow-pulse 3s infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 30px rgba(139, 92, 246, 0.5);
+  }
+}
+
+.start-game-btn::after {
+  content: '🎮';
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
 }
 
 .start-game-btn:disabled {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.5);
+  background: linear-gradient(135deg, #374151, #1f2937);
+  border-color: rgba(55, 65, 81, 0.3);
+  color: rgba(255, 255, 255, 0.3);
   cursor: not-allowed;
+  box-shadow: none;
+  animation: none;
+}
+
+.start-game-btn:disabled::after {
+  opacity: 0.3;
+}
+
+.start-game-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+  background: linear-gradient(135deg, #9333ea, #8b5cf6);
 }
 
 .start-game-btn:active:not(:disabled) {
-  transform: scale(0.98);
-  background: linear-gradient(135deg, #7FB069, var(--bean-green));
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
 }
 
 /* Game Screen */
@@ -289,6 +392,53 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: background 0.5s ease;
+}
+
+/* Player-specific color themes */
+.game-screen.player-1 {
+  background: linear-gradient(135deg, 
+    #0a0a0f 0%, 
+    #dc2626 15%, 
+    #1a1a2e 50%,
+    #991b1b 85%,
+    #0a0a0f 100%);
+}
+
+.game-screen.player-2 {
+  background: linear-gradient(135deg, 
+    #0a0a0f 0%, 
+    #2563eb 15%, 
+    #1a1a2e 50%,
+    #1e40af 85%,
+    #0a0a0f 100%);
+}
+
+.game-screen.player-3 {
+  background: linear-gradient(135deg, 
+    #0a0a0f 0%, 
+    #10b981 15%, 
+    #1a1a2e 50%,
+    #059669 85%,
+    #0a0a0f 100%);
+}
+
+.game-screen.player-4 {
+  background: linear-gradient(135deg, 
+    #0a0a0f 0%, 
+    #f59e0b 15%, 
+    #1a1a2e 50%,
+    #d97706 85%,
+    #0a0a0f 100%);
+}
+
+.game-screen.player-5 {
+  background: linear-gradient(135deg, 
+    #0a0a0f 0%, 
+    #8b5cf6 15%, 
+    #1a1a2e 50%,
+    #7c3aed 85%,
+    #0a0a0f 100%);
 }
 
 .player-header {
@@ -326,10 +476,23 @@ body {
   flex: 1;
   position: relative;
   margin: 20px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.01) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
+  box-shadow: 
+    inset 0 2px 10px rgba(0, 0, 0, 0.2),
+    0 0 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.touch-area:active {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 100%);
 }
 
 .touch-area.vertical {
@@ -440,20 +603,63 @@ body {
   margin-left: -50px;
 }
 
-/* Player-specific colors */
-.player-1 .paddle-indicator { background: linear-gradient(135deg, var(--bean-primary), var(--bean-accent)); }
-.player-2 .paddle-indicator { background: linear-gradient(135deg, var(--bean-light), var(--bean-cream)); }
-.player-3 .paddle-indicator { background: linear-gradient(135deg, var(--bean-accent), #DEB887); }
-.player-4 .paddle-indicator { background: linear-gradient(135deg, var(--bean-green), #7FB069); }
+/* Player-specific colors for paddles and UI elements */
+.player-1 .paddle-indicator { 
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+}
 
+.player-2 .paddle-indicator { 
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+}
+
+.player-3 .paddle-indicator { 
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+}
+
+.player-4 .paddle-indicator { 
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+}
+
+.player-5 .paddle-indicator { 
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+}
+
+/* Player-specific header labels */
 .player-1 .player-label {
-  background: linear-gradient(135deg, var(--bean-primary), var(--bean-accent));
+  background: linear-gradient(135deg, #ef4444, #dc2626);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
 .player-2 .player-label {
-  background: linear-gradient(135deg, var(--bean-light), var(--bean-cream));
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.player-3 .player-label {
+  background: linear-gradient(135deg, #10b981, #059669);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.player-4 .player-label {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.player-5 .player-label {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

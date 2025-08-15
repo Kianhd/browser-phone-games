@@ -685,23 +685,19 @@ socket.on('startGame', () => {
   }
 });
 
-socket.on('speedWarning', ({ newSpeed }) => {
-  // Vibrate and play warning sound
-  if ('vibrate' in navigator) {
-    navigator.vibrate([100, 50, 100]);
-  }
-  playControllerSound(440, 0.15, 0.06);
-  
-  // Show brief overlay
-  showSpeedWarningOverlay(newSpeed);
+// Power-up socket listeners
+socket.on('powerUpActivated', ({ type, player }) => {
+  showPowerUpOverlay(type, player);
 });
 
-socket.on('speedIncreased', ({ newSpeed }) => {
-  // Vibrate confirmation
-  if ('vibrate' in navigator) {
-    navigator.vibrate([50, 50, 200]);
+socket.on('powerUpCollected', ({ type, player }) => {
+  if (player === playerNumber) {
+    // Show collection feedback for own power-up
+    if ('vibrate' in navigator) {
+      navigator.vibrate([30, 20, 30]);
+    }
+    playControllerSound(660, 0.1, 0.05);
   }
-  playControllerSound(660, 0.2, 0.08);
 });
 
 socket.on('gameOver', () => {
@@ -874,60 +870,101 @@ function showScrollHint() {
   }, 3000);
 }
 
-// Show speed warning overlay for controllers
-function showSpeedWarningOverlay(newSpeed) {
-  let warningOverlay = document.getElementById('speedWarningOverlay');
-  if (!warningOverlay) {
-    warningOverlay = document.createElement('div');
-    warningOverlay.id = 'speedWarningOverlay';
-    warningOverlay.style.cssText = `
+// Power-up notification overlay
+function showPowerUpOverlay(powerUpType, playerNumber) {
+  let powerUpOverlay = document.getElementById('powerUpOverlay');
+  if (!powerUpOverlay) {
+    powerUpOverlay = document.createElement('div');
+    powerUpOverlay.id = 'powerUpOverlay';
+    powerUpOverlay.style.cssText = `
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 165, 0, 0.9);
-      display: flex;
+      top: 20px;
+      right: 20px;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(124, 58, 237, 0.95));
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      display: none;
       align-items: center;
-      justify-content: center;
+      gap: 12px;
       z-index: 10000;
       color: white;
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      pointer-events: none;
+      box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+      animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     `;
-    document.body.appendChild(warningOverlay);
+    document.body.appendChild(powerUpOverlay);
   }
   
-  warningOverlay.innerHTML = `
-    <div style="
-      text-align: center;
-      color: #ffffff;
-      animation: pulseWarning 0.5s ease-in-out infinite;
-    ">
-      <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
-      <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">
-        SPEED INCREASING
+  const powerUpInfo = {
+    'speed-boost': { icon: '⚡', name: 'SPEED BOOST', color: '#fbbf24' },
+    'mega-ball': { icon: '🔥', name: 'MEGA BALL', color: '#ef4444' },
+    'shield': { icon: '🛡️', name: 'SHIELD', color: '#3b82f6' },
+    'freeze': { icon: '❄️', name: 'FREEZE', color: '#06b6d4' },
+    'multi-ball': { icon: '🎱', name: 'MULTI-BALL', color: '#10b981' }
+  };
+  
+  const powerUp = powerUpInfo[powerUpType] || { icon: '✨', name: 'POWER-UP', color: '#8b5cf6' };
+  
+  powerUpOverlay.innerHTML = `
+    <div style="font-size: 32px;">${powerUp.icon}</div>
+    <div>
+      <div style="font-size: 14px; font-weight: 700; color: ${powerUp.color};">
+        ${powerUp.name}
       </div>
-      <div style="font-size: 16px;">
-        New speed: ${newSpeed.toFixed(1)}x
+      <div style="font-size: 12px; opacity: 0.8;">
+        Player ${playerNumber} activated
       </div>
     </div>
-    <style>
-      @keyframes pulseWarning {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-      }
-    </style>
   `;
   
-  warningOverlay.style.display = 'flex';
+  powerUpOverlay.style.display = 'flex';
   
-  // Hide warning after 2.5 seconds
+  // Haptic feedback for power-up
+  if ('vibrate' in navigator) {
+    navigator.vibrate([50, 30, 50, 30, 100]);
+  }
+  
+  // Play power-up sound
+  playControllerSound(880, 0.2, 0.1);
+  
+  // Hide after 3 seconds
   setTimeout(() => {
-    if (warningOverlay.parentNode) {
-      warningOverlay.parentNode.removeChild(warningOverlay);
+    powerUpOverlay.style.animation = 'slideOutRight 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    setTimeout(() => {
+      powerUpOverlay.style.display = 'none';
+      powerUpOverlay.style.animation = 'slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    }, 400);
+  }, 3000);
+}
+
+// Add animations to head if not already present
+if (!document.getElementById('powerUpAnimations')) {
+  const style = document.createElement('style');
+  style.id = 'powerUpAnimations';
+  style.textContent = `
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
-  }, 2500);
+    @keyframes slideOutRight {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+    }
+  `;
+  document.head.appendChild(style);
 }
 
 // Enter key to join
