@@ -18,8 +18,18 @@ const startGameBtn = document.getElementById('startGame');
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Optimize canvas
-ctx.imageSmoothingEnabled = false;
+// Hi-DPI Canvas Setup
+function setupCanvas() {
+  const rect = canvas.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  canvas.style.width = `${rect.width}px`;
+  canvas.style.height = `${rect.height}px`;
+}
+setupCanvas();
+window.addEventListener('resize', setupCanvas);
 
 // Game State
 let currentRoom = null;
@@ -56,14 +66,64 @@ let lastUpdateTime = Date.now();
 // Plate impact physics system
 let plateImpacts = {}; // Track impact animations for each paddle
 
-// Trigger subtle plate impact animation
-function triggerPlateImpact(playerNum, impactVelocity) {
+// Enhanced Visual Effects System
+let screenShake = 0;
+let particles = [];
+let ballTrail = [];
+
+// Particle system for impacts
+function spawnImpactParticles(x, y, color, count = 12) {
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x, y,
+      vx: (Math.random() - 0.5) * 8,
+      vy: (Math.random() - 0.5) * 8,
+      life: 1,
+      color,
+      size: Math.random() * 3 + 1
+    });
+  }
+}
+
+// Update particles
+function updateParticles() {
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vx *= 0.98;
+    p.vy *= 0.98;
+    p.life -= 0.02;
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+}
+
+// Draw particles with glow
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.save();
+    ctx.globalAlpha = p.life;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = p.color;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+    ctx.restore();
+  });
+}
+
+// Trigger subtle plate impact animation with enhanced effects
+function triggerPlateImpact(playerNum, impactVelocity, x, y) {
   plateImpacts[playerNum] = {
     startTime: Date.now(),
     pushDistance: Math.min(impactVelocity * 0.3, 8), // Max 8px push
     duration: 150, // Very quick 150ms animation
     direction: Math.random() * Math.PI * 2 // Random subtle direction
   };
+  
+  // Add visual effects
+  const playerColor = playerColors[playerNum] || '#ffffff';
+  spawnImpactParticles(x, y, playerColor);
+  screenShake = Math.min(12, impactVelocity * 0.5); // Screen shake on impact
 }
 
 // Update plate impact animations
@@ -998,7 +1058,7 @@ function setupSocketListeners() {
             
             // If ball is close to this paddle, trigger impact
             if (distance < 100) {
-              triggerPlateImpact(playerNum, velocityChange);
+              triggerPlateImpact(playerNum, velocityChange, newState.ball.x, newState.ball.y);
               
               // Send haptic feedback to controller for this player's impact
               if (playerNumber === playerNum && 'vibrate' in navigator) {
@@ -1336,35 +1396,115 @@ function render() {
     return;
   }
 
-  // Apply background color override for power-ups
-  let backgroundColor = '#0a0a0f';
-  if (gameState.backgroundColorOverride) {
-    const overlay = gameState.backgroundColorOverride;
-    ctx.fillStyle = overlay;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    backgroundColor = '#0a0a0f';
+  // Save context for screen shake
+  ctx.save();
+  
+  // Apply screen shake
+  if (screenShake > 0) {
+    const shakeX = (Math.random() - 0.5) * screenShake;
+    const shakeY = (Math.random() - 0.5) * screenShake;
+    ctx.translate(shakeX, shakeY);
+    screenShake *= 0.9; // Decay shake
   }
 
-  // Clear canvas with background color
-  ctx.fillStyle = backgroundColor;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Enhanced background with gradient and vignette
+  drawEnhancedBackground();
 
-  // Update interpolations for smooth movement
+  // Update systems
   updateInterpolation();
-  updatePlateImpacts(); // Update impact animations
+  updatePlateImpacts();
+  updateParticles();
+  updateBallTrail();
   
   // Draw game elements
   drawField();
   drawPaddles();
   drawPowerUp();
+  drawBallTrail();
   drawBall();
   drawEchoBallTrail();
   drawExtraBalls();
+  drawParticles();
+  
+  // Restore context after shake
+  ctx.restore();
+  
+  // UI elements (not affected by shake)
   updateHTMLScoreboard();
   drawPowerUpTimer();
   drawCountdown();
 
   animationId = requestAnimationFrame(render);
+}
+
+// Enhanced background with gradient and vignette
+function drawEnhancedBackground() {
+  const w = canvas.width;
+  const h = canvas.height;
+  
+  // Gradient background
+  const gradient = ctx.createLinearGradient(0, 0, 0, h);
+  gradient.addColorStop(0, '#0b0b10');
+  gradient.addColorStop(1, '#000000');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, w, h);
+  
+  // Center grid/sheen effect
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+  for (let y = 24; y < h - 24; y += 36) {
+    ctx.fillRect(w/2 - 1, y, 2, 18);
+  }
+  
+  // Vignette effect
+  const vignette = ctx.createRadialGradient(w/2, h/2, Math.min(w, h) * 0.2, w/2, h/2, Math.max(w, h) * 0.7);
+  vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
+  vignette.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
+  ctx.fillStyle = vignette;
+  ctx.fillRect(0, 0, w, h);
+  
+  // Apply power-up background overlay if active
+  if (gameState.backgroundColorOverride) {
+    ctx.fillStyle = gameState.backgroundColorOverride;
+    ctx.globalAlpha = 0.3;
+    ctx.fillRect(0, 0, w, h);
+    ctx.globalAlpha = 1;
+  }
+}
+
+// Update ball trail
+function updateBallTrail() {
+  if (!gameState.ball) return;
+  
+  // Add current position to trail
+  ballTrail.push({
+    x: gameState.ball.x,
+    y: gameState.ball.y,
+    alpha: 0.5
+  });
+  
+  // Limit trail length
+  if (ballTrail.length > 15) {
+    ballTrail.shift();
+  }
+  
+  // Fade trail
+  ballTrail.forEach(t => {
+    t.alpha *= 0.95;
+  });
+}
+
+// Draw ball trail
+function drawBallTrail() {
+  ballTrail.forEach((t, i) => {
+    ctx.save();
+    ctx.globalAlpha = t.alpha * (i / ballTrail.length);
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    const size = gameState.ball.radius * (0.7 + i / ballTrail.length * 0.3);
+    ctx.arc(t.x, t.y, size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
 }
 
 // Smooth interpolation for paddle movement
@@ -1646,6 +1786,17 @@ function drawBall() {
   
   const ball = gameState.ball;
   const ballSize = 32; // Bigger kidney bean ball for better visibility
+  
+  // Draw ball glow effect
+  ctx.save();
+  ctx.shadowBlur = 20;
+  ctx.shadowColor = '#ffffff';
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.radius + 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
   
   // Special effects for different power-ups
   if (gameState.butterflyActive) {
