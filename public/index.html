@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="/premium-style.css" />
   <script src="/js/webrtc-manager.js"></script>
   <script src="/js/hybrid-connection.js"></script>
-  <script src="/js/universal-connection.js"></script>
 </head>
 <body>
   <div class="tv-wrapper">
@@ -31,44 +30,11 @@
               <span class="qr-text">QR Code will appear here</span>
             </div>
           </div>
-          
-          <!-- Connection Status Indicator -->
-          <div class="connection-status hidden" id="connectionStatus">
-            <div class="status-indicator">
-              <div class="status-dot" id="statusDot"></div>
-              <div class="status-text" id="statusText">Waiting for connections...</div>
-            </div>
-            <div class="connection-details hidden" id="connectionDetails">
-              <div class="detail-item" id="connectionType">🌐 Internet Connection</div>
-              <div class="detail-item" id="connectionLatency">~100ms latency</div>
-            </div>
-          </div>
         </div>
 
         <div class="instruction-text">
           <p>Press "Create Room" to start playing with friends</p>
           <p style="font-size: 12px; opacity: 0.6; margin-top: 8px;">Share the QR code or room code with players</p>
-        </div>
-
-        <!-- Connection Methods Display -->
-        <div class="connection-methods hidden" id="connectionMethods">
-          <div class="connection-header">
-            <h3>📱 Connection Options</h3>
-            <p>Multiple ways to connect your phone:</p>
-          </div>
-          <div class="methods-list" id="methodsList">
-            <!-- Dynamically populated with available connection methods -->
-          </div>
-          
-          <!-- Device Capabilities -->
-          <div class="device-capabilities" id="deviceCapabilities">
-            <div class="capabilities-header">
-              <h4>🔍 Your Device Supports:</h4>
-            </div>
-            <div class="capabilities-grid" id="capabilitiesGrid">
-              <!-- Dynamically populated with device capabilities -->
-            </div>
-          </div>
         </div>
 
         <div class="control-group">
@@ -117,16 +83,6 @@
             <div class="player-indicator"></div>
             <span class="player-label">P5</span>
             <span class="player-status">⭕</span>
-          </div>
-        </div>
-
-        <!-- Connection Status Display -->
-        <div class="connection-info">
-          <div id="connectionStatus" class="connection-status disconnected">
-            🔄 Initializing Connection...
-          </div>
-          <div id="latencyDisplay" class="latency-display">
-            Latency: Measuring...
           </div>
         </div>
 

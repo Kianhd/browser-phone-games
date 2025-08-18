@@ -5,8 +5,7 @@ const socket = io();
 let hybridConnection = null;
 let connectionInitialized = false;
 
-// Initialize Universal Connection Manager
-let universalConnection = null;
+// Universal Connection Manager removed - using original WebRTC only
 
 // DOM Elements
 const menuPanel = document.getElementById('menuPanel');
@@ -560,9 +559,6 @@ createRoomBtn.addEventListener('click', async () => {
     
     generateQR(res.room);
     
-    // Show waiting status
-    updateConnectionStatus('waiting');
-    
     // Change button text after first room creation
     createRoomBtn.textContent = 'CREATE NEW ROOM';
   });
@@ -706,55 +702,24 @@ function resetRoomInterface() {
 }
 
 function generateQR(code) {
-  if (!universalConnection) {
-    // Initialize Universal Connection Manager if not already done
-    universalConnection = new UniversalConnectionManager();
+  let url = `${location.origin}/controller.html?r=${code}`;
+  
+  // Add WebRTC connection code if available for direct P2P connection
+  if (hybridConnection && connectionInitialized) {
+    const connectionInfo = hybridConnection.getConnectionInfo();
+    if (connectionInfo.type === 'webrtc') {
+      // Generate enhanced QR with WebRTC capability
+      url = hybridConnection.generateEnhancedQR(code, 'webrtc-enabled');
+    }
   }
   
-  // Generate host information for the universal connection
-  const hostInfo = {
-    name: 'BeanPong TV Host',
-    type: 'tv', // or 'pc', 'browser', etc.
-    platform: navigator.platform,
-    room: code
-  };
-  
-  try {
-    // Generate universal QR with multiple connection methods
-    const universalQR = universalConnection.generateUniversalQR(hostInfo);
-    
-    // Use the primary smart QR code
-    qrImg.src = universalQR.primary;
-    
-    // Store QR data for potential UI enhancements
-    window.currentQRData = {
-      primary: universalQR.primary,
-      fallback: universalQR.fallback,
-      simple: universalQR.simple,
-      metadata: universalQR.metadata,
-      instructions: universalQR.instructions
-    };
-    
-    console.log('🌐 Universal QR Generated with methods:', universalQR.metadata.connections.length);
-    console.log('📱 Connection methods available:', universalQR.metadata.connections.map(c => c.type));
-    
-  } catch (error) {
-    console.warn('❌ Universal QR generation failed, falling back to simple QR:', error);
-    
-    // Fallback to simple QR code
-    const fallbackUrl = `${location.origin}/controller.html?r=${code}`;
-    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(fallbackUrl)}&bgcolor=ffffff&color=0a0a0f`;
-  }
+  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=0a0a0f`;
   
   // Show QR code and hide placeholder
   qrImg.classList.remove('hidden');
   document.getElementById('qrPlaceholder').style.display = 'none';
   
-  // Show connection methods if universal QR was generated successfully
-  if (window.currentQRData && window.currentQRData.metadata) {
-    displayConnectionMethods(window.currentQRData.metadata.connections);
-    displayDeviceCapabilities(window.currentQRData.metadata.capabilities);
-  }
+  console.log('📱 QR Code generated:', url);
 }
 
 // Display available connection methods to the user

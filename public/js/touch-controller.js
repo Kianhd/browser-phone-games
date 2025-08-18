@@ -64,25 +64,18 @@ let sendInterval = null;
 let countdownActive = false;
 let countdownNumber = null;
 
-// Initialize Universal Connection Manager for controller
-let universalController = null;
-
-// Check URL params for room code and connection data
+// Check URL params for room code and WebRTC capability
 window.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
   const roomCode = params.get('r');
   const rtcMode = params.get('mode');
   const rtcCode = params.get('rtc');
-  const connectionData = params.get('data');
   
   if (roomCode) {
     roomInput.value = roomCode.toUpperCase();
     
-    // Check for universal connection data first
-    if (connectionData && rtcMode === 'smart') {
-      await initializeUniversalConnection(connectionData);
-    } else if (rtcMode === 'direct' || rtcCode) {
-      // Fallback to WebRTC-only initialization
+    // Initialize WebRTC if available
+    if (rtcMode === 'direct' || rtcCode) {
       await initializeWebRTCController(rtcCode);
     }
     
@@ -93,43 +86,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   document.addEventListener('touchstart', initControllerAudio, { once: true });
   document.addEventListener('click', initControllerAudio, { once: true });
 });
-
-// Initialize Universal Connection for controller
-async function initializeUniversalConnection(encodedData) {
-  try {
-    universalController = new UniversalConnectionManager();
-    
-    // Decode and parse connection data
-    const decodedData = atob(encodedData);
-    const connectionInfo = JSON.parse(decodedData);
-    
-    console.log('📱 Universal connection data received:', connectionInfo);
-    
-    // Attempt connection using universal system
-    const connection = await universalController.connectFromQR(JSON.stringify(connectionInfo));
-    
-    if (connection.success) {
-      console.log('🌐 Universal connection established:', connection.type);
-      
-      // Update connection status display
-      updateControllerConnectionDisplay({
-        type: connection.type,
-        state: 'connected',
-        latency: connection.method.latency
-      });
-      
-      // Set up hybrid connection based on the successful method
-      if (connection.type === 'webrtc') {
-        useWebRTC = true;
-      }
-    }
-    
-  } catch (error) {
-    console.error('❌ Universal connection failed:', error);
-    // Fall back to standard socket.io connection
-    console.log('🔄 Falling back to standard connection...');
-  }
-}
 
 // Initialize WebRTC controller connection
 async function initializeWebRTCController(connectionCode) {
