@@ -465,3 +465,136 @@ socket.on('toast', ({ msg }) => {
 
 // Initialize
 showView('selection');
+// Initialize highlight after a short delay to ensure DOM is ready
+setTimeout(() => updateTVHighlight(), 100);
+
+// TV Navigation System - Handle controller input
+let tvState = {
+  currentView: 'selection', // 'selection', 'collection', 'game'
+  selectedCategory: 0, // For collection view
+  selectedGame: -1, // For collection view
+  inGameControls: false
+};
+
+const categories = [
+  { key: 'party', title: 'Party / Friends', games: [
+    'party.quick-quiz', 'party.finish-phrase', 'party.fact-fiction', 
+    'party.phone-confessions', 'party.answer-roulette', 'party.lie-detector', 'party.buzzkill'
+  ]},
+  { key: 'couples', title: 'Couples', games: [
+    'couples.how-good', 'couples.survival', 'couples.finish-phrase', 
+    'couples.relationship', 'couples.secret-sync'
+  ]}
+];
+
+function updateTVHighlight() {
+  // Remove all existing highlights
+  document.querySelectorAll('.tv-highlighted').forEach(el => el.classList.remove('tv-highlighted'));
+  
+  if (tvState.currentView === 'selection') {
+    // Highlight the braincell card
+    const braincellCard = document.querySelector('[data-action="show-braincell"]');
+    if (braincellCard) braincellCard.classList.add('tv-highlighted');
+  } else if (tvState.currentView === 'collection') {
+    if (tvState.inGameControls) {
+      // Highlight start button or back button
+      if (startBtn && !startBtn.disabled) {
+        startBtn.classList.add('tv-highlighted');
+      }
+    } else {
+      // Highlight current category or game
+      const categoryCards = document.querySelectorAll('.category-card');
+      const currentCategory = categories[tvState.selectedCategory];
+      
+      if (tvState.selectedGame === -1) {
+        // Highlighting category
+        if (categoryCards[tvState.selectedCategory]) {
+          categoryCards[tvState.selectedCategory].classList.add('tv-highlighted');
+        }
+      } else {
+        // Highlighting specific game
+        const gameCards = document.querySelectorAll(`[data-game-id="${currentCategory.games[tvState.selectedGame]}"]`);
+        if (gameCards[0]) gameCards[0].classList.add('tv-highlighted');
+      }
+    }
+  }
+}
+
+socket.on('tvNavigate', ({ action, data }) => {
+  if (action === 'navigate') {
+    handleTVNavigation(data.direction);
+  } else if (action === 'start') {
+    // Trigger start game if valid
+    if (selectedGame && startBtn && !startBtn.disabled) {
+      startBtn.click();
+    }
+  }
+});
+
+function handleTVNavigation(direction) {
+  if (tvState.currentView === 'selection') {
+    if (direction === 'select') {
+      // Go to collection view
+      tvState.currentView = 'collection';
+      tvState.selectedCategory = 0;
+      tvState.selectedGame = -1;
+      showView('collection');
+    }
+  } else if (tvState.currentView === 'collection') {
+    if (direction === 'back') {
+      if (tvState.inGameControls) {
+        tvState.inGameControls = false;
+      } else if (tvState.selectedGame !== -1) {
+        tvState.selectedGame = -1;
+      } else {
+        tvState.currentView = 'selection';
+        showView('selection');
+        selectedGame = null;
+        gameControls.classList.add('hidden');
+      }
+    } else if (direction === 'up') {
+      if (!tvState.inGameControls && tvState.selectedGame === -1) {
+        tvState.selectedCategory = Math.max(0, tvState.selectedCategory - 1);
+      } else if (tvState.selectedGame !== -1) {
+        const currentCategory = categories[tvState.selectedCategory];
+        tvState.selectedGame = Math.max(0, tvState.selectedGame - 1);
+      }
+    } else if (direction === 'down') {
+      if (!tvState.inGameControls && tvState.selectedGame === -1) {
+        tvState.selectedCategory = Math.min(categories.length - 1, tvState.selectedCategory + 1);
+      } else if (tvState.selectedGame !== -1) {
+        const currentCategory = categories[tvState.selectedCategory];
+        tvState.selectedGame = Math.min(currentCategory.games.length - 1, tvState.selectedGame + 1);
+      }
+    } else if (direction === 'right' && tvState.selectedGame === -1) {
+      // Enter games for current category
+      tvState.selectedGame = 0;
+    } else if (direction === 'left' && tvState.selectedGame !== -1) {
+      // Go back to category selection
+      tvState.selectedGame = -1;
+    } else if (direction === 'select') {
+      if (tvState.inGameControls) {
+        // Start the game if we're in game controls
+        if (selectedGame && startBtn && !startBtn.disabled) {
+          startBtn.click();
+        }
+      } else if (tvState.selectedGame !== -1) {
+        // Select the game
+        const currentCategory = categories[tvState.selectedCategory];
+        const gameId = currentCategory.games[tvState.selectedGame];
+        selectedGame = gameId;
+        
+        // Simulate clicking the game card
+        const gameCard = document.querySelector(`[data-game-id="${gameId}"]`);
+        if (gameCard) gameCard.click();
+        
+        tvState.inGameControls = true;
+      } else {
+        // Select the current category (enter games for this category)
+        tvState.selectedGame = 0;
+      }
+    }
+  }
+  
+  updateTVHighlight();
+}

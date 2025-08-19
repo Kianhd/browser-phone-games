@@ -184,6 +184,19 @@ io.on('connection', (socket)=>{
     startTrivia(rounds);
   });
 
+  // Handle TV navigation commands from controller
+  socket.on('tvControl', ({ action, data, pid })=>{
+    // Verify player exists
+    const sid = hub.byPid.get(pid); 
+    if(!sid || sid !== socket.id) return;
+    
+    // Only host can control TV
+    if (socket.id !== hub.hostSocketId) return;
+    
+    // Forward command to TV
+    io.to('tv').emit('tvNavigate', { action, data });
+  });
+
   socket.on('disconnect', ()=>{
     if (socket.id === hub.hostSocketId) {
       hub.hostSocketId = null;
@@ -216,11 +229,16 @@ function startTrivia(rounds){
     total: shuffled.length,
     timerSec: TIMER_SEC,
     scores: Object.fromEntries(activePIDs.map(pid=>[pid,0])),
+    streaks: Object.fromEntries(activePIDs.map(pid=>[pid,0])), // For streak bonus
     phase: 'idle',
     phaseFlag: isCouples ? 'self' : null,
+    questionStartAt: 0,
     endsAt: 0,
     q: null,
-    answers: {}
+    answers: {},
+    jinxedPlayer: null, // For Answer Roulette
+    isLightningRound: false, // For Buzzkill Bonus
+    afkCount: Object.fromEntries(activePIDs.map(pid=>[pid,0])) // Track AFK
   };
 
   function snapshotForController(){
@@ -239,10 +257,32 @@ function startTrivia(rounds){
     STATE.q = shuffled[STATE.idx];
     if (!STATE.q){ return endGame(); }
 
+    // Special game modes setup
+    if (STATE.gameId === 'party.answer-roulette') {
+      // Randomly jinx one player for Answer Roulette
+      const randomIdx = Math.floor(Math.random() * activePIDs.length);
+      STATE.jinxedPlayer = activePIDs[randomIdx];
+    } else {
+      STATE.jinxedPlayer = null;
+    }
+
+    // Buzzkill Bonus: Every 5th question or 20% chance for lightning round
+    if (STATE.gameId === 'party.buzzkill' && (STATE.idx % 5 === 4 || Math.random() < 0.2)) {
+      STATE.isLightningRound = true;
+    } else {
+      STATE.isLightningRound = false;
+    }
+
     STATE.phase = 'idle';
     setSnapshot();
     const title = isCouples ? (STATE.phaseFlag==='self' ? 'Couples — Your Answer' : 'Couples — Guess Partner') : titleOf(STATE.gameId);
-    io.emit('preQuestion', { title, idx: STATE.idx+1, total: STATE.total, timerSec: STATE.timerSec });
+    io.emit('preQuestion', { 
+      title, 
+      idx: STATE.idx+1, 
+      total: STATE.total, 
+      timerSec: STATE.timerSec,
+      isLightning: STATE.isLightningRound 
+    });
 
     setTimeout(()=> startPhase(), 1000); // 1s pre-question pause
   }
@@ -251,6 +291,7 @@ function startTrivia(rounds){
 
   function startPhase(){
     STATE.phase = 'question';
+    STATE.questionStartAt = Date.now();
     STATE.endsAt = Date.now() + STATE.timerSec*1000;
     setSnapshot();
 
@@ -261,7 +302,22 @@ function startTrivia(rounds){
         io.emit('csGuess', { q:STATE.q, idx:STATE.idx+1, total:STATE.total, endsAt:STATE.endsAt, timerSec:STATE.timerSec });
       }
     } else {
-      io.emit('lbQuestion', { q:STATE.q, idx:STATE.idx+1, total:STATE.total, endsAt:STATE.endsAt, title:titleOf(STATE.gameId), timerSec:STATE.timerSec });
+      // Send jinxed player info only to that player
+      if (STATE.jinxedPlayer) {
+        const jinxedSocket = hub.byPid.get(STATE.jinxedPlayer);
+        if (jinxedSocket) {
+          io.to(jinxedSocket).emit('youAreJinxed', { jinxed: true });
+        }
+      }
+      io.emit('lbQuestion', { 
+        q:STATE.q, 
+        idx:STATE.idx+1, 
+        total:STATE.total, 
+        endsAt:STATE.endsAt, 
+        title:titleOf(STATE.gameId), 
+        timerSec:STATE.timerSec,
+        isLightning: STATE.isLightningRound 
+      });
     }
 
     clearInterval(tickInterval);
@@ -272,11 +328,13 @@ function startTrivia(rounds){
       if (!isCouples) {
         if (Object.keys(STATE.answers).length >= activePIDs.length) { clearInterval(tickInterval); return reveal(); }
       } else {
-        const bothDone = activePIDs.every(pid => {
+        // Check if both players have submitted both self and guess
+        const activeCouplePIDs = activePIDs.slice(0, 2);
+        const allDone = activeCouplePIDs.every(pid => {
           const a = STATE.answers[pid];
-          return STATE.phaseFlag==='self' ? (a && a.self) : (a && a.guess);
+          return a && a.self && a.guess;
         });
-        if (bothDone) { clearInterval(tickInterval); return reveal(); }
+        if (allDone) { clearInterval(tickInterval); return reveal(); }
       }
 
       if (left<=0){ clearInterval(tickInterval); reveal(); }
@@ -285,20 +343,31 @@ function startTrivia(rounds){
 
   // Reset any old listeners for a fresh round
   io.removeAllListeners('answer');
-  io.removeAllListeners('answerCouplesPhase');
+  io.removeAllListeners('answerCouples');
 
   io.on('connection', (skt)=>{
     skt.on('answer', ({ pid, choice })=>{
       if (STATE.kind!=='trivia' || STATE.phase!=='question' || isCouples) return;
       if (STATE.answers[pid]) return;
+      
+      // Handle jinxed player in Answer Roulette - force wrong answer
+      if (STATE.jinxedPlayer === pid && STATE.gameId === 'party.answer-roulette') {
+        // Find a wrong answer
+        const wrongAnswers = ['A', 'B', 'C', 'D'].filter(opt => opt !== STATE.q.correct);
+        choice = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
+      }
+      
       STATE.answers[pid] = { choice, at: Date.now() };
     });
-    skt.on('answerCouplesPhase', ({ pid, choice })=>{
+    
+    // New couples answer format: both self and guess in one submission
+    skt.on('answerCouples', ({ pid, self, guessPartner })=>{
       if (STATE.kind!=='trivia' || STATE.phase!=='question' || !isCouples) return;
-      if (!STATE.answers[pid]) STATE.answers[pid] = {};
-      const tag = (STATE.phaseFlag==='self') ? 'self' : 'guess';
-      if (STATE.answers[pid][tag]) return;
-      STATE.answers[pid][tag] = { choice, at: Date.now() };
+      if (STATE.answers[pid]) return;
+      STATE.answers[pid] = { 
+        self: { choice: self, at: Date.now() },
+        guess: { choice: guessPartner, at: Date.now() }
+      };
     });
   });
 
@@ -306,56 +375,122 @@ function startTrivia(rounds){
     STATE.phase = 'reveal';
     setSnapshot();
 
-    // suspense before highlighting
+    // Suspense pause before highlighting (250-400ms as per spec)
     setTimeout(()=>{
       if (isCouples){
+        // Couples scoring: +5 points for correctly guessing partner's choice
         const active = activePIDs.slice(0,2);
         const [A,B] = active;
         const a = STATE.answers[A]||{}, b = STATE.answers[B]||{};
-        if (STATE.phaseFlag==='guess'){
-          if (a.guess && b.self && a.guess.choice===b.self.choice) STATE.scores[A]+=5;
-          if (b.guess && a.self && b.guess.choice===a.self.choice) STATE.scores[B]+=5;
-
-          const picks = {};
-          active.forEach(pid=>{
-            picks[pid] = {
-              self:  (STATE.answers[pid] && STATE.answers[pid].self)  ? STATE.answers[pid].self.choice  : null,
-              guess: (STATE.answers[pid] && STATE.answers[pid].guess) ? STATE.answers[pid].guess.choice : null
-            };
-          });
-
-          io.emit('csReveal', { correct: STATE.q.correct, picks, scores: STATE.scores });
-
-          // longer viewing window so players clearly see the correct answer
-          setTimeout(()=>{
-            STATE.idx++;
-            STATE.phaseFlag = 'self';
-            (STATE.idx >= STATE.total) ? endGame() : nextQuestion();
-          }, 2400);
-        } else {
-          // finished self -> switch to guess with a tiny pause
-          setTimeout(()=>{ STATE.phaseFlag = 'guess'; startPhase(); }, 500);
+        
+        let scoreChanges = {};
+        if (a.guess && b.self && a.guess.choice === b.self.choice) {
+          STATE.scores[A] += 5;
+          scoreChanges[A] = 5;
         }
-      } else {
-        Object.entries(STATE.answers).forEach(([pid, ans])=>{
-          if (ans.choice === STATE.q.correct){
-            const pts = Math.max(0, Math.ceil((STATE.endsAt - ans.at)/1000));
-            STATE.scores[pid] += pts;
-          }
-        });
+        if (b.guess && a.self && b.guess.choice === a.self.choice) {
+          STATE.scores[B] += 5;
+          scoreChanges[B] = 5;
+        }
 
         const picks = {};
-        activePIDs.forEach(pid => { picks[pid] = (STATE.answers[pid] && STATE.answers[pid].choice) || null; });
+        active.forEach(pid => {
+          picks[pid] = {
+            self:  (STATE.answers[pid] && STATE.answers[pid].self) ? STATE.answers[pid].self.choice : null,
+            guess: (STATE.answers[pid] && STATE.answers[pid].guess) ? STATE.answers[pid].guess.choice : null
+          };
+        });
 
-        io.emit('lbReveal', { correct: STATE.q.correct, scores: STATE.scores, picks });
+        io.emit('csReveal', { 
+          correct: STATE.q.correct, 
+          picks, 
+          scores: STATE.scores,
+          scoreChanges 
+        });
 
-        // longer viewing pause (2.4s) so highlight + avatars are visible before next
+        // Hold reveal for 1.2s then advance after 0.9s
         setTimeout(()=>{
           STATE.idx++;
-          (STATE.idx >= STATE.total) ? endGame() : nextQuestion();
-        }, 2400);
+          (STATE.idx >= STATE.total) ? endGame() : setTimeout(() => nextQuestion(), 900);
+        }, 1200);
+        
+      } else {
+        // Party/Friends scoring based on seconds remaining
+        let scoreChanges = {};
+        let perfectRound = true;
+        
+        Object.entries(STATE.answers).forEach(([pid, ans])=>{
+          if (ans.choice === STATE.q.correct){
+            // Calculate points based on seconds left when they answered
+            const elapsed = Math.ceil((ans.at - STATE.questionStartAt) / 1000);
+            const left = Math.max(0, STATE.timerSec - elapsed);
+            let pts = left;
+            
+            // Apply lightning bonus for Buzzkill
+            if (STATE.isLightningRound) {
+              pts *= 2;
+            }
+            
+            // Apply streak bonus (cap at +3)
+            STATE.streaks[pid] = (STATE.streaks[pid] || 0) + 1;
+            const streakBonus = Math.min(3, STATE.streaks[pid] - 1);
+            pts += streakBonus;
+            
+            STATE.scores[pid] += pts;
+            scoreChanges[pid] = pts;
+            
+            // Reset AFK counter on answer
+            STATE.afkCount[pid] = 0;
+          } else {
+            // Wrong answer
+            STATE.streaks[pid] = 0;
+            perfectRound = false;
+            STATE.afkCount[pid] = (STATE.afkCount[pid] || 0) + 1;
+          }
+        });
+        
+        // Check for no answers (AFK)
+        activePIDs.forEach(pid => {
+          if (!STATE.answers[pid]) {
+            STATE.afkCount[pid] = (STATE.afkCount[pid] || 0) + 1;
+            STATE.streaks[pid] = 0;
+            perfectRound = false;
+          }
+        });
+        
+        // Perfect round bonus (+1 to everyone who got it right)
+        if (perfectRound && Object.keys(scoreChanges).length === activePIDs.length) {
+          Object.keys(scoreChanges).forEach(pid => {
+            STATE.scores[pid] += 1;
+            scoreChanges[pid] += 1;
+          });
+        }
+
+        const picks = {};
+        activePIDs.forEach(pid => { 
+          picks[pid] = (STATE.answers[pid] && STATE.answers[pid].choice) || null; 
+        });
+
+        io.emit('lbReveal', { 
+          correct: STATE.q.correct, 
+          scores: STATE.scores, 
+          picks,
+          scoreChanges,
+          jinxed: STATE.jinxedPlayer,
+          perfectRound: perfectRound && Object.keys(scoreChanges).length === activePIDs.length,
+          streaks: STATE.streaks,
+          afk: Object.fromEntries(
+            Object.entries(STATE.afkCount).filter(([_, count]) => count >= 3)
+          )
+        });
+
+        // Hold reveal for 1.2s then advance after 0.9s
+        setTimeout(()=>{
+          STATE.idx++;
+          (STATE.idx >= STATE.total) ? endGame() : setTimeout(() => nextQuestion(), 900);
+        }, 1200);
       }
-    }, 800); // suspense pause before reveal
+    }, 350); // 350ms suspense pause before reveal
   }
 
   function endGame(){

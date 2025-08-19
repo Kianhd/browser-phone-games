@@ -840,3 +840,155 @@ body::before {
   justify-content: space-between;
   margin: 8px 0;
 }
+
+/* New scoring system styles */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+/* Couples selection styles */
+.opt-self.selected, .opt-guess.selected {
+  background: var(--accent) !important;
+  color: #000 !important;
+  font-weight: 700;
+  border: 2px solid var(--accent);
+}
+
+.couples-section {
+  transition: all 0.3s ease;
+}
+
+/* Lightning round animation */
+@keyframes lightning {
+  0%, 100% { color: #ffd166; }
+  50% { color: #fff; }
+}
+
+/* Jinxed player notification */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Score toast animations */
+.score-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--premium-gradient);
+  color: #fff;
+  padding: 24px 48px;
+  border-radius: 16px;
+  font-size: 32px;
+  font-weight: 700;
+  z-index: 10000;
+  animation: scorePopup 1s ease-out;
+}
+
+@keyframes scorePopup {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* Perfect round banner */
+.perfect-banner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #6EFF9D, #6ec1ff);
+  color: #000;
+  padding: 16px 32px;
+  border-radius: 16px;
+  font-size: 24px;
+  font-weight: 700;
+  z-index: 10000;
+  animation: perfectSlide 0.5s ease-out;
+}
+
+@keyframes perfectSlide {
+  from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* AFK indicator */
+.player-chip.afk {
+  opacity: 0.4;
+  position: relative;
+}
+
+.player-chip.afk::after {
+  content: 'AFK';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff2b2b;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Streak indicator */
+.player-chip.streak::before {
+  content: '🔥';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  font-size: 20px;
+  animation: flame 0.5s ease-in-out infinite;
+}
+
+@keyframes flame {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(5deg); }
+}
+
+
+/* TV Navigation Highlighting */
+.tv-highlighted {
+  outline: 3px solid #6EFF9D !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 20px rgba(110, 255, 157, 0.5) !important;
+  transform: scale(1.02) !important;
+  transition: all 0.2s ease !important;
+}
+
+.tv-highlighted:hover {
+  outline: 3px solid #6EFF9D !important;
+  outline-offset: 2px;
+}
+
+/* Remote control UI improvements */
+.remote-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.remote-instruction {
+  font-size: 13px;
+  color: #bdbdbd;
+  text-align: center;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+/* Update dpad button hover states for remote control */
+.dpad-btn:hover {
+  background: linear-gradient(135deg, rgba(110, 255, 157, 0.15), rgba(110, 255, 157, 0.05)) !important;
+  border-color: rgba(110, 255, 157, 0.3) !important;
+  box-shadow: 0 0 16px rgba(110, 255, 157, 0.2) !important;
+}
+
+.dpad-btn:active {
+  transform: scale(0.95) !important;
+  box-shadow: 0 0 12px rgba(110, 255, 157, 0.3) !important;
+}

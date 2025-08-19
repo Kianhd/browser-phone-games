@@ -78,48 +78,11 @@ function uiHostController(){
         </div>
       </div>
 
-      <!-- Display Screen -->
+      <!-- Simplified Display -->
       <div class="remote-screen">
         <div class="screen-content">
-          ${currentMenuSection === 'main' ? `
-            <div class="menu-title">Main Menu</div>
-            <div class="current-selection">
-              <div class="selection-icon">${selectedItem.name.split(' ')[0]}</div>
-              <div class="selection-info">
-                <div class="selection-name">${selectedItem.name.substring(2)}</div>
-                <div class="selection-desc">${selectedItem.desc}</div>
-              </div>
-            </div>
-          ` : currentMenuSection === 'braincell' ? `
-            <div class="menu-breadcrumb">
-              <span>Main</span>
-              <span class="breadcrumb-arrow">›</span>
-              <span>The Last Braincell</span>
-            </div>
-            <div class="current-selection">
-              <div class="selection-icon">${selectedItem.name.split(' ')[0]}</div>
-              <div class="selection-info">
-                <div class="selection-name">${selectedItem.name.substring(2)}</div>
-                <div class="selection-desc">${selectedItem.desc}</div>
-              </div>
-            </div>
-          ` : `
-            <div class="menu-breadcrumb">
-              <span>Main</span>
-              <span class="breadcrumb-arrow">›</span>
-              <span>Braincell</span>
-              <span class="breadcrumb-arrow">›</span>
-              <span>${currentMenuSection === 'party' ? 'Party' : 'Couples'}</span>
-            </div>
-            <div class="game-selection">
-              <div class="game-icon">${selectedItem.name.split(' ')[0]}</div>
-              <div class="game-details">
-                <div class="game-name">${selectedItem.name.substring(2)}</div>
-                <div class="game-desc">${selectedItem.desc}</div>
-                ${currentGame === selectedItem.id ? '<div class="game-selected">✓ Selected</div>' : ''}
-              </div>
-            </div>
-          `}
+          <div class="remote-title">TV Remote Control</div>
+          <div class="remote-instruction">Navigate the TV screen using the controls below</div>
           
           <div class="player-count">
             <span class="count-icon">👥</span>
@@ -683,19 +646,24 @@ function uiHostController(){
     uiHostController();
   };
   
-  // Wire up controls
-  document.getElementById('dpadUp')?.addEventListener('click', () => navigate('up'));
-  document.getElementById('dpadDown')?.addEventListener('click', () => navigate('down'));
-  document.getElementById('dpadLeft')?.addEventListener('click', goBack);
-  document.getElementById('dpadRight')?.addEventListener('click', selectCurrent);
-  document.getElementById('dpadOk')?.addEventListener('click', selectCurrent);
-  document.getElementById('backBtn')?.addEventListener('click', goBack);
+  // Wire up controls to send TV navigation commands
+  document.getElementById('dpadUp')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'up' }));
+  document.getElementById('dpadDown')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'down' }));
+  document.getElementById('dpadLeft')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'left' }));
+  document.getElementById('dpadRight')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'right' }));
+  document.getElementById('dpadOk')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'select' }));
+  document.getElementById('backBtn')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'back' }));
   
   document.getElementById('startBtn')?.addEventListener('click', () => {
-    socket.emit('startGame', { rounds: 10 });
+    sendTVCommand('start');
   });
   
   document.getElementById('leaveBtn')?.addEventListener('click', () => doLeave());
+}
+
+// Function to send commands to TV
+function sendTVCommand(action, data = {}) {
+  socket.emit('tvControl', { action, data, pid });
 }
 
 function uiWaitingForHost(){
@@ -756,8 +724,31 @@ socket.on('preQuestion', ({ title, idx, total })=>{
   const leave = document.getElementById('leaveBtn'); if (leave) leave.onclick = ()=> doLeave();
 });
 
-socket.on('lbQuestion', ({ q, idx, total, title })=> {
-  uiPartyQuestion(title || 'Quick Round', q, idx, total);
+socket.on('lbQuestion', ({ q, idx, total, title, isLightning })=> {
+  uiPartyQuestion(title || 'Quick Round', q, idx, total, isLightning);
+});
+
+// Handle jinxed player notification for Answer Roulette
+socket.on('youAreJinxed', ({ jinxed })=> {
+  if (jinxed) {
+    const jinxNote = document.createElement('div');
+    jinxNote.style.cssText = `
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #ff2b2b, #ff6b9d);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      z-index: 10000;
+      animation: pulse 0.5s ease-in-out 3;
+    `;
+    jinxNote.innerHTML = '🎲 You are JINXED this round! Your answer will be forced wrong!';
+    document.body.appendChild(jinxNote);
+    setTimeout(() => jinxNote.remove(), 4000);
+  }
 });
 
 socket.on('timer', ({ left, total })=>{
@@ -794,10 +785,11 @@ socket.on('csGameOver', ()=>{
   document.getElementById('leaveBtn').onclick = ()=> doLeave();
 });
 
-function uiPartyQuestion(title, q, idx, total){
+function uiPartyQuestion(title, q, idx, total, isLightning){
   screen.innerHTML = `
     <div class="center">
-      <h2>${title}</h2>
+      <h2>${title} ${isLightning ? '⚡' : ''}</h2>
+      ${isLightning ? '<div style="color: #ffd166; font-weight: 600; margin: 8px 0; animation: pulse 1s infinite;">⚡ LIGHTNING ROUND - DOUBLE POINTS! ⚡</div>' : ''}
       <div class="row"><div>Q ${idx}/${total}</div><div class="timer">—</div></div>
       <div class="timerbar"><div class="fill" style="width:100%"></div></div>
       <div class="question-text" style="font-size: 14px; margin: 12px 0; padding: 8px; background: var(--glass-strong); border-radius: 8px; color: #fff;">
@@ -815,42 +807,127 @@ function uiPartyQuestion(title, q, idx, total){
   const leave = document.getElementById('leaveBtn'); if (leave) leave.onclick = ()=> doLeave();
 }
 
+// Store couples selections
+let couplesSelfAnswer = null;
+let couplesGuessAnswer = null;
+
 function uiCouplesSelf(q, idx, total){
+  // Reset for new question
+  couplesSelfAnswer = null;
+  couplesGuessAnswer = null;
+  
   screen.innerHTML = `
     <div class="center">
-      <h2>💝 Your Answer</h2>
+      <h2>💝 Couples Mode</h2>
       <div class="row"><div>Q ${idx}/${total}</div><div class="timer">—</div></div>
       <div class="timerbar"><div class="fill" style="width:100%"></div></div>
-      <div class="couples-hint" style="font-size: 12px; color: #ff6b9d; margin: 8px 0; text-align: center;">
-        Answer for yourself first!
-      </div>
+      
       <div class="question-text" style="font-size: 14px; margin: 12px 0; padding: 8px; background: var(--glass-strong); border-radius: 8px; color: #fff;">
         ${q.q}
       </div>
-      ${optsHtml(q)}
+      
+      <div class="couples-section" style="margin: 16px 0;">
+        <div class="couples-hint" style="font-size: 13px; color: #ff6b9d; margin: 8px 0;">
+          Step 1: Your answer
+        </div>
+        <div class="couples-options" id="selfOptions">
+          ${couplesOptsHtml(q, 'self')}
+        </div>
+      </div>
+      
+      <div class="couples-section" id="guessSection" style="opacity: 0.4; pointer-events: none;">
+        <div class="couples-hint" style="font-size: 13px; color: #ff6b9d; margin: 8px 0;">
+          Step 2: What did your partner choose?
+        </div>
+        <div class="couples-options" id="guessOptions">
+          ${couplesOptsHtml(q, 'guess')}
+        </div>
+      </div>
+      
+      <button id="submitBoth" class="btn primary" style="display: none; margin-top: 16px;">
+        Submit Both Answers
+      </button>
     </div>
     <button id="leaveBtn" class="btn secondary">Leave</button>`;
-  wireOpts((k)=> socket.emit('answerCouplesPhase', { pid, choice:k }));
+  
+  wireCouplesOpts(q);
   const leave = document.getElementById('leaveBtn'); if (leave) leave.onclick = ()=> doLeave();
 }
 
 function uiCouplesGuess(q, idx, total){
-  screen.innerHTML = `
-    <div class="center">
-      <h2>💭 Guess Partner</h2>
-      <div class="row"><div>Q ${idx}/${total}</div><div class="timer">—</div></div>
-      <div class="timerbar"><div class="fill" style="width:100%"></div></div>
-      <div class="couples-hint" style="font-size: 12px; color: #ff6b9d; margin: 8px 0; text-align: center;">
-        What did your partner choose?
-      </div>
-      <div class="question-text" style="font-size: 14px; margin: 12px 0; padding: 8px; background: var(--glass-strong); border-radius: 8px; color: #fff;">
-        ${q.q}
-      </div>
-      ${optsHtml(q)}
-    </div>
-    <button id="leaveBtn" class="btn secondary">Leave</button>`;
-  wireOpts((k)=> socket.emit('answerCouplesPhase', { pid, choice:k }));
-  const leave = document.getElementById('leaveBtn'); if (leave) leave.onclick = ()=> doLeave();
+  // For backwards compatibility, redirect to the combined UI
+  uiCouplesSelf(q, idx, total);
+}
+
+function couplesOptsHtml(q, type){
+  return `
+    <div class="row" style="margin-top:4px"><button class="btn opt-${type}" data-k="A" data-type="${type}">A) ${q.A}</button></div>
+    <div class="row" style="margin-top:4px"><button class="btn opt-${type}" data-k="B" data-type="${type}">B) ${q.B}</button></div>
+    <div class="row" style="margin-top:4px"><button class="btn opt-${type}" data-k="C" data-type="${type}">C) ${q.C}</button></div>
+    <div class="row" style="margin-top:4px"><button class="btn opt-${type}" data-k="D" data-type="${type}">D) ${q.D}</button></div>`;
+}
+
+function wireCouplesOpts(q){
+  // Wire self options
+  document.querySelectorAll('.opt-self').forEach(b => {
+    b.onclick = () => {
+      // Clear previous selection
+      document.querySelectorAll('.opt-self').forEach(btn => btn.classList.remove('selected'));
+      b.classList.add('selected');
+      couplesSelfAnswer = b.dataset.k;
+      
+      // Enable guess section
+      const guessSection = document.getElementById('guessSection');
+      if (guessSection) {
+        guessSection.style.opacity = '1';
+        guessSection.style.pointerEvents = 'auto';
+      }
+      
+      checkCouplesReady();
+    };
+  });
+  
+  // Wire guess options
+  document.querySelectorAll('.opt-guess').forEach(b => {
+    b.onclick = () => {
+      // Clear previous selection
+      document.querySelectorAll('.opt-guess').forEach(btn => btn.classList.remove('selected'));
+      b.classList.add('selected');
+      couplesGuessAnswer = b.dataset.k;
+      
+      checkCouplesReady();
+    };
+  });
+  
+  // Wire submit button
+  const submitBtn = document.getElementById('submitBoth');
+  if (submitBtn) {
+    submitBtn.onclick = () => {
+      if (couplesSelfAnswer && couplesGuessAnswer) {
+        // Disable all buttons
+        document.querySelectorAll('.opt-self, .opt-guess').forEach(b => {
+          b.disabled = true;
+          b.style.opacity = '0.6';
+        });
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.6';
+        
+        // Send both answers in one submission
+        socket.emit('answerCouples', { 
+          pid, 
+          self: couplesSelfAnswer, 
+          guessPartner: couplesGuessAnswer 
+        });
+      }
+    };
+  }
+}
+
+function checkCouplesReady(){
+  const submitBtn = document.getElementById('submitBoth');
+  if (submitBtn && couplesSelfAnswer && couplesGuessAnswer) {
+    submitBtn.style.display = 'block';
+  }
 }
 
 function optsHtml(q){
