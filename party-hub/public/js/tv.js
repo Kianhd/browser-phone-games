@@ -127,9 +127,22 @@ function updatePlayersList(players) {
 
 // Navigation
 function showView(viewName) {
+  console.log('TV: showView called with:', viewName);
+  console.log('TV: DOM elements check:', {
+    gameSelection: !!gameSelection,
+    braincellCollection: !!braincellCollection,
+    gameScreen: !!gameScreen
+  });
+  
   gameSelection.classList.toggle('hidden', viewName !== 'selection');
   braincellCollection.classList.toggle('hidden', viewName !== 'collection');
   gameScreen.classList.toggle('hidden', viewName !== 'game');
+  
+  console.log('TV: View classes after toggle:', {
+    gameSelectionHidden: gameSelection.classList.contains('hidden'),
+    braincellCollectionHidden: braincellCollection.classList.contains('hidden'),
+    gameScreenHidden: gameScreen.classList.contains('hidden')
+  });
 }
 
 function updateGameControls() {
@@ -168,6 +181,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Main game card click
   document.querySelector('[data-action=\"show-braincell\"]')?.addEventListener('click', () => {
     showView('collection');
+  });
+  
+  // Manual arena entry button
+  document.querySelector('[data-action=\"manual-enter-arena\"]')?.addEventListener('click', () => {
+    console.log('Manual arena entry clicked');
+    showView('collection');
+    tvState.currentView = 'collection';
+    tvState.selectedCategory = 0;
+    tvState.selectedGame = -1;
+    updateTVHighlight();
   });
   
   // Back button
@@ -232,6 +255,13 @@ socket.on('hubState', (state) => {
   const previousPlayerCount = hub ? hub.players.length : 0;
   hub = state;
   
+  console.log('TV hubState received:', {
+    previousPlayerCount,
+    currentPlayerCount: state.players.length,
+    currentView: tvState.currentView,
+    shouldAutoAdvance: previousPlayerCount === 0 && state.players.length >= 1
+  });
+  
   // Update room code and QR
   codeEl.textContent = state.code;
   generateQR(state.code);
@@ -241,20 +271,24 @@ socket.on('hubState', (state) => {
   
   // Auto-advance to arena selection when first player joins
   if (previousPlayerCount === 0 && state.players.length >= 1) {
+    console.log('TV: Auto-advancing to arena selection...');
     // Small delay for smooth transition
     setTimeout(() => {
+      console.log('TV: Executing auto-advance, current view:', tvState.currentView);
       // Only advance if we're still on the selection view
       if (tvState.currentView === 'selection') {
-        const epicGateway = document.querySelector('[data-action="show-braincell"]');
-        if (epicGateway) {
-          epicGateway.click();
-          tvState.currentView = 'collection';
-          tvState.selectedCategory = 0;
-          tvState.selectedGame = -1;
-          updateTVHighlight();
-        }
+        console.log('TV: Advancing to collection view...');
+        // Directly call showView instead of relying on click event
+        showView('collection');
+        tvState.currentView = 'collection';
+        tvState.selectedCategory = 0;
+        tvState.selectedGame = -1;
+        updateTVHighlight();
+        console.log('TV: Auto-advance completed, new view:', tvState.currentView);
+      } else {
+        console.log('TV: Not on selection view, skipping auto-advance');
       }
-    }, 2000); // 2 second delay for dramatic effect
+    }, 1000); // 1 second delay for smooth transition
   }
   
   // Update game controls if a game is selected
@@ -559,12 +593,31 @@ socket.on('toast', ({ msg }) => {
 });
 
 // Initialize
+console.log('TV: Initializing, current tvState:', tvState);
+console.log('TV: DOM elements available:', {
+  gameSelection: !!gameSelection,
+  braincellCollection: !!braincellCollection,
+  gameScreen: !!gameScreen
+});
 showView('selection');
 // Initialize highlight after a short delay to ensure DOM is ready
-setTimeout(() => updateTVHighlight(), 100);
+setTimeout(() => {
+  updateTVHighlight();
+  console.log('TV: Initialization complete');
+}, 100);
 
 // Refresh Hub button functionality
 document.getElementById('refreshHub')?.addEventListener('click', refreshHub);
+
+// Manual Enter Arena button functionality
+document.getElementById('manualEnterArena')?.addEventListener('click', () => {
+  console.log('Manual arena entry via ID clicked');
+  showView('collection');
+  tvState.currentView = 'collection';
+  tvState.selectedCategory = 0;
+  tvState.selectedGame = -1;
+  updateTVHighlight();
+});
 
 function refreshHub() {
   // Show loading state

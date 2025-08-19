@@ -861,6 +861,125 @@ body::before {
   margin-bottom: var(--space-dimension);
 }
 
+/* Manual Arena Entry Button */
+.manual-entry-controls {
+  margin-top: var(--space-xl);
+  display: flex;
+  justify-content: center;
+}
+
+.arena-entry-btn {
+  position: relative;
+  background: linear-gradient(135deg, 
+    rgba(0, 212, 255, 0.15) 0%, 
+    rgba(255, 45, 146, 0.1) 100%);
+  border: 2px solid var(--stellar-cyan);
+  border-radius: 16px;
+  padding: 20px 40px;
+  color: var(--stellar-cyan);
+  font-family: var(--font-main);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  min-width: 280px;
+  box-shadow: 
+    0 8px 32px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.arena-entry-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0, 212, 255, 0.3) 50%,
+    transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.arena-entry-btn:hover::before {
+  transform: translateX(100%);
+}
+
+.arena-entry-btn:hover {
+  background: linear-gradient(135deg, 
+    rgba(0, 212, 255, 0.25) 0%, 
+    rgba(255, 45, 146, 0.2) 100%);
+  border-color: var(--energy-green);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 12px 48px rgba(0, 212, 255, 0.3),
+    0 0 80px rgba(0, 212, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.arena-entry-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.entry-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, 
+    rgba(0, 212, 255, 0.2) 0%, 
+    transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: pulse-entry 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-entry {
+  0%, 100% { 
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  50% { 
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.entry-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5));
+  animation: float-icon 3s ease-in-out infinite;
+}
+
+@keyframes float-icon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.entry-text {
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+.entry-hint {
+  font-size: 14px;
+  color: rgba(0, 212, 255, 0.7);
+  opacity: 0.8;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
 .epic-gateway {
   position: relative;
   width: 100%;
