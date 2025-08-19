@@ -26,20 +26,20 @@ app.get('/controller', (req, res) => {
 
 /* ============== GAME NIGHT HQ (single global lobby) ============== */
 const AVAIL = {
-  // party (2–10)
-  'party.quick-quiz':         { min: 2, max: 10, label: '2–10 players' },
-  'party.finish-phrase':      { min: 2, max: 10, label: '2–10 players' },
-  'party.fact-fiction':       { min: 2, max: 10, label: '2–10 players' },
-  'party.phone-confessions':  { min: 2, max: 10, label: '2–10 players' },
-  'party.answer-roulette':    { min: 3, max: 10, label: '3–10 players' },
-  'party.lie-detector':       { min: 2, max: 10, label: '2–10 players' },
-  'party.buzzkill':           { min: 2, max: 10, label: '2–10 players' },
-  // couples (exactly 2)
-  'couples.how-good':         { min: 2, max: 2,  label: 'Exactly 2 players' },
-  'couples.survival':         { min: 2, max: 2,  label: 'Exactly 2 players' },
-  'couples.finish-phrase':    { min: 2, max: 2,  label: 'Exactly 2 players' },
-  'couples.relationship':     { min: 2, max: 2,  label: 'Exactly 2 players' },
-  'couples.secret-sync':      { min: 2, max: 2,  label: 'Exactly 2 players' }
+  // party (1–10) - temporary for testing
+  'party.quick-quiz':         { min: 1, max: 10, label: '1–10 players (testing)' },
+  'party.finish-phrase':      { min: 1, max: 10, label: '1–10 players (testing)' },
+  'party.fact-fiction':       { min: 1, max: 10, label: '1–10 players (testing)' },
+  'party.phone-confessions':  { min: 1, max: 10, label: '1–10 players (testing)' },
+  'party.answer-roulette':    { min: 1, max: 10, label: '1–10 players (testing)' },
+  'party.lie-detector':       { min: 1, max: 10, label: '1–10 players (testing)' },
+  'party.buzzkill':           { min: 1, max: 10, label: '1–10 players (testing)' },
+  // couples (1–2) - temporary for testing
+  'couples.how-good':         { min: 1, max: 2,  label: '1–2 players (testing)' },
+  'couples.survival':         { min: 1, max: 2,  label: '1–2 players (testing)' },
+  'couples.finish-phrase':    { min: 1, max: 2,  label: '1–2 players (testing)' },
+  'couples.relationship':     { min: 1, max: 2,  label: '1–2 players (testing)' },
+  'couples.secret-sync':      { min: 1, max: 2,  label: '1–2 players (testing)' }
 };
 
 function makeCode(){ return Math.random().toString(36).slice(2,8).toUpperCase(); }
