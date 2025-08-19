@@ -12,6 +12,15 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve Party Hub at /party-hub
+app.use('/party-hub', express.static(path.join(__dirname, 'party-hub/public')));
+app.get('/party-hub', (req, res) => {
+  res.sendFile(path.join(__dirname, 'party-hub/public/index.html'));
+});
+app.get('/party-hub/controller', (req, res) => {
+  res.sendFile(path.join(__dirname, 'party-hub/public/controller.html'));
+});
+
 // Game rooms storage
 const rooms = {};
 
