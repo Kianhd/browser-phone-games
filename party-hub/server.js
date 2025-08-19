@@ -345,31 +345,34 @@ function startTrivia(rounds){
   io.removeAllListeners('answer');
   io.removeAllListeners('answerCouples');
 
-  io.on('connection', (skt)=>{
-    skt.on('answer', ({ pid, choice })=>{
-      if (STATE.kind!=='trivia' || STATE.phase!=='question' || isCouples) return;
-      if (STATE.answers[pid]) return;
-      
-      // Handle jinxed player in Answer Roulette - force wrong answer
-      if (STATE.jinxedPlayer === pid && STATE.gameId === 'party.answer-roulette') {
-        // Find a wrong answer
-        const wrongAnswers = ['A', 'B', 'C', 'D'].filter(opt => opt !== STATE.q.correct);
-        choice = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
-      }
-      
-      STATE.answers[pid] = { choice, at: Date.now() };
-    });
+  // Set up answer listeners for this game
+  const answerHandler = ({ pid, choice }) => {
+    if (STATE.kind !== 'trivia' || STATE.phase !== 'question' || isCouples) return;
+    if (STATE.answers[pid]) return;
     
-    // New couples answer format: both self and guess in one submission
-    skt.on('answerCouples', ({ pid, self, guessPartner })=>{
-      if (STATE.kind!=='trivia' || STATE.phase!=='question' || !isCouples) return;
-      if (STATE.answers[pid]) return;
-      STATE.answers[pid] = { 
-        self: { choice: self, at: Date.now() },
-        guess: { choice: guessPartner, at: Date.now() }
-      };
-    });
-  });
+    // Handle jinxed player in Answer Roulette - force wrong answer
+    if (STATE.jinxedPlayer === pid && STATE.gameId === 'party.answer-roulette') {
+      // Find a wrong answer
+      const wrongAnswers = ['A', 'B', 'C', 'D'].filter(opt => opt !== STATE.q.correct);
+      choice = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
+    }
+    
+    STATE.answers[pid] = { choice, at: Date.now() };
+    console.log(`Player ${pid} answered, total answers: ${Object.keys(STATE.answers).length}/${activePIDs.length}`);
+  };
+
+  const couplesAnswerHandler = ({ pid, self, guessPartner }) => {
+    if (STATE.kind !== 'trivia' || STATE.phase !== 'question' || !isCouples) return;
+    if (STATE.answers[pid]) return;
+    STATE.answers[pid] = { 
+      self: { choice: self, at: Date.now() },
+      guess: { choice: guessPartner, at: Date.now() }
+    };
+    console.log(`Couple ${pid} answered, total answers: ${Object.keys(STATE.answers).length}/2`);
+  };
+
+  io.on('answer', answerHandler);
+  io.on('answerCouples', couplesAnswerHandler);
 
   function reveal(){
     STATE.phase = 'reveal';

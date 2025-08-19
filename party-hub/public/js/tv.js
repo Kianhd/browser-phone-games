@@ -22,6 +22,34 @@ const gameRequirements = document.getElementById('gameRequirements');
 
 let hub = null;
 let selectedGame = null;
+let currentGameScores = {}; // Track current game scores
+
+// Function to create a scores header for games
+function createScoresHeader(scores, title) {
+  if (!scores || Object.keys(scores).length === 0) return '';
+  
+  const scoresHTML = Object.entries(scores)
+    .sort(([,a], [,b]) => b - a)
+    .map(([pid, score], idx) => {
+      const player = hub.players.find(p => p.pid === pid);
+      return `
+        <div class="score-item">
+          ${avatarHTML(player?.name || 'Player', idx)}
+          <span class="score-name">${player?.name || 'Player'}</span>
+          <span class="score-value">${score}</span>
+        </div>
+      `;
+    }).join('');
+
+  return `
+    <div class="scores-header">
+      <div class="scores-title">${title} - Live Scores</div>
+      <div class="scores-list">
+        ${scoresHTML}
+      </div>
+    </div>
+  `;
+}
 
 // Game metadata
 const gameInfo = {
@@ -232,6 +260,11 @@ socket.on('gameSelected', ({ id, meta }) => {
 // Game event handlers
 socket.on('preQuestion', (data) => {
   showView('game');
+  // Reset scores if this is the first question
+  if (data.idx === 1) {
+    currentGameScores = {};
+  }
+  
   gameScreen.innerHTML = `
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 32px;">
       <h1 style="font-size: 48px; margin-bottom: 16px; color: #fff;">${data.title}</h1>
@@ -244,10 +277,14 @@ socket.on('preQuestion', (data) => {
 
 socket.on('lbQuestion', (data) => {
   const timeLeft = Math.max(0, data.endsAt - Date.now());
+  const scoresHeader = createScoresHeader(currentGameScores, data.title);
+  
   gameScreen.innerHTML = `
+    ${scoresHeader}
     <div style="padding: 32px; max-width: 1200px; margin: 0 auto;">
       <div style="text-align: center; margin-bottom: 32px;">
-        <h1 style="font-size: 36px; margin-bottom: 8px; color: #fff;">${data.title}</h1>
+        <h1 style="font-size: 36px; margin-bottom: 8px; color: #fff;">${data.title} ${data.isLightning ? '⚡' : ''}</h1>
+        ${data.isLightning ? '<div style="color: #ffd166; font-size: 18px; font-weight: 600; margin-bottom: 8px;">⚡ LIGHTNING ROUND - DOUBLE POINTS! ⚡</div>' : ''}
         <p style="font-size: 18px; color: #bdbdbd;">Question ${data.idx} of ${data.total}</p>
         <div class="timerbar" style="margin: 16px auto; max-width: 400px;">
           <div class="fill" id="timerFill"></div>
@@ -276,6 +313,9 @@ socket.on('timer', ({ left, total }) => {
 });
 
 socket.on('lbReveal', (data) => {
+  // Update current game scores
+  currentGameScores = data.scores || {};
+  
   const correct = data.correct;
   const options = document.querySelectorAll('.optcard');
   
@@ -334,7 +374,10 @@ socket.on('lbGameOver', (data) => {
 
 // Couples game events (similar structure but different layout)
 socket.on('csSelf', (data) => {
+  const scoresHeader = createScoresHeader(currentGameScores, 'Couples Mode');
+  
   gameScreen.innerHTML = `
+    ${scoresHeader}
     <div style="padding: 32px; max-width: 800px; margin: 0 auto; text-align: center;">
       <h1 style="font-size: 36px; margin-bottom: 8px; color: #fff;">Your Answer</h1>
       <p style="font-size: 18px; color: #bdbdbd; margin-bottom: 16px;">Question ${data.idx} of ${data.total}</p>
@@ -352,7 +395,7 @@ socket.on('csSelf', (data) => {
         </div>
       </div>
       
-      <p style="color: #ff6b9d; font-size: 16px;">💝 Answer for yourself first, then guess your partner's choice!</p>
+      <p style="color: #ff6b9d; font-size: 16px;">💝 Answer for yourself AND guess your partner's choice!</p>
     </div>
   `;
 });
@@ -382,8 +425,14 @@ socket.on('csGuess', (data) => {
 });
 
 socket.on('csReveal', (data) => {
+  // Update current game scores
+  currentGameScores = data.scores || {};
+  
   const players = hub.players.slice(0, 2);
+  const scoresHeader = createScoresHeader(currentGameScores, 'Couples Mode');
+  
   gameScreen.innerHTML = `
+    ${scoresHeader}
     <div style="padding: 32px; max-width: 1000px; margin: 0 auto; text-align: center;">
       <h1 style="font-size: 36px; margin-bottom: 24px; color: #fff;">Results</h1>
       
@@ -400,8 +449,8 @@ socket.on('csReveal', (data) => {
       </div>
       
       <div style="background: var(--premium-gradient); border-radius: 16px; padding: 24px; border: var(--border-premium);">
-        <p style="font-size: 18px; color: #fff; margin-bottom: 8px;">Correct Answer:</p>
-        <p style="font-size: 24px; font-weight: 700; color: #6EFF9D;">${data.correct}</p>
+        <p style="font-size: 18px; color: #fff; margin-bottom: 8px;">No correct answer - couples mode!</p>
+        <p style="font-size: 16px; color: #bdbdbd;">+5 points for matching your partner's choice</p>
       </div>
     </div>
   `;
@@ -476,16 +525,15 @@ let tvState = {
   inGameControls: false
 };
 
-const categories = [
-  { key: 'party', title: 'Party / Friends', games: [
-    'party.quick-quiz', 'party.finish-phrase', 'party.fact-fiction', 
-    'party.phone-confessions', 'party.answer-roulette', 'party.lie-detector', 'party.buzzkill'
-  ]},
-  { key: 'couples', title: 'Couples', games: [
-    'couples.how-good', 'couples.survival', 'couples.finish-phrase', 
-    'couples.relationship', 'couples.secret-sync'
-  ]}
-];
+// Get game cards dynamically from the actual DOM
+function getGameCards() {
+  const partyCards = Array.from(document.querySelectorAll('.category-section:first-child .mode-card'));
+  const couplesCards = Array.from(document.querySelectorAll('.category-section:last-child .mode-card'));
+  return [
+    { key: 'party', title: 'Party / Friends', cards: partyCards },
+    { key: 'couples', title: 'Couples', cards: couplesCards }
+  ];
+}
 
 function updateTVHighlight() {
   // Remove all existing highlights
@@ -497,24 +545,25 @@ function updateTVHighlight() {
     if (braincellCard) braincellCard.classList.add('tv-highlighted');
   } else if (tvState.currentView === 'collection') {
     if (tvState.inGameControls) {
-      // Highlight start button or back button
+      // Highlight start button
       if (startBtn && !startBtn.disabled) {
         startBtn.classList.add('tv-highlighted');
       }
     } else {
-      // Highlight current category or game
-      const categoryCards = document.querySelectorAll('.category-card');
+      const categories = getGameCards();
       const currentCategory = categories[tvState.selectedCategory];
       
       if (tvState.selectedGame === -1) {
-        // Highlighting category
-        if (categoryCards[tvState.selectedCategory]) {
-          categoryCards[tvState.selectedCategory].classList.add('tv-highlighted');
+        // Highlighting category section
+        const categorySections = document.querySelectorAll('.category-section');
+        if (categorySections[tvState.selectedCategory]) {
+          categorySections[tvState.selectedCategory].classList.add('tv-highlighted');
         }
       } else {
-        // Highlighting specific game
-        const gameCards = document.querySelectorAll(`[data-game-id="${currentCategory.games[tvState.selectedGame]}"]`);
-        if (gameCards[0]) gameCards[0].classList.add('tv-highlighted');
+        // Highlighting specific game card
+        if (currentCategory && currentCategory.cards[tvState.selectedGame]) {
+          currentCategory.cards[tvState.selectedGame].classList.add('tv-highlighted');
+        }
       }
     }
   }
@@ -534,23 +583,32 @@ socket.on('tvNavigate', ({ action, data }) => {
 function handleTVNavigation(direction) {
   if (tvState.currentView === 'selection') {
     if (direction === 'select') {
-      // Go to collection view
-      tvState.currentView = 'collection';
-      tvState.selectedCategory = 0;
-      tvState.selectedGame = -1;
-      showView('collection');
+      // Actually click the braincell card
+      const braincellCard = document.querySelector('[data-action="show-braincell"]');
+      if (braincellCard) {
+        braincellCard.click();
+        tvState.currentView = 'collection';
+        tvState.selectedCategory = 0;
+        tvState.selectedGame = -1;
+      }
     }
   } else if (tvState.currentView === 'collection') {
+    const categories = getGameCards();
+    
     if (direction === 'back') {
       if (tvState.inGameControls) {
         tvState.inGameControls = false;
+        selectedGame = null;
+        gameControls.classList.add('hidden');
       } else if (tvState.selectedGame !== -1) {
         tvState.selectedGame = -1;
       } else {
-        tvState.currentView = 'selection';
-        showView('selection');
-        selectedGame = null;
-        gameControls.classList.add('hidden');
+        // Actually click the back button
+        const backBtn = document.querySelector('[data-action="back-to-selection"]');
+        if (backBtn) {
+          backBtn.click();
+          tvState.currentView = 'selection';
+        }
       }
     } else if (direction === 'up') {
       if (!tvState.inGameControls && tvState.selectedGame === -1) {
@@ -564,34 +622,38 @@ function handleTVNavigation(direction) {
         tvState.selectedCategory = Math.min(categories.length - 1, tvState.selectedCategory + 1);
       } else if (tvState.selectedGame !== -1) {
         const currentCategory = categories[tvState.selectedCategory];
-        tvState.selectedGame = Math.min(currentCategory.games.length - 1, tvState.selectedGame + 1);
+        if (currentCategory) {
+          tvState.selectedGame = Math.min(currentCategory.cards.length - 1, tvState.selectedGame + 1);
+        }
       }
     } else if (direction === 'right' && tvState.selectedGame === -1) {
       // Enter games for current category
-      tvState.selectedGame = 0;
+      const currentCategory = categories[tvState.selectedCategory];
+      if (currentCategory && currentCategory.cards.length > 0) {
+        tvState.selectedGame = 0;
+      }
     } else if (direction === 'left' && tvState.selectedGame !== -1) {
       // Go back to category selection
       tvState.selectedGame = -1;
     } else if (direction === 'select') {
       if (tvState.inGameControls) {
-        // Start the game if we're in game controls
-        if (selectedGame && startBtn && !startBtn.disabled) {
+        // Actually click the start button
+        if (startBtn && !startBtn.disabled) {
           startBtn.click();
         }
       } else if (tvState.selectedGame !== -1) {
-        // Select the game
+        // Actually click the game card
         const currentCategory = categories[tvState.selectedCategory];
-        const gameId = currentCategory.games[tvState.selectedGame];
-        selectedGame = gameId;
-        
-        // Simulate clicking the game card
-        const gameCard = document.querySelector(`[data-game-id="${gameId}"]`);
-        if (gameCard) gameCard.click();
-        
-        tvState.inGameControls = true;
+        if (currentCategory && currentCategory.cards[tvState.selectedGame]) {
+          currentCategory.cards[tvState.selectedGame].click();
+          tvState.inGameControls = true;
+        }
       } else {
         // Select the current category (enter games for this category)
-        tvState.selectedGame = 0;
+        const currentCategory = categories[tvState.selectedCategory];
+        if (currentCategory && currentCategory.cards.length > 0) {
+          tvState.selectedGame = 0;
+        }
       }
     }
   }

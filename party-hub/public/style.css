@@ -992,3 +992,64 @@ body::before {
   transform: scale(0.95) !important;
   box-shadow: 0 0 12px rgba(110, 255, 157, 0.3) !important;
 }
+
+
+/* Scores Header for Games */
+.scores-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 12px 24px;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.scores-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.scores-list {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.score-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+
+.score-name {
+  font-size: 14px;
+  color: #bdbdbd;
+  min-width: 60px;
+}
+
+.score-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #6EFF9D;
+  min-width: 30px;
+  text-align: right;
+}
+
+/* Adjust game content to account for scores header */
+.game-screen:not(:empty) > div:first-child:not(.scores-header) {
+  margin-top: 80px;
+}
+
+.game-screen .scores-header + div {
+  margin-top: 80px;
+}
