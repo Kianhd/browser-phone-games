@@ -105,21 +105,21 @@ function updatePlayersList(players) {
   
   if (players.length === 0) {
     const emptyState = document.createElement('div');
-    emptyState.className = 'players-hint';
-    emptyState.textContent = 'Waiting for players to join...';
+    emptyState.className = 'hall-footer';
+    emptyState.innerHTML = '<span class="footer-text">Waiting for legends to join...</span>';
     plist.appendChild(emptyState);
     return;
   }
   
   players.forEach((player, idx) => {
     const chip = document.createElement('div');
-    chip.className = `player-chip ${player.ready ? 'ready' : ''}`;
+    chip.className = `legend-card ${player.ready ? 'ready' : ''}`;
     chip.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 8px;">
-        ${avatarHTML(player.name, idx)}
-        <span>${player.name}</span>
+      <div class="legend-avatar" style="background: ${playerColor(idx)};">${avatarHTML(player.name, idx)}</div>
+      <div class="legend-info">
+        <div class="legend-name">${player.name}</div>
+        <div class="legend-status ${player.ready ? 'ready' : ''}">${player.ready ? 'Ready for Battle' : 'Preparing...'}</div>
       </div>
-      <span class="player-status">${player.ready ? 'Ready' : 'Waiting'}</span>
     `;
     plist.appendChild(chip);
   });
@@ -202,14 +202,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
-  // Mode selection
-  document.querySelectorAll('.mode-card[data-id]').forEach(card => {
+  // Battle card selection
+  document.querySelectorAll('.battle-card[data-id]').forEach(card => {
     card.addEventListener('click', () => {
       // Remove previous selection
-      document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('.battle-card').forEach(c => c.classList.remove('card-selected'));
       
       // Select this card
-      card.classList.add('selected');
+      card.classList.add('card-selected');
       selectedGame = card.dataset.id;
       
       // Emit to server
@@ -248,10 +248,10 @@ socket.on('gameSelected', ({ id, meta }) => {
   selectedGame = id;
   
   // Update selection in UI
-  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.battle-card').forEach(c => c.classList.remove('card-selected'));
   const selectedCard = document.querySelector(`[data-id=\"${id}\"]`);
   if (selectedCard) {
-    selectedCard.classList.add('selected');
+    selectedCard.classList.add('card-selected');
   }
   
   updateGameControls();
@@ -309,10 +309,10 @@ socket.on('lbQuestion', (data) => {
       <div style="background: var(--premium-gradient); border-radius: 20px; padding: 32px; margin-bottom: 24px; border: var(--border-premium);">
         <h2 style="font-size: 28px; margin-bottom: 24px; text-align: center; color: #fff;">${data.q.q}</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">A) ${data.q.A}</div>
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">B) ${data.q.B}</div>
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">C) ${data.q.C}</div>
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">D) ${data.q.D}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">A) ${data.q.A}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">B) ${data.q.B}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">C) ${data.q.C}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">D) ${data.q.D}</div>
         </div>
       </div>
     </div>
@@ -335,13 +335,13 @@ socket.on('lbReveal', (data) => {
   currentGameScores = data.scores || {};
   
   const correct = data.correct;
-  const options = document.querySelectorAll('.optcard');
+  const options = document.querySelectorAll('.cosmic-option');
   
   // Highlight correct answer
   options.forEach((opt, idx) => {
     const letter = ['A', 'B', 'C', 'D'][idx];
     if (letter === correct) {
-      opt.classList.add('correct');
+      opt.classList.add('option-correct');
     }
   });
   
@@ -412,10 +412,10 @@ socket.on('csSelf', (data) => {
       <div style="background: var(--premium-gradient); border-radius: 20px; padding: 32px; margin: 24px 0; border: var(--border-premium);">
         <h2 style="font-size: 24px; margin-bottom: 24px; color: #fff;">${data.q.q}</h2>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">A) ${data.q.A}</div>
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">B) ${data.q.B}</div>
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">C) ${data.q.C}</div>
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">D) ${data.q.D}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">A) ${data.q.A}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">B) ${data.q.B}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">C) ${data.q.C}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">D) ${data.q.D}</div>
         </div>
       </div>
       
@@ -439,10 +439,10 @@ socket.on('csGuess', (data) => {
       <div style="background: var(--premium-gradient); border-radius: 20px; padding: 32px; margin: 24px 0; border: var(--border-premium);">
         <h2 style="font-size: 24px; margin-bottom: 24px; color: #fff;">${data.q.q}</h2>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">A) ${data.q.A}</div>
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">B) ${data.q.B}</div>
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">C) ${data.q.C}</div>
-          <div class="optcard" style="text-align: center; font-size: 18px; font-weight: 600;">D) ${data.q.D}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">A) ${data.q.A}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">B) ${data.q.B}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">C) ${data.q.C}</div>
+          <div class="cosmic-option" style="text-align: center; font-size: 18px; font-weight: 600;">D) ${data.q.D}</div>
         </div>
       </div>
       
@@ -620,11 +620,11 @@ let tvState = {
 
 // Get game cards dynamically from the actual DOM
 function getGameCards() {
-  const partyCards = Array.from(document.querySelectorAll('.category-section:first-child .mode-card'));
-  const couplesCards = Array.from(document.querySelectorAll('.category-section:last-child .mode-card'));
+  const partyCards = Array.from(document.querySelectorAll('.battleground-sector:first-child .battle-card'));
+  const couplesCards = Array.from(document.querySelectorAll('.battleground-sector:last-child .battle-card'));
   return [
-    { key: 'party', title: 'Party / Friends', cards: partyCards },
-    { key: 'couples', title: 'Couples', cards: couplesCards }
+    { key: 'party', title: 'Party Legends Arena', cards: partyCards },
+    { key: 'couples', title: 'Love\'s Proving Ground', cards: couplesCards }
   ];
 }
 
@@ -633,9 +633,9 @@ function updateTVHighlight() {
   document.querySelectorAll('.tv-highlighted').forEach(el => el.classList.remove('tv-highlighted'));
   
   if (tvState.currentView === 'selection') {
-    // Highlight the braincell card
-    const braincellCard = document.querySelector('[data-action="show-braincell"]');
-    if (braincellCard) braincellCard.classList.add('tv-highlighted');
+    // Highlight the epic gateway
+    const epicGateway = document.querySelector('[data-action="show-braincell"]');
+    if (epicGateway) epicGateway.classList.add('tv-highlighted');
   } else if (tvState.currentView === 'collection') {
     if (tvState.inGameControls) {
       // Highlight start button
@@ -647,10 +647,10 @@ function updateTVHighlight() {
       const currentCategory = categories[tvState.selectedCategory];
       
       if (tvState.selectedGame === -1) {
-        // Highlighting category section
-        const categorySections = document.querySelectorAll('.category-section');
-        if (categorySections[tvState.selectedCategory]) {
-          categorySections[tvState.selectedCategory].classList.add('tv-highlighted');
+        // Highlighting battleground sector
+        const battlegroundSectors = document.querySelectorAll('.battleground-sector');
+        if (battlegroundSectors[tvState.selectedCategory]) {
+          battlegroundSectors[tvState.selectedCategory].classList.add('tv-highlighted');
         }
       } else {
         // Highlighting specific game card
@@ -676,10 +676,10 @@ socket.on('tvNavigate', ({ action, data }) => {
 function handleTVNavigation(direction) {
   if (tvState.currentView === 'selection') {
     if (direction === 'select') {
-      // Actually click the braincell card
-      const braincellCard = document.querySelector('[data-action="show-braincell"]');
-      if (braincellCard) {
-        braincellCard.click();
+      // Actually click the epic gateway
+      const epicGateway = document.querySelector('[data-action="show-braincell"]');
+      if (epicGateway) {
+        epicGateway.click();
         tvState.currentView = 'collection';
         tvState.selectedCategory = 0;
         tvState.selectedGame = -1;
