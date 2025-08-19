@@ -8,635 +8,155 @@
     "correct": "A"
   },
   {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
-    "correct": "A"
-  },
-  {
     "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
+    "A": "Rule",
+    "B": "Leg",
+    "C": "Group chat",
+    "D": "Record",
+    "correct": "B"
   },
   {
     "q": "Spill the ____.",
     "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
+    "B": "Beans",
+    "C": "Juice",
     "D": "Entire kitchen",
     "correct": "A"
   },
   {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
+    "q": "Keep calm and ____.",
+    "A": "Blame your ex",
+    "B": "Eat cake",
+    "C": "Carry on",
+    "D": "Call mom",
+    "correct": "C"
+  },
+  {
+    "q": "The early bird catches the ____.",
+    "A": "Cold",
+    "B": "Worm",
     "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings fr fr",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data send help",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat 😅",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower no cap",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen pls",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings 🫣",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data lowkey",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat ngl",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower (probably)",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen 🤨",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings fr fr",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data send help",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat 😅",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower no cap",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen pls",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings 🫣",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data lowkey",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat ngl",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower (probably)",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
-    "correct": "A"
+    "D": "Wi-Fi",
+    "correct": "B"
   },
   {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
-  },
-  {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen 🤨",
-    "correct": "A"
-  },
-  {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
-  },
-  {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
-    "correct": "A"
-  },
-  {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings fr fr",
-    "correct": "A"
-  },
-  {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
+    "q": "When life gives you lemons, make ____.",
+    "A": "Margaritas",
+    "B": "Excuses",
+    "C": "Lemonade",
+    "D": "Tea",
+    "correct": "C"
   },
   {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen",
-    "correct": "A"
+    "q": "Hit the nail on the ____.",
+    "A": "DMs",
+    "B": "Head",
+    "C": "Table",
+    "D": "Thumb",
+    "correct": "B"
   },
   {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data send help",
+    "q": "A picture is worth a thousand ____.",
+    "A": "Words",
+    "B": "Pixels",
+    "C": "Memes",
+    "D": "Likes",
     "correct": "A"
   },
   {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
+    "q": "Don't count your chickens before they ____.",
+    "A": "Hatch",
+    "B": "Fry",
+    "C": "Post",
+    "D": "Cry",
     "correct": "A"
   },
   {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
+    "q": "Bite off more than you can ____.",
+    "A": "Chew",
+    "B": "Stream",
+    "C": "Budget",
+    "D": "Swipe",
     "correct": "A"
   },
   {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat 😅",
-    "correct": "A"
+    "q": "Let the cat out of the ____.",
+    "A": "Room",
+    "B": "Box",
+    "C": "Bag",
+    "D": "Inbox",
+    "correct": "C"
   },
   {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen",
-    "correct": "A"
+    "q": "Beat around the ____.",
+    "A": "Mic",
+    "B": "Block",
+    "C": "Group chat",
+    "D": "Bush",
+    "correct": "D"
   },
   {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
+    "q": "Burning the midnight ____.",
+    "A": "Data",
+    "B": "Toast",
+    "C": "Oil",
+    "D": "Playlist",
+    "correct": "C"
   },
   {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower no cap",
-    "correct": "A"
+    "q": "Add fuel to the ____.",
+    "A": "Playlist",
+    "B": "Rumor",
+    "C": "Car",
+    "D": "Fire",
+    "correct": "D"
   },
   {
-    "q": "Work hard, play ____.",
-    "A": "Hard",
-    "B": "Smart",
-    "C": "Cards",
-    "D": "With my feelings",
-    "correct": "A"
+    "q": "On cloud ____.",
+    "A": "Eleven",
+    "B": "Nine",
+    "C": "Storage",
+    "D": "Seven",
+    "correct": "B"
   },
   {
-    "q": "Break a ____.",
-    "A": "Leg",
-    "B": "Rule",
-    "C": "Record",
-    "D": "Group chat",
-    "correct": "A"
+    "q": "Barking up the wrong ____.",
+    "A": "Door",
+    "B": "Chat",
+    "C": "Tree",
+    "D": "Thread",
+    "correct": "C"
   },
   {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Juice",
-    "C": "Truth",
-    "D": "Entire kitchen pls",
-    "correct": "A"
+    "q": "A blessing in ____.",
+    "A": "Noise",
+    "B": "Disguise",
+    "C": "Crocs",
+    "D": "Comments",
+    "correct": "B"
   },
   {
-    "q": "Another one bites the ____.",
-    "A": "Dust",
-    "B": "Crust",
-    "C": "Bus",
-    "D": "Mobile data",
-    "correct": "A"
+    "q": "Don't put all your eggs in one ____.",
+    "A": "Cart",
+    "B": "Basket",
+    "C": "Story",
+    "D": "App",
+    "correct": "B"
+  },
+  {
+    "q": "Throw in the ____.",
+    "A": "Fork",
+    "B": "Mic",
+    "C": "Towel",
+    "D": "Like",
+    "correct": "C"
+  },
+  {
+    "q": "Hit the ____ sack.",
+    "A": "Like",
+    "B": "Snooze",
+    "C": "Hay",
+    "D": "Gym",
+    "correct": "C"
   }
 ]

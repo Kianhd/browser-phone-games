@@ -1,482 +1,82 @@
 [
   {
     "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage",
-    "correct": "A"
+    "A": "Sushi",
+    "B": "Ice cream",
+    "C": "Pizza",
+    "D": "Tacos",
+    "correct": "C"
   },
   {
     "q": "My dream vacation vibe?",
-    "A": "Beach",
+    "A": "City",
     "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
+    "C": "Countryside",
+    "D": "Beach",
+    "correct": "D"
   },
   {
     "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
+    "A": "Black coffee",
+    "B": "Latte",
     "C": "Cappuccino",
-    "D": "Pure chaos",
+    "D": "Americano",
+    "correct": "B"
+  },
+  {
+    "q": "What stresses me out most?",
+    "A": "Technology",
+    "B": "Running late",
+    "C": "Crowds",
+    "D": "Loud noises",
+    "correct": "B"
+  },
+  {
+    "q": "My favorite way to relax?",
+    "A": "Reading",
+    "B": "Music",
+    "C": "Netflix",
+    "D": "Gaming",
     "correct": "A"
   },
   {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage 🤨",
+    "q": "What do I do when I'm really excited?",
+    "A": "Get quiet",
+    "B": "Laugh loudly",
+    "C": "Talk fast",
+    "D": "Jump around",
+    "correct": "C"
+  },
+  {
+    "q": "My biggest pet peeve is:",
+    "A": "Messy spaces",
+    "B": "People being late",
+    "C": "Loud chewing",
+    "D": "Bad drivers",
+    "correct": "B"
+  },
+  {
+    "q": "How do I handle conflict?",
+    "A": "Talk it out immediately",
+    "B": "Get emotional",
+    "C": "Need time to think",
+    "D": "Avoid it",
     "correct": "A"
   },
   {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
+    "q": "What's my love language?",
+    "A": "Quality time",
+    "B": "Words of affirmation",
+    "C": "Acts of service",
+    "D": "Physical touch",
     "correct": "A"
   },
   {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage fr fr",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage send help",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage 😅",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage no cap",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage pls",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage 🫣",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage lowkey",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage ngl",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage (probably)",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage 🤨",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage fr fr",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage send help",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage 😅",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage no cap",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage pls",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage 🫣",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage lowkey",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
-    "correct": "A"
-  },
-  {
-    "q": "What's my go-to comfort food?",
-    "A": "Pizza",
-    "B": "Sushi",
-    "C": "Ice cream",
-    "D": "Liquid courage ngl",
-    "correct": "A"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "Beach",
-    "B": "Mountains",
-    "C": "City",
-    "D": "In-laws resort",
-    "correct": "A"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Latte",
-    "B": "Americano",
-    "C": "Cappuccino",
-    "D": "Pure chaos",
+    "q": "When I'm sad, I usually:",
+    "A": "Want to be alone",
+    "B": "Get busy",
+    "C": "Sleep it off",
+    "D": "Seek comfort",
     "correct": "A"
   }
 ]
