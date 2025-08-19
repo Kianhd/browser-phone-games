@@ -1,0 +1,15 @@
+{
+  "name": "party-hub",
+  "version": "3.2.0",
+  "description": "AirConsole-style Party Hub with persistent players, QR join, multi-trivia modes, animated timers & reveal",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build:packs": "node scripts/generate-packs.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "engines": { "node": ">=18" }
+}

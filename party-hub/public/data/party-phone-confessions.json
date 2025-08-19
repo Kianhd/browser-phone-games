@@ -1,0 +1,642 @@
+[
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza 🤨",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza fr fr",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza send help",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza 😅",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza no cap",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza pls",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza 🫣",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza lowkey",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza ngl",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza (probably)",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza 🤨",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza fr fr",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza send help",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza 😅",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza no cap",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza pls",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza 🫣",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza lowkey",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza ngl",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza (probably)",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza 🤨",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza fr fr",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza send help",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza 😅",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza no cap",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  },
+  {
+    "q": "You see 47 unread DMs. You:",
+    "A": "Answer all",
+    "B": "Select important",
+    "C": "Mark all read",
+    "D": "Throw phone in sea",
+    "correct": "B"
+  },
+  {
+    "q": "Your ex texts 'U up?' You reply:",
+    "A": "New phone, who dis",
+    "B": "Yes but busy",
+    "C": "Block immediately",
+    "D": "Only if you bring pizza pls",
+    "correct": "C"
+  },
+  {
+    "q": "You pocket-dial your boss. You:",
+    "A": "Hang up",
+    "B": "Text sorry",
+    "C": "Pretend it's research",
+    "D": "Start singing",
+    "correct": "B"
+  }
+]

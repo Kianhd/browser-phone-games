@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Party Hub</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+  <div class="tv">
+    <header class="topbar">
+      <div class="brand"><span class="logo">🧠</span><span class="title">Party Hub</span></div>
+      <div class="room"><div class="code" id="code">———</div><img id="qr" class="qr" alt="QR"/></div>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <h2>Players</h2>
+        <div id="plist" class="plist"></div>
+        <div class="hint">Scan QR to join on phones. Names persist until "Leave".</div>
+      </section>
+
+      <section class="panel">
+        <h2>The Last Braincell</h2>
+        <div class="gameline">Pick a collection:</div>
+        <div class="collection-grid">
+          <button class="collection" data-col="party">🎉 Party / Friends</button>
+          <button class="collection" data-col="couples">💘 Couples</button>
+        </div>
+
+        <div id="menuParty" class="mode-grid hidden">
+          <h3>Party Modes</h3>
+          <div class="modes">
+            <button class="mode" data-id="party.quick-quiz">👑 Quick Quiz Royale</button>
+            <button class="mode" data-id="party.finish-phrase">✍️ Finish the Phrase</button>
+            <button class="mode" data-id="party.fact-fiction">🤔 Fact or Fiction?</button>
+            <button class="mode" data-id="party.phone-confessions">📱 Phone Confessions</button>
+            <button class="mode" data-id="party.answer-roulette">🎲 Answer Roulette</button>
+            <button class="mode" data-id="party.lie-detector">🚨 Lie Detector</button>
+            <button class="mode" data-id="party.buzzkill">⚡ Buzzkill Bonus</button>
+          </div>
+        </div>
+
+        <div id="menuCouples" class="mode-grid hidden">
+          <h3>Couples Modes</h3>
+          <div class="modes">
+            <button class="mode" data-id="couples.how-good">💑 How Good Do You Know Me?</button>
+            <button class="mode" data-id="couples.survival">🕹️ Couple's Survival</button>
+            <button class="mode" data-id="couples.finish-phrase">💌 Finish the Phrase (Love)</button>
+            <button class="mode" data-id="couples.relationship">🎰 Relationship Roulette</button>
+            <button class="mode" data-id="couples.secret-sync">🔒 Secret Sync</button>
+          </div>
+        </div>
+
+        <div class="startline">
+          <button id="startBtn" class="start">Start</button>
+          <div class="note" id="capNote"></div>
+        </div>
+      </section>
+    </main>
+
+    <section id="gameArea" class="panel game"></section>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/tv.js"></script>
+</body>
+</html>

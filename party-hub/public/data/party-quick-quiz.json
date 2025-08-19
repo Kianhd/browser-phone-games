@@ -1,0 +1,802 @@
+[
+  {
+    "q": "Capital of Australia?",
+    "A": "Sydney",
+    "B": "Melbourne",
+    "C": "Canberra",
+    "D": "Kangaroo City",
+    "correct": "C"
+  },
+  {
+    "q": "Largest ocean?",
+    "A": "Atlantic",
+    "B": "Indian",
+    "C": "Pacific",
+    "D": "Ocean Spray",
+    "correct": "C"
+  },
+  {
+    "q": "Chemical symbol for gold?",
+    "A": "Au",
+    "B": "Ag",
+    "C": "Go",
+    "D": "$$",
+    "correct": "A"
+  },
+  {
+    "q": "Fastest land animal?",
+    "A": "Horse",
+    "B": "Ostrich",
+    "C": "Cheetah",
+    "D": "Your Wi-Fi fleeing",
+    "correct": "C"
+  },
+  {
+    "q": "Scotland's national animal?",
+    "A": "Lion",
+    "B": "Unicorn",
+    "C": "Horse",
+    "D": "Nessie",
+    "correct": "B"
+  },
+  {
+    "q": "Which planet is the Red Planet?",
+    "A": "Venus",
+    "B": "Mars",
+    "C": "Jupiter",
+    "D": "Elon's backyard",
+    "correct": "B"
+  },
+  {
+    "q": "Smallest country?",
+    "A": "Monaco",
+    "B": "Vatican City",
+    "C": "Liechtenstein",
+    "D": "TikTok HQ",
+    "correct": "B"
+  },
+  {
+    "q": "9 × 9 =",
+    "A": "81",
+    "B": "72",
+    "C": "99",
+    "D": "Use a calculator",
+    "correct": "A"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "A": "Oxygen",
+    "B": "Carbon dioxide",
+    "C": "Nitrogen",
+    "D": "Pure vibes",
+    "correct": "B"
+  },
+  {
+    "q": "Who painted Guernica?",
+    "A": "Picasso",
+    "B": "Van Gogh",
+    "C": "Dalí",
+    "D": "That one NFT guy",
+    "correct": "A"
+  },
+  {
+    "q": "Capital of Australia?",
+    "A": "Sydney",
+    "B": "Melbourne",
+    "C": "Canberra",
+    "D": "Kangaroo City",
+    "correct": "C"
+  },
+  {
+    "q": "Largest ocean?",
+    "A": "Atlantic",
+    "B": "Indian",
+    "C": "Pacific",
+    "D": "Ocean Spray",
+    "correct": "C"
+  },
+  {
+    "q": "Chemical symbol for gold?",
+    "A": "Au",
+    "B": "Ag",
+    "C": "Go",
+    "D": "$$ 😅",
+    "correct": "A"
+  },
+  {
+    "q": "Fastest land animal?",
+    "A": "Horse",
+    "B": "Ostrich",
+    "C": "Cheetah",
+    "D": "Your Wi-Fi fleeing",
+    "correct": "C"
+  },
+  {
+    "q": "Scotland's national animal?",
+    "A": "Lion",
+    "B": "Unicorn",
+    "C": "Horse",
+    "D": "Nessie",
+    "correct": "B"
+  },
+  {
+    "q": "Which planet is the Red Planet?",
+    "A": "Venus",
+    "B": "Mars",
+    "C": "Jupiter",
+    "D": "Elon's backyard no cap",
+    "correct": "B"
+  },
+  {
+    "q": "Smallest country?",
+    "A": "Monaco",
+    "B": "Vatican City",
+    "C": "Liechtenstein",
+    "D": "TikTok HQ",
+    "correct": "B"
+  },
+  {
+    "q": "9 × 9 =",
+    "A": "81",
+    "B": "72",
+    "C": "99",
+    "D": "Use a calculator",
+    "correct": "A"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "A": "Oxygen",
+    "B": "Carbon dioxide",
+    "C": "Nitrogen",
+    "D": "Pure vibes pls",
+    "correct": "B"
+  },
+  {
+    "q": "Who painted Guernica?",
+    "A": "Picasso",
+    "B": "Van Gogh",
+    "C": "Dalí",
+    "D": "That one NFT guy",
+    "correct": "A"
+  },
+  {
+    "q": "Capital of Australia?",
+    "A": "Sydney",
+    "B": "Melbourne",
+    "C": "Canberra",
+    "D": "Kangaroo City",
+    "correct": "C"
+  },
+  {
+    "q": "Largest ocean?",
+    "A": "Atlantic",
+    "B": "Indian",
+    "C": "Pacific",
+    "D": "Ocean Spray 🫣",
+    "correct": "C"
+  },
+  {
+    "q": "Chemical symbol for gold?",
+    "A": "Au",
+    "B": "Ag",
+    "C": "Go",
+    "D": "$$",
+    "correct": "A"
+  },
+  {
+    "q": "Fastest land animal?",
+    "A": "Horse",
+    "B": "Ostrich",
+    "C": "Cheetah",
+    "D": "Your Wi-Fi fleeing",
+    "correct": "C"
+  },
+  {
+    "q": "Scotland's national animal?",
+    "A": "Lion",
+    "B": "Unicorn",
+    "C": "Horse",
+    "D": "Nessie lowkey",
+    "correct": "B"
+  },
+  {
+    "q": "Which planet is the Red Planet?",
+    "A": "Venus",
+    "B": "Mars",
+    "C": "Jupiter",
+    "D": "Elon's backyard",
+    "correct": "B"
+  },
+  {
+    "q": "Smallest country?",
+    "A": "Monaco",
+    "B": "Vatican City",
+    "C": "Liechtenstein",
+    "D": "TikTok HQ",
+    "correct": "B"
+  },
+  {
+    "q": "9 × 9 =",
+    "A": "81",
+    "B": "72",
+    "C": "99",
+    "D": "Use a calculator ngl",
+    "correct": "A"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "A": "Oxygen",
+    "B": "Carbon dioxide",
+    "C": "Nitrogen",
+    "D": "Pure vibes",
+    "correct": "B"
+  },
+  {
+    "q": "Who painted Guernica?",
+    "A": "Picasso",
+    "B": "Van Gogh",
+    "C": "Dalí",
+    "D": "That one NFT guy",
+    "correct": "A"
+  },
+  {
+    "q": "Capital of Australia?",
+    "A": "Sydney",
+    "B": "Melbourne",
+    "C": "Canberra",
+    "D": "Kangaroo City (probably)",
+    "correct": "C"
+  },
+  {
+    "q": "Largest ocean?",
+    "A": "Atlantic",
+    "B": "Indian",
+    "C": "Pacific",
+    "D": "Ocean Spray",
+    "correct": "C"
+  },
+  {
+    "q": "Chemical symbol for gold?",
+    "A": "Au",
+    "B": "Ag",
+    "C": "Go",
+    "D": "$$",
+    "correct": "A"
+  },
+  {
+    "q": "Fastest land animal?",
+    "A": "Horse",
+    "B": "Ostrich",
+    "C": "Cheetah",
+    "D": "Your Wi-Fi fleeing 🤨",
+    "correct": "C"
+  },
+  {
+    "q": "Scotland's national animal?",
+    "A": "Lion",
+    "B": "Unicorn",
+    "C": "Horse",
+    "D": "Nessie",
+    "correct": "B"
+  },
+  {
+    "q": "Which planet is the Red Planet?",
+    "A": "Venus",
+    "B": "Mars",
+    "C": "Jupiter",
+    "D": "Elon's backyard",
+    "correct": "B"
+  },
+  {
+    "q": "Smallest country?",
+    "A": "Monaco",
+    "B": "Vatican City",
+    "C": "Liechtenstein",
+    "D": "TikTok HQ fr fr",
+    "correct": "B"
+  },
+  {
+    "q": "9 × 9 =",
+    "A": "81",
+    "B": "72",
+    "C": "99",
+    "D": "Use a calculator",
+    "correct": "A"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "A": "Oxygen",
+    "B": "Carbon dioxide",
+    "C": "Nitrogen",
+    "D": "Pure vibes",
+    "correct": "B"
+  },
+  {
+    "q": "Who painted Guernica?",
+    "A": "Picasso",
+    "B": "Van Gogh",
+    "C": "Dalí",
+    "D": "That one NFT guy send help",
+    "correct": "A"
+  },
+  {
+    "q": "Capital of Australia?",
+    "A": "Sydney",
+    "B": "Melbourne",
+    "C": "Canberra",
+    "D": "Kangaroo City",
+    "correct": "C"
+  },
+  {
+    "q": "Largest ocean?",
+    "A": "Atlantic",
+    "B": "Indian",
+    "C": "Pacific",
+    "D": "Ocean Spray",
+    "correct": "C"
+  },
+  {
+    "q": "Chemical symbol for gold?",
+    "A": "Au",
+    "B": "Ag",
+    "C": "Go",
+    "D": "$$ 😅",
+    "correct": "A"
+  },
+  {
+    "q": "Fastest land animal?",
+    "A": "Horse",
+    "B": "Ostrich",
+    "C": "Cheetah",
+    "D": "Your Wi-Fi fleeing",
+    "correct": "C"
+  },
+  {
+    "q": "Scotland's national animal?",
+    "A": "Lion",
+    "B": "Unicorn",
+    "C": "Horse",
+    "D": "Nessie",
+    "correct": "B"
+  },
+  {
+    "q": "Which planet is the Red Planet?",
+    "A": "Venus",
+    "B": "Mars",
+    "C": "Jupiter",
+    "D": "Elon's backyard no cap",
+    "correct": "B"
+  },
+  {
+    "q": "Smallest country?",
+    "A": "Monaco",
+    "B": "Vatican City",
+    "C": "Liechtenstein",
+    "D": "TikTok HQ",
+    "correct": "B"
+  },
+  {
+    "q": "9 × 9 =",
+    "A": "81",
+    "B": "72",
+    "C": "99",
+    "D": "Use a calculator",
+    "correct": "A"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "A": "Oxygen",
+    "B": "Carbon dioxide",
+    "C": "Nitrogen",
+    "D": "Pure vibes pls",
+    "correct": "B"
+  },
+  {
+    "q": "Who painted Guernica?",
+    "A": "Picasso",
+    "B": "Van Gogh",
+    "C": "Dalí",
+    "D": "That one NFT guy",
+    "correct": "A"
+  },
+  {
+    "q": "Capital of Australia?",
+    "A": "Sydney",
+    "B": "Melbourne",
+    "C": "Canberra",
+    "D": "Kangaroo City",
+    "correct": "C"
+  },
+  {
+    "q": "Largest ocean?",
+    "A": "Atlantic",
+    "B": "Indian",
+    "C": "Pacific",
+    "D": "Ocean Spray 🫣",
+    "correct": "C"
+  },
+  {
+    "q": "Chemical symbol for gold?",
+    "A": "Au",
+    "B": "Ag",
+    "C": "Go",
+    "D": "$$",
+    "correct": "A"
+  },
+  {
+    "q": "Fastest land animal?",
+    "A": "Horse",
+    "B": "Ostrich",
+    "C": "Cheetah",
+    "D": "Your Wi-Fi fleeing",
+    "correct": "C"
+  },
+  {
+    "q": "Scotland's national animal?",
+    "A": "Lion",
+    "B": "Unicorn",
+    "C": "Horse",
+    "D": "Nessie lowkey",
+    "correct": "B"
+  },
+  {
+    "q": "Which planet is the Red Planet?",
+    "A": "Venus",
+    "B": "Mars",
+    "C": "Jupiter",
+    "D": "Elon's backyard",
+    "correct": "B"
+  },
+  {
+    "q": "Smallest country?",
+    "A": "Monaco",
+    "B": "Vatican City",
+    "C": "Liechtenstein",
+    "D": "TikTok HQ",
+    "correct": "B"
+  },
+  {
+    "q": "9 × 9 =",
+    "A": "81",
+    "B": "72",
+    "C": "99",
+    "D": "Use a calculator ngl",
+    "correct": "A"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "A": "Oxygen",
+    "B": "Carbon dioxide",
+    "C": "Nitrogen",
+    "D": "Pure vibes",
+    "correct": "B"
+  },
+  {
+    "q": "Who painted Guernica?",
+    "A": "Picasso",
+    "B": "Van Gogh",
+    "C": "Dalí",
+    "D": "That one NFT guy",
+    "correct": "A"
+  },
+  {
+    "q": "Capital of Australia?",
+    "A": "Sydney",
+    "B": "Melbourne",
+    "C": "Canberra",
+    "D": "Kangaroo City (probably)",
+    "correct": "C"
+  },
+  {
+    "q": "Largest ocean?",
+    "A": "Atlantic",
+    "B": "Indian",
+    "C": "Pacific",
+    "D": "Ocean Spray",
+    "correct": "C"
+  },
+  {
+    "q": "Chemical symbol for gold?",
+    "A": "Au",
+    "B": "Ag",
+    "C": "Go",
+    "D": "$$",
+    "correct": "A"
+  },
+  {
+    "q": "Fastest land animal?",
+    "A": "Horse",
+    "B": "Ostrich",
+    "C": "Cheetah",
+    "D": "Your Wi-Fi fleeing 🤨",
+    "correct": "C"
+  },
+  {
+    "q": "Scotland's national animal?",
+    "A": "Lion",
+    "B": "Unicorn",
+    "C": "Horse",
+    "D": "Nessie",
+    "correct": "B"
+  },
+  {
+    "q": "Which planet is the Red Planet?",
+    "A": "Venus",
+    "B": "Mars",
+    "C": "Jupiter",
+    "D": "Elon's backyard",
+    "correct": "B"
+  },
+  {
+    "q": "Smallest country?",
+    "A": "Monaco",
+    "B": "Vatican City",
+    "C": "Liechtenstein",
+    "D": "TikTok HQ fr fr",
+    "correct": "B"
+  },
+  {
+    "q": "9 × 9 =",
+    "A": "81",
+    "B": "72",
+    "C": "99",
+    "D": "Use a calculator",
+    "correct": "A"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "A": "Oxygen",
+    "B": "Carbon dioxide",
+    "C": "Nitrogen",
+    "D": "Pure vibes",
+    "correct": "B"
+  },
+  {
+    "q": "Who painted Guernica?",
+    "A": "Picasso",
+    "B": "Van Gogh",
+    "C": "Dalí",
+    "D": "That one NFT guy send help",
+    "correct": "A"
+  },
+  {
+    "q": "Capital of Australia?",
+    "A": "Sydney",
+    "B": "Melbourne",
+    "C": "Canberra",
+    "D": "Kangaroo City",
+    "correct": "C"
+  },
+  {
+    "q": "Largest ocean?",
+    "A": "Atlantic",
+    "B": "Indian",
+    "C": "Pacific",
+    "D": "Ocean Spray",
+    "correct": "C"
+  },
+  {
+    "q": "Chemical symbol for gold?",
+    "A": "Au",
+    "B": "Ag",
+    "C": "Go",
+    "D": "$$ 😅",
+    "correct": "A"
+  },
+  {
+    "q": "Fastest land animal?",
+    "A": "Horse",
+    "B": "Ostrich",
+    "C": "Cheetah",
+    "D": "Your Wi-Fi fleeing",
+    "correct": "C"
+  },
+  {
+    "q": "Scotland's national animal?",
+    "A": "Lion",
+    "B": "Unicorn",
+    "C": "Horse",
+    "D": "Nessie",
+    "correct": "B"
+  },
+  {
+    "q": "Which planet is the Red Planet?",
+    "A": "Venus",
+    "B": "Mars",
+    "C": "Jupiter",
+    "D": "Elon's backyard no cap",
+    "correct": "B"
+  },
+  {
+    "q": "Smallest country?",
+    "A": "Monaco",
+    "B": "Vatican City",
+    "C": "Liechtenstein",
+    "D": "TikTok HQ",
+    "correct": "B"
+  },
+  {
+    "q": "9 × 9 =",
+    "A": "81",
+    "B": "72",
+    "C": "99",
+    "D": "Use a calculator",
+    "correct": "A"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "A": "Oxygen",
+    "B": "Carbon dioxide",
+    "C": "Nitrogen",
+    "D": "Pure vibes pls",
+    "correct": "B"
+  },
+  {
+    "q": "Who painted Guernica?",
+    "A": "Picasso",
+    "B": "Van Gogh",
+    "C": "Dalí",
+    "D": "That one NFT guy",
+    "correct": "A"
+  },
+  {
+    "q": "Capital of Australia?",
+    "A": "Sydney",
+    "B": "Melbourne",
+    "C": "Canberra",
+    "D": "Kangaroo City",
+    "correct": "C"
+  },
+  {
+    "q": "Largest ocean?",
+    "A": "Atlantic",
+    "B": "Indian",
+    "C": "Pacific",
+    "D": "Ocean Spray 🫣",
+    "correct": "C"
+  },
+  {
+    "q": "Chemical symbol for gold?",
+    "A": "Au",
+    "B": "Ag",
+    "C": "Go",
+    "D": "$$",
+    "correct": "A"
+  },
+  {
+    "q": "Fastest land animal?",
+    "A": "Horse",
+    "B": "Ostrich",
+    "C": "Cheetah",
+    "D": "Your Wi-Fi fleeing",
+    "correct": "C"
+  },
+  {
+    "q": "Scotland's national animal?",
+    "A": "Lion",
+    "B": "Unicorn",
+    "C": "Horse",
+    "D": "Nessie lowkey",
+    "correct": "B"
+  },
+  {
+    "q": "Which planet is the Red Planet?",
+    "A": "Venus",
+    "B": "Mars",
+    "C": "Jupiter",
+    "D": "Elon's backyard",
+    "correct": "B"
+  },
+  {
+    "q": "Smallest country?",
+    "A": "Monaco",
+    "B": "Vatican City",
+    "C": "Liechtenstein",
+    "D": "TikTok HQ",
+    "correct": "B"
+  },
+  {
+    "q": "9 × 9 =",
+    "A": "81",
+    "B": "72",
+    "C": "99",
+    "D": "Use a calculator ngl",
+    "correct": "A"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "A": "Oxygen",
+    "B": "Carbon dioxide",
+    "C": "Nitrogen",
+    "D": "Pure vibes",
+    "correct": "B"
+  },
+  {
+    "q": "Who painted Guernica?",
+    "A": "Picasso",
+    "B": "Van Gogh",
+    "C": "Dalí",
+    "D": "That one NFT guy",
+    "correct": "A"
+  },
+  {
+    "q": "Capital of Australia?",
+    "A": "Sydney",
+    "B": "Melbourne",
+    "C": "Canberra",
+    "D": "Kangaroo City (probably)",
+    "correct": "C"
+  },
+  {
+    "q": "Largest ocean?",
+    "A": "Atlantic",
+    "B": "Indian",
+    "C": "Pacific",
+    "D": "Ocean Spray",
+    "correct": "C"
+  },
+  {
+    "q": "Chemical symbol for gold?",
+    "A": "Au",
+    "B": "Ag",
+    "C": "Go",
+    "D": "$$",
+    "correct": "A"
+  },
+  {
+    "q": "Fastest land animal?",
+    "A": "Horse",
+    "B": "Ostrich",
+    "C": "Cheetah",
+    "D": "Your Wi-Fi fleeing 🤨",
+    "correct": "C"
+  },
+  {
+    "q": "Scotland's national animal?",
+    "A": "Lion",
+    "B": "Unicorn",
+    "C": "Horse",
+    "D": "Nessie",
+    "correct": "B"
+  },
+  {
+    "q": "Which planet is the Red Planet?",
+    "A": "Venus",
+    "B": "Mars",
+    "C": "Jupiter",
+    "D": "Elon's backyard",
+    "correct": "B"
+  },
+  {
+    "q": "Smallest country?",
+    "A": "Monaco",
+    "B": "Vatican City",
+    "C": "Liechtenstein",
+    "D": "TikTok HQ fr fr",
+    "correct": "B"
+  },
+  {
+    "q": "9 × 9 =",
+    "A": "81",
+    "B": "72",
+    "C": "99",
+    "D": "Use a calculator",
+    "correct": "A"
+  },
+  {
+    "q": "Which gas do plants absorb?",
+    "A": "Oxygen",
+    "B": "Carbon dioxide",
+    "C": "Nitrogen",
+    "D": "Pure vibes",
+    "correct": "B"
+  },
+  {
+    "q": "Who painted Guernica?",
+    "A": "Picasso",
+    "B": "Van Gogh",
+    "C": "Dalí",
+    "D": "That one NFT guy send help",
+    "correct": "A"
+  }
+]
