@@ -266,6 +266,12 @@ socket.on('preQuestion', (data) => {
   }
   
   gameScreen.innerHTML = `
+    <div class="game-header-controls">
+      <button id="leaveGameBtn" class="leave-game-btn" title="Leave Game & Return to Lobby">
+        <span class="leave-icon">🚪</span>
+        <span class="leave-text">Leave Game</span>
+      </button>
+    </div>
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 32px;">
       <h1 style="font-size: 48px; margin-bottom: 16px; color: #fff;">${data.title}</h1>
       <p style="font-size: 24px; color: #bdbdbd; margin-bottom: 32px;">Question ${data.idx} of ${data.total}</p>
@@ -273,6 +279,9 @@ socket.on('preQuestion', (data) => {
       <p style="font-size: 18px; color: #bdbdbd;">Get ready...</p>
     </div>
   `;
+  
+  // Add leave game functionality
+  document.getElementById('leaveGameBtn')?.addEventListener('click', leaveGame);
 });
 
 socket.on('lbQuestion', (data) => {
@@ -280,6 +289,12 @@ socket.on('lbQuestion', (data) => {
   const scoresHeader = createScoresHeader(currentGameScores, data.title);
   
   gameScreen.innerHTML = `
+    <div class="game-header-controls">
+      <button id="leaveGameBtn" class="leave-game-btn" title="Leave Game & Return to Lobby">
+        <span class="leave-icon">🚪</span>
+        <span class="leave-text">Leave Game</span>
+      </button>
+    </div>
     ${scoresHeader}
     <div style="padding: 32px; max-width: 1200px; margin: 0 auto;">
       <div style="text-align: center; margin-bottom: 32px;">
@@ -302,6 +317,9 @@ socket.on('lbQuestion', (data) => {
       </div>
     </div>
   `;
+  
+  // Add leave game functionality
+  document.getElementById('leaveGameBtn')?.addEventListener('click', leaveGame);
 });
 
 socket.on('timer', ({ left, total }) => {
@@ -377,6 +395,12 @@ socket.on('csSelf', (data) => {
   const scoresHeader = createScoresHeader(currentGameScores, 'Couples Mode');
   
   gameScreen.innerHTML = `
+    <div class="game-header-controls">
+      <button id="leaveGameBtn" class="leave-game-btn" title="Leave Game & Return to Lobby">
+        <span class="leave-icon">🚪</span>
+        <span class="leave-text">Leave Game</span>
+      </button>
+    </div>
     ${scoresHeader}
     <div style="padding: 32px; max-width: 800px; margin: 0 auto; text-align: center;">
       <h1 style="font-size: 36px; margin-bottom: 8px; color: #fff;">Your Answer</h1>
@@ -398,6 +422,9 @@ socket.on('csSelf', (data) => {
       <p style="color: #ff6b9d; font-size: 16px;">💝 Answer for yourself AND guess your partner's choice!</p>
     </div>
   `;
+  
+  // Add leave game functionality
+  document.getElementById('leaveGameBtn')?.addEventListener('click', leaveGame);
 });
 
 socket.on('csGuess', (data) => {
@@ -516,6 +543,72 @@ socket.on('toast', ({ msg }) => {
 showView('selection');
 // Initialize highlight after a short delay to ensure DOM is ready
 setTimeout(() => updateTVHighlight(), 100);
+
+// Refresh Hub button functionality
+document.getElementById('refreshHub')?.addEventListener('click', refreshHub);
+
+function refreshHub() {
+  // Show loading state
+  const refreshBtn = document.getElementById('refreshHub');
+  const originalText = refreshBtn?.innerHTML;
+  if (refreshBtn) {
+    refreshBtn.innerHTML = '<span class="refresh-icon">🔄</span><span class="refresh-text">Refreshing...</span>';
+    refreshBtn.disabled = true;
+  }
+  
+  // Reset game state
+  selectedGame = null;
+  currentGameScores = {};
+  tvState = {
+    currentView: 'selection',
+    selectedCategory: 0,
+    selectedGame: -1,
+    inGameControls: false
+  };
+  
+  // Clear any game controls
+  gameControls.classList.add('hidden');
+  
+  // Return to selection view
+  showView('selection');
+  updateTVHighlight();
+  
+  // Emit hub refresh to server (clears players and resets everything)
+  socket.emit('refreshHub');
+  
+  // Restore button after short delay
+  setTimeout(() => {
+    if (refreshBtn) {
+      refreshBtn.innerHTML = originalText;
+      refreshBtn.disabled = false;
+    }
+  }, 1500);
+}
+
+// Leave Game functionality for TV
+function leaveGame() {
+  // Show confirmation
+  const confirmed = confirm('Are you sure you want to leave this game and return to the lobby?');
+  if (!confirmed) return;
+  
+  // Reset game state
+  selectedGame = null;
+  currentGameScores = {};
+  tvState = {
+    currentView: 'selection',
+    selectedCategory: 0,
+    selectedGame: -1,
+    inGameControls: false
+  };
+  
+  // Clear any game controls and return to selection view
+  gameControls.classList.add('hidden');
+  showView('selection');
+  updateTVHighlight();
+  
+  // Emit leave game to server
+  socket.emit('leaveGame');
+}
 
 // TV Navigation System - Handle controller input
 let tvState = {

@@ -698,11 +698,8 @@ function uiWaitingForHost(){
 }
 
 function uiReady(){
-  // Check if this player is the host (first player)
-  if (hubState && hubState.players && hubState.players.length > 0) {
-    const firstPlayer = hubState.players[0];
-    isHost = (firstPlayer.pid === pid);
-  }
+  // Check if this player is the host (socket.id matches hubState.host)
+  isHost = hubState && hubState.host === socket.id;
   
   if (isHost) {
     uiHostController();
@@ -966,13 +963,8 @@ socket.on('hubState', (st)=>{
   if (!pid || !st.players.find(p=>p.pid===pid)) {
     uiName();
   } else {
-    // If we're already in the lobby, update the display
-    const currentScreen = screen.innerHTML;
-    if (currentScreen.includes('premium-remote') || currentScreen.includes('Waiting for')) {
-      uiReady();
-    } else if (currentScreen.includes('Join Party')) {
-      uiReady();
-    }
+    // Always show the ready UI when we have a valid player ID
+    uiReady();
   }
 });
 
@@ -1001,4 +993,19 @@ socket.on('restoreSnapshot', (snapshot) => {
   if (snapshot?.kind === 'trivia') {
     // We're in the middle of a game, the appropriate game event will fire
   }
+});
+
+// Handle game being ended by host
+socket.on('gameEnded', ({ reason }) => {
+  screen.innerHTML = `
+    <div class="center">
+      <h2>🎮 Game Ended</h2>
+      <div style="font-size: 48px; margin: 24px 0;">⏹️</div>
+      <div style="color: #bdbdbd; margin-bottom: 16px; text-align: center; line-height: 1.4;">
+        ${reason || 'The game has ended'}
+      </div>
+      <button id="backBtn" class="btn">Back to Lobby</button>
+    </div>`;
+  
+  document.getElementById('backBtn').onclick = () => uiReady();
 });

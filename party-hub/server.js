@@ -184,6 +184,29 @@ io.on('connection', (socket)=>{
     startTrivia(rounds);
   });
 
+  socket.on('refreshHub', ()=>{
+    if (socket.id !== hub.hostSocketId) return;
+    // Clear all players and reset hub state
+    hub.players.clear();
+    hub.byPid.clear();
+    hub.currentGame = null;
+    hub.lastSnapshot = null;
+    // Generate new room code
+    hub.code = makeCode();
+    // Broadcast the refreshed state
+    broadcastHub();
+  });
+
+  socket.on('leaveGame', ()=>{
+    if (socket.id !== hub.hostSocketId) return;
+    // End current game and return to lobby
+    hub.lastSnapshot = null;
+    resetReady();
+    // Notify all players that game ended
+    io.emit('gameEnded', { reason: 'Host left the game' });
+    broadcastHub();
+  });
+
   // Handle TV navigation commands from controller
   socket.on('tvControl', ({ action, data, pid })=>{
     // Verify player exists
