@@ -7,59 +7,273 @@
   <link rel="stylesheet" href="/style.css"/>
 </head>
 <body>
-  <div class="tv">
-    <header class="topbar">
-      <div class="brand"><span class="logo">🎮</span><span class="title">Game Night HQ</span></div>
-      <div class="room"><div class="code" id="code">———</div><img id="qr" class="qr" alt="QR"/></div>
-    </header>
+  <!-- Hero Section with Premium Branding -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <div class="brand-container">
+        <div class="brand-logo">🎮</div>
+        <h1 class="brand-title">Game Night HQ</h1>
+        <p class="brand-subtitle">Premium trivia experience for groups and couples</p>
+      </div>
+      
+      <div class="connection-hub">
+        <div class="room-info">
+          <div class="room-code-container">
+            <span class="room-label">Room Code</span>
+            <div class="room-code" id="code">———</div>
+          </div>
+          <div class="qr-container">
+            <img id="qr" class="qr-code" alt="QR Code"/>
+            <p class="qr-hint">Scan to join on mobile</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <main class="layout">
-      <section class="panel">
-        <h2>Players</h2>
-        <div id="plist" class="plist"></div>
-        <div class="hint">Scan QR to join on phones. Names persist until "Leave".</div>
-      </section>
+  <!-- Main Game Area -->
+  <div class="game-container">
+    <div class="sidebar">
+      <div class="players-section">
+        <h3 class="section-title">
+          <span class="section-icon">👥</span>
+          Players <span id="playerCount" class="player-count">0</span>
+        </h3>
+        <div id="plist" class="players-list"></div>
+        <div class="players-hint">Names persist until you leave the room</div>
+      </div>
+    </div>
 
-      <section class="panel">
-        <h2>The Last Braincell</h2>
-        <div class="gameline">Pick a collection:</div>
-        <div class="collection-grid">
-          <button class="collection" data-col="party">🎉 Party / Friends</button>
-          <button class="collection" data-col="couples">💘 Couples</button>
+    <div class="main-content">
+      <!-- Game Selection Flow -->
+      <div id="gameSelection" class="game-selection">
+        <div class="selection-header">
+          <h2 class="selection-title">Choose Your Experience</h2>
+          <p class="selection-subtitle">Pick a game mode to get started</p>
         </div>
 
-        <div id="menuParty" class="mode-grid hidden">
-          <h3>Party Modes</h3>
-          <div class="modes">
-            <button class="mode" data-id="party.quick-quiz">👑 Quick Quiz Royale</button>
-            <button class="mode" data-id="party.finish-phrase">✍️ Finish the Phrase</button>
-            <button class="mode" data-id="party.fact-fiction">🤔 Fact or Fiction?</button>
-            <button class="mode" data-id="party.phone-confessions">📱 Phone Confessions</button>
-            <button class="mode" data-id="party.answer-roulette">🎲 Answer Roulette</button>
-            <button class="mode" data-id="party.lie-detector">🚨 Lie Detector</button>
-            <button class="mode" data-id="party.buzzkill">⚡ Buzzkill Bonus</button>
+        <!-- Primary Game Entry Point -->
+        <div class="primary-game">
+          <button class="game-card featured" data-action="show-braincell">
+            <div class="game-header">
+              <span class="game-icon">🧠</span>
+              <div class="game-info">
+                <h3 class="game-title">The Last Braincell</h3>
+                <p class="game-desc">Ultimate trivia showdown with multiple game modes</p>
+              </div>
+            </div>
+            <div class="game-meta">
+              <span class="player-range">2-10 Players</span>
+              <span class="game-arrow">→</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Secondary Options -->
+        <div class="secondary-games">
+          <div class="games-grid">
+            <button class="game-card" data-action="coming-soon">
+              <div class="game-header">
+                <span class="game-icon">🎯</span>
+                <div class="game-info">
+                  <h4 class="game-title">Challenge Arena</h4>
+                  <p class="game-desc">Competitive skill challenges</p>
+                </div>
+              </div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+            
+            <button class="game-card" data-action="coming-soon">
+              <div class="game-header">
+                <span class="game-icon">🎨</span>
+                <div class="game-info">
+                  <h4 class="game-title">Creative Studio</h4>
+                  <p class="game-desc">Drawing and creativity games</p>
+                </div>
+              </div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Braincell Collection View -->
+      <div id="braincellCollection" class="collection-view hidden">
+        <div class="collection-header">
+          <button class="back-btn" data-action="back-to-selection">
+            <span class="back-arrow">←</span> Back
+          </button>
+          <div class="collection-title">
+            <span class="collection-icon">🧠</span>
+            <h2>The Last Braincell</h2>
           </div>
         </div>
 
-        <div id="menuCouples" class="mode-grid hidden">
-          <h3>Couples Modes</h3>
-          <div class="modes">
-            <button class="mode" data-id="couples.how-good">💑 How Good Do You Know Me?</button>
-            <button class="mode" data-id="couples.survival">🕹️ Couple's Survival</button>
-            <button class="mode" data-id="couples.finish-phrase">💌 Finish the Phrase (Love)</button>
-            <button class="mode" data-id="couples.relationship">🎰 Relationship Roulette</button>
-            <button class="mode" data-id="couples.secret-sync">🔒 Secret Sync</button>
+        <div class="collection-categories">
+          <div class="category-section">
+            <h3 class="category-title">
+              <span class="category-icon">🎉</span>
+              Party / Friends
+              <span class="category-count">7 modes</span>
+            </h3>
+            <div class="modes-grid">
+              <button class="mode-card" data-id="party.quick-quiz">
+                <span class="mode-icon">👑</span>
+                <div class="mode-info">
+                  <h4>Quick Quiz Royale</h4>
+                  <p>Fast-paced general knowledge</p>
+                </div>
+                <span class="mode-players">2-10 players</span>
+              </button>
+              
+              <button class="mode-card" data-id="party.finish-phrase">
+                <span class="mode-icon">✍️</span>
+                <div class="mode-info">
+                  <h4>Finish the Phrase</h4>
+                  <p>Complete popular sayings</p>
+                </div>
+                <span class="mode-players">2-10 players</span>
+              </button>
+              
+              <button class="mode-card" data-id="party.fact-fiction">
+                <span class="mode-icon">🤔</span>
+                <div class="mode-info">
+                  <h4>Fact or Fiction?</h4>
+                  <p>Spot the real from the fake</p>
+                </div>
+                <span class="mode-players">2-10 players</span>
+              </button>
+              
+              <button class="mode-card" data-id="party.phone-confessions">
+                <span class="mode-icon">📱</span>
+                <div class="mode-info">
+                  <h4>Phone Confessions</h4>
+                  <p>Digital age dilemmas</p>
+                </div>
+                <span class="mode-players">2-10 players</span>
+              </button>
+              
+              <button class="mode-card" data-id="party.answer-roulette">
+                <span class="mode-icon">🎲</span>
+                <div class="mode-info">
+                  <h4>Answer Roulette</h4>
+                  <p>High-stakes knowledge game</p>
+                </div>
+                <span class="mode-players">3-10 players</span>
+              </button>
+              
+              <button class="mode-card" data-id="party.lie-detector">
+                <span class="mode-icon">🚨</span>
+                <div class="mode-info">
+                  <h4>Lie Detector</h4>
+                  <p>Separate truth from fiction</p>
+                </div>
+                <span class="mode-players">2-10 players</span>
+              </button>
+              
+              <button class="mode-card" data-id="party.buzzkill">
+                <span class="mode-icon">⚡</span>
+                <div class="mode-info">
+                  <h4>Buzzkill Bonus</h4>
+                  <p>Double points showdown</p>
+                </div>
+                <span class="mode-players">2-10 players</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="category-section">
+            <h3 class="category-title">
+              <span class="category-icon">💘</span>
+              Couples
+              <span class="category-count">5 modes</span>
+            </h3>
+            <div class="modes-grid">
+              <button class="mode-card" data-id="couples.how-good">
+                <span class="mode-icon">💑</span>
+                <div class="mode-info">
+                  <h4>How Good Do You Know Me?</h4>
+                  <p>Test your couple knowledge</p>
+                </div>
+                <span class="mode-players">Exactly 2 players</span>
+              </button>
+              
+              <button class="mode-card" data-id="couples.survival">
+                <span class="mode-icon">🕹️</span>
+                <div class="mode-info">
+                  <h4>Couple's Survival</h4>
+                  <p>Team up to overcome challenges</p>
+                </div>
+                <span class="mode-players">Exactly 2 players</span>
+              </button>
+              
+              <button class="mode-card" data-id="couples.finish-phrase">
+                <span class="mode-icon">💌</span>
+                <div class="mode-info">
+                  <h4>Finish the Phrase (Love)</h4>
+                  <p>Romantic sayings and quotes</p>
+                </div>
+                <span class="mode-players">Exactly 2 players</span>
+              </button>
+              
+              <button class="mode-card" data-id="couples.relationship">
+                <span class="mode-icon">🎰</span>
+                <div class="mode-info">
+                  <h4>Relationship Roulette</h4>
+                  <p>Random relationship scenarios</p>
+                </div>
+                <span class="mode-players">Exactly 2 players</span>
+              </button>
+              
+              <button class="mode-card" data-id="couples.secret-sync">
+                <span class="mode-icon">🔮</span>
+                <div class="mode-info">
+                  <h4>Secret Sync</h4>
+                  <p>Think alike to score points</p>
+                </div>
+                <span class="mode-players">Exactly 2 players</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="startline">
-          <button id="startBtn" class="start">Start</button>
-          <div class="note" id="capNote"></div>
+        <!-- Game Control Panel -->
+        <div id="gameControls" class="game-controls hidden">
+          <div class="controls-header">
+            <h3 id="selectedGameTitle" class="selected-game-title">Selected Game</h3>
+            <p id="selectedGameDesc" class="selected-game-desc">Game description</p>
+          </div>
+          
+          <div class="controls-content">
+            <div class="start-section">
+              <div class="rounds-selector">
+                <label class="rounds-label">Number of rounds:</label>
+                <select id="roundsSelect" class="rounds-select">
+                  <option value="5">5 questions</option>
+                  <option value="10" selected>10 questions</option>
+                  <option value="15">15 questions</option>
+                  <option value="20">20 questions</option>
+                </select>
+              </div>
+              
+              <button id="startBtn" class="start-btn" disabled>
+                <span class="start-icon">🚀</span>
+                Start Game
+              </button>
+            </div>
+            
+            <div class="game-requirements">
+              <p id="gameRequirements" class="requirements-text">Waiting for players...</p>
+            </div>
+          </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
+  </div>
 
-    <section id="gameArea" class="panel game"></section>
+  <!-- Game Screen (shown during gameplay) -->
+  <div id="gameScreen" class="game-screen hidden">
+    <!-- Game content will be populated by JavaScript -->
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
