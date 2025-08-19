@@ -646,13 +646,15 @@ function uiHostController(){
     uiHostController();
   };
   
-  // Wire up controls to send TV navigation commands
-  document.getElementById('dpadUp')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'up' }));
-  document.getElementById('dpadDown')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'down' }));
-  document.getElementById('dpadLeft')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'left' }));
-  document.getElementById('dpadRight')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'right' }));
-  document.getElementById('dpadOk')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'select' }));
-  document.getElementById('backBtn')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'back' }));
+  // Wire up controls to send TV navigation commands (only for host)
+  if (isHost) {
+    document.getElementById('dpadUp')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'up' }));
+    document.getElementById('dpadDown')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'down' }));
+    document.getElementById('dpadLeft')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'left' }));
+    document.getElementById('dpadRight')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'right' }));
+    document.getElementById('dpadOk')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'select' }));
+    document.getElementById('backBtn')?.addEventListener('click', () => sendTVCommand('navigate', { direction: 'back' }));
+  }
   
   document.getElementById('startBtn')?.addEventListener('click', () => {
     sendTVCommand('start');
@@ -667,39 +669,78 @@ function sendTVCommand(action, data = {}) {
 }
 
 function uiWaitingForHost(){
-  const hostName = hubState?.players?.find(p => p.pid === hubState?.host)?.name || 'Host';
+  const hostPlayer = hubState?.players?.find(p => p.pid === hubState?.host);
+  const hostName = hostPlayer?.name || 'Host';
   
-  screen.innerHTML = `
-    <div class="center">
-      <h2>🎮 Game Night HQ</h2>
-      <div class="waiting-state">
-        <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
-        <h3 style="margin-bottom: 8px;">Waiting for ${hostName}</h3>
-        <div style="color: #bdbdbd; margin-bottom: 16px; text-align: center; line-height: 1.4;">
-          The host is selecting a game mode.<br>
-          Sit tight and get ready to play!
-        </div>
-        
-        <div class="party-info" style="background: var(--glass-strong); padding: 12px; border-radius: 12px; margin-bottom: 16px;">
-          <div style="font-size: 14px; color: #bdbdbd; margin-bottom: 4px;">Party Status:</div>
-          <div style="font-weight: 600;">Players: ${hubState?.players?.length || 0}</div>
-          ${hubState?.currentGame ? `<div style="font-size: 12px; color: #6EFF9D; margin-top: 4px;">Game selected!</div>` : ''}
-        </div>
-        
-        <div style="font-size: 12px; color: #bdbdbd; text-align: center;">
-          💡 Tip: Make sure your volume is up for the best experience!
+  // If no host is assigned but there are players, show different message
+  if (!hubState?.host && hubState?.players?.length >= 1) {
+    screen.innerHTML = `
+      <div class="center">
+        <h2>🎮 Game Night HQ</h2>
+        <div class="waiting-state">
+          <div style="font-size: 48px; margin-bottom: 16px;">🎯</div>
+          <h3 style="margin-bottom: 8px;">Setting Up Host...</h3>
+          <div style="color: #bdbdbd; margin-bottom: 16px; text-align: center; line-height: 1.4;">
+            The first player will become the host automatically.<br>
+            Please wait a moment...
+          </div>
+          
+          <div class="party-info" style="background: var(--glass-strong); padding: 12px; border-radius: 12px; margin-bottom: 16px;">
+            <div style="font-size: 14px; color: #bdbdbd; margin-bottom: 4px;">Party Status:</div>
+            <div style="font-weight: 600;">Players: ${hubState?.players?.length || 0}</div>
+          </div>
         </div>
       </div>
-    </div>
-    
-    <button id="leaveBtn" class="btn secondary">Leave Party</button>`;
+      
+      <button id="leaveBtn" class="btn secondary">Leave Party</button>`;
+  } else {
+    screen.innerHTML = `
+      <div class="center">
+        <h2>🎮 Game Night HQ</h2>
+        <div class="waiting-state">
+          <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+          <h3 style="margin-bottom: 8px;">Waiting for ${hostName}</h3>
+          <div style="color: #bdbdbd; margin-bottom: 16px; text-align: center; line-height: 1.4;">
+            The host is selecting a game mode.<br>
+            Sit tight and get ready to play!
+          </div>
+          
+          <div class="party-info" style="background: var(--glass-strong); padding: 12px; border-radius: 12px; margin-bottom: 16px;">
+            <div style="font-size: 14px; color: #bdbdbd; margin-bottom: 4px;">Party Status:</div>
+            <div style="font-weight: 600;">Players: ${hubState?.players?.length || 0}</div>
+            ${hubState?.currentGame ? `<div style="font-size: 12px; color: #6EFF9D; margin-top: 4px;">Game selected!</div>` : ''}
+          </div>
+          
+          <div style="font-size: 12px; color: #bdbdbd; text-align: center;">
+            💡 Tip: Make sure your volume is up for the best experience!
+          </div>
+        </div>
+      </div>
+      
+      <button id="leaveBtn" class="btn secondary">Leave Party</button>`;
+  }
   
   document.getElementById('leaveBtn').onclick = () => doLeave();
 }
 
 function uiReady(){
-  // Check if this player is the host (socket.id matches hubState.host)
-  isHost = hubState && hubState.host === socket.id;
+  // Check if this player is the host (pid matches hubState.host)
+  isHost = hubState && hubState.host === pid;
+  
+  // Also check if this is the first player (should auto-become host)
+  if (!isHost && hubState && hubState.players.length >= 1 && hubState.players[0].pid === pid) {
+    isHost = true;
+    console.log('First player auto-promoted to host:', pid);
+  }
+  
+  // Debug logging
+  console.log('Host check:', {
+    pid,
+    hubStateHost: hubState?.host,
+    isHost,
+    playerCount: hubState?.players?.length,
+    firstPlayerPid: hubState?.players?.[0]?.pid
+  });
   
   if (isHost) {
     uiHostController();

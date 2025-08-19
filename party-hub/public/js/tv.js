@@ -243,14 +243,18 @@ socket.on('hubState', (state) => {
   if (previousPlayerCount === 0 && state.players.length >= 1) {
     // Small delay for smooth transition
     setTimeout(() => {
-      const epicGateway = document.querySelector('[data-action="show-braincell"]');
-      if (epicGateway) {
-        epicGateway.click();
-        tvState.currentView = 'collection';
-        tvState.selectedCategory = 0;
-        tvState.selectedGame = -1;
+      // Only advance if we're still on the selection view
+      if (tvState.currentView === 'selection') {
+        const epicGateway = document.querySelector('[data-action="show-braincell"]');
+        if (epicGateway) {
+          epicGateway.click();
+          tvState.currentView = 'collection';
+          tvState.selectedCategory = 0;
+          tvState.selectedGame = -1;
+          updateTVHighlight();
+        }
       }
-    }, 1500); // 1.5 second delay for dramatic effect
+    }, 2000); // 2 second delay for dramatic effect
   }
   
   // Update game controls if a game is selected
