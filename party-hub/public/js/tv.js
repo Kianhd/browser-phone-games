@@ -229,6 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Socket event handlers
 socket.on('hubState', (state) => {
+  const previousPlayerCount = hub ? hub.players.length : 0;
   hub = state;
   
   // Update room code and QR
@@ -237,6 +238,20 @@ socket.on('hubState', (state) => {
   
   // Update players list
   updatePlayersList(state.players);
+  
+  // Auto-advance to arena selection when first player joins
+  if (previousPlayerCount === 0 && state.players.length >= 1) {
+    // Small delay for smooth transition
+    setTimeout(() => {
+      const epicGateway = document.querySelector('[data-action="show-braincell"]');
+      if (epicGateway) {
+        epicGateway.click();
+        tvState.currentView = 'collection';
+        tvState.selectedCategory = 0;
+        tvState.selectedGame = -1;
+      }
+    }, 1500); // 1.5 second delay for dramatic effect
+  }
   
   // Update game controls if a game is selected
   if (selectedGame) {
@@ -552,9 +567,16 @@ function refreshHub() {
   const refreshBtn = document.getElementById('refreshHub');
   const originalText = refreshBtn?.innerHTML;
   if (refreshBtn) {
-    refreshBtn.innerHTML = '<span class="refresh-icon">🔄</span><span class="refresh-text">Refreshing...</span>';
+    refreshBtn.innerHTML = '<span class="refresh-symbol">⚡</span><span class="refresh-label">Resetting Reality...</span>';
     refreshBtn.disabled = true;
   }
+  
+  // Reset room code display to loading state
+  codeEl.textContent = '———';
+  
+  // Clear QR code temporarily
+  qrEl.src = '';
+  qrEl.alt = 'Generating new reality...';
   
   // Reset game state
   selectedGame = null;
@@ -573,10 +595,10 @@ function refreshHub() {
   showView('selection');
   updateTVHighlight();
   
-  // Emit hub refresh to server (clears players and resets everything)
+  // Emit hub refresh to server (clears players and resets everything including new room code)
   socket.emit('refreshHub');
   
-  // Restore button after short delay
+  // Restore button after delay (the hubState event will handle updating codes)
   setTimeout(() => {
     if (refreshBtn) {
       refreshBtn.innerHTML = originalText;
