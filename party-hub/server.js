@@ -56,8 +56,52 @@ function broadcastHub(){
 
 function resetReady(){ for (const p of hub.players.values()) p.ready = false; }
 
+// Load all trivia questions at startup
+let TRIVIA_BY_CATEGORY = {};
+const megaPath = path.join(__dirname, 'public', 'data', 'all-trivia-mega.json');
+try {
+  const megaData = JSON.parse(fs.readFileSync(megaPath, 'utf8'));
+  TRIVIA_BY_CATEGORY = megaData.reduce((acc, q) => {
+    (acc[q.category] ||= []).push(q);
+    return acc;
+  }, {});
+  console.log('Loaded trivia mega file with categories:', Object.keys(TRIVIA_BY_CATEGORY));
+} catch (err) {
+  console.error('Failed to load all-trivia-mega.json:', err);
+}
+
 function loadPack(id){
-  const map = {
+  // Map game IDs to category names in mega file
+  const categoryMap = {
+    'party.quick-quiz':        'party-quick-quiz',
+    'party.finish-phrase':     'party-finish-the-phrase',
+    'party.fact-fiction':      'party-fact-or-fiction',
+    'party.phone-confessions': 'party-phone-confessions',
+    'party.answer-roulette':   'party-answer-roulette',
+    'party.lie-detector':      'party-lie-detector',
+    'party.buzzkill':          'party-buzzkill',
+    'couples.how-good':        'couples-know-me',        // mapped from couples-how-good
+    'couples.survival':        'couples-survival',
+    'couples.finish-phrase':   'couples-love-phrase',    // mapped from couples-finish-phrase
+    'couples.relationship':    'couples-roulette',       // mapped from couples-relationship-roulette
+    'couples.secret-sync':     'couples-secret-sync'
+  };
+  
+  const category = categoryMap[id];
+  if (!category) return [];
+  
+  // Return questions from mega file if available
+  const questions = TRIVIA_BY_CATEGORY[category] || [];
+  if (questions.length > 0) {
+    // Remove category field from questions before returning
+    return questions.map(q => {
+      const { category, ...rest } = q;
+      return rest;
+    });
+  }
+  
+  // Fallback to individual files if mega file doesn't have this category
+  const fileMap = {
     'party.quick-quiz':        'party-quick-quiz.json',
     'party.finish-phrase':     'party-finish-the-phrase.json',
     'party.fact-fiction':      'party-fact-or-fiction.json',
@@ -71,7 +115,7 @@ function loadPack(id){
     'couples.relationship':    'couples-relationship-roulette.json',
     'couples.secret-sync':     'couples-secret-sync.json'
   };
-  const f = map[id];
+  const f = fileMap[id];
   if (!f) return [];
   const p = path.join(__dirname, 'public', 'data', f);
   try { return JSON.parse(fs.readFileSync(p,'utf8')); } catch { return []; }
