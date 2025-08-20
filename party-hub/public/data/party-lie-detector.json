@@ -1,26 +1,626 @@
 [
   {
-    "q": "Which of these actually happened?",
-    "A": "Ed Sheeran was arrested for karaoke crimes",
-    "B": "SpongeBob was jailed for tax evasion",
-    "C": "Justin Bieber was charged for egging a neighbor's house (2014)",
-    "D": "Bruno Mars was arrested for bringing a tiger to a club",
+    "q": "Which celebrity actually exists?",
+    "A": "Benedict Cumberbatch",
+    "B": "Benadryl Cucumberpatch",
+    "C": "Benefit Cumbersnatch",
+    "D": "Benthazar Crumpetbatch",
+    "correct": "A"
+  },
+  {
+    "q": "Which dating app feature is real?",
+    "A": "Swipe to see their credit score",
+    "B": "Super Like",
+    "C": "Match with your ex's friends only",
+    "D": "STD test results verification",
+    "correct": "B"
+  },
+  {
+    "q": "Which is an actual sex position?",
+    "A": "The Disappointed Parent",
+    "B": "The Netflix Algorithm",
+    "C": "The Reverse Cowgirl",
+    "D": "The Tax Return",
     "correct": "C"
   },
   {
-    "q": "Which product started as a medicine/tonic?",
-    "A": "Fanta was an energy drink",
-    "B": "Mountain Dew was a cough syrup",
-    "C": "Coca-Cola",
-    "D": "Sprite",
+    "q": "Which breakup excuse is most commonly used?",
+    "A": "I need to focus on my career",
+    "B": "My goldfish is going through a rough patch",
+    "C": "I'm allergic to commitment",
+    "D": "My horoscope said we're incompatible",
+    "correct": "A"
+  },
+  {
+    "q": "Which is a real psychological phenomenon?",
+    "A": "Post-nut clarity",
+    "B": "Pre-text anxiety",
+    "C": "Netflix decision paralysis",
+    "D": "Confirmation bias",
+    "correct": "D"
+  },
+  {
+    "q": "Which actually happens during orgasm?",
+    "A": "Your brain releases oxytocin",
+    "B": "Your soul briefly leaves your body",
+    "C": "Time stops for 3.7 seconds",
+    "D": "Your ex feels a disturbance in the force",
+    "correct": "A"
+  },
+  {
+    "q": "Which is a real study finding?",
+    "A": "People who use dating apps have commitment issues",
+    "B": "Couples who fart together stay together",
+    "C": "Attractive people get more matches on dating apps",
+    "D": "Your mom was right about your ex",
     "correct": "C"
   },
   {
-    "q": "Which geography fact is true?",
-    "A": "The Rhine is the world's longest",
-    "B": "The Danube is the world's longest",
-    "C": "The Nile is generally cited as the longest river (disputed with the Amazon)",
-    "D": "The Mississippi is the world's longest",
+    "q": "Which drunk behavior is scientifically documented?",
+    "A": "Liquid courage actually works",
+    "B": "Drunk people think they're more attractive",
+    "C": "Alcohol improves dance moves",
+    "D": "Beer goggles make everyone photogenic",
+    "correct": "B"
+  },
+  {
+    "q": "Which is a real relationship milestone?",
+    "A": "First fart in front of each other",
+    "B": "First joint Netflix account",
+    "C": "Meeting each other's friends",
+    "D": "First public Instagram appearance",
     "correct": "C"
+  },
+  {
+    "q": "Which hookup location is most popular according to surveys?",
+    "A": "Someone's bedroom",
+    "B": "Back seat of a car",
+    "C": "Public bathroom",
+    "D": "Your mom's basement",
+    "correct": "A"
+  },
+  {
+    "q": "Which is an actual dating red flag experts warn about?",
+    "A": "They're too nice",
+    "B": "Love bombing",
+    "C": "They like pineapple on pizza",
+    "D": "Their Netflix queue is all rom-coms",
+    "correct": "B"
+  },
+  {
+    "q": "Which is a real chemical reaction in your brain during love?",
+    "A": "Dopamine release",
+    "B": "Stupidine production",
+    "C": "Logic suppression hormones",
+    "D": "Common sense blockers",
+    "correct": "A"
+  },
+  {
+    "q": "Which cheating method is most common?",
+    "A": "Emotional affair with coworker",
+    "B": "Dating apps while in relationship",
+    "C": "Hooking up at high school reunion",
+    "D": "Mail-order spouse backup plan",
+    "correct": "A"
+  },
+  {
+    "q": "Which social media behavior predicts breakups?",
+    "A": "Posting couple photos daily",
+    "B": "Liking your ex's photos",
+    "C": "Decreased couple posts",
+    "D": "Using couple filters ironically",
+    "correct": "C"
+  },
+  {
+    "q": "Which is proven to improve sex life?",
+    "A": "Communication about desires",
+    "B": "Watching more porn together",
+    "C": "Keeping score of orgasms",
+    D": "Wearing matching underwear",
+    "correct": "A"
+  },
+  {
+    "q": "Which dating app opener has highest response rate?",
+    "A": "Hey beautiful",
+    "B": "References to their bio",
+    "C": "Dick pic",
+    "D": "Your astrological compatibility report",
+    "correct": "B"
+  },
+  {
+    "q": "Which is an actual psychological term?",
+    "A": "Netflix guilt",
+    "B": "Text message anxiety",
+    "C": "Attachment theory",
+    "D": "Swipe fatigue syndrome",
+    "correct": "C"
+  },
+  {
+    "q": "Which age group uses dating apps most?",
+    "A": "18-24",
+    "B": "25-34",
+    "C": "35-44",
+    "D": "Your mom's book club",
+    "correct": "B"
+  },
+  {
+    "q": "Which is proven to predict relationship success?",
+    "A": "Similar Netflix preferences",
+    "B": "Matching political views",
+    "C": "Same zodiac sign",
+    "D": "Compatible meme humor",
+    "correct": "B"
+  },
+  {
+    "q": "Which is a real thing people lie about on dating profiles?",
+    "A": "Their height",
+    "B": "Their pet's name",
+    "C": "Their favorite color",
+    "D": "Their blood type",
+    "correct": "A"
+  },
+  {
+    "q": "Which physical reaction happens when you see someone attractive?",
+    "A": "Your pupils dilate",
+    "B": "Your IQ temporarily drops",
+    "C": "Your wallet gets lighter",
+    "D": "Your standards get lower",
+    "correct": "A"
+  },
+  {
+    "q": "Which pickup line actually works according to studies?",
+    "A": "Are you wifi? I'm feeling a connection",
+    "B": "Did it hurt when you fell from heaven?",
+    "C": "Genuine compliments",
+    "D": "Asking about their car's extended warranty",
+    "correct": "C"
+  },
+  {
+    "q": "Which is the most common reason for divorce?",
+    "A": "Infidelity",
+    "B": "Money problems",
+    "C": "Lack of communication",
+    "D": "Different opinions on pineapple pizza",
+    "correct": "C"
+  },
+  {
+    "q": "Which happens during the 'honeymoon phase'?",
+    "A": "Ignoring red flags",
+    "B": "Perfect instagram posts increase",
+    "C": "Brain chemistry changes",
+    "D": "Common sense goes on vacation",
+    "correct": "C"
+  },
+  {
+    "q": "Which is a real dating trend?",
+    "A": "Ghosting",
+    "B": "Haunting",
+    "C": "Zombieing",
+    "D": "Poltergeisting",
+    "correct": "A"
+  },
+  {
+    "q": "Which body language sign indicates attraction?",
+    "A": "Mirroring your movements",
+    "B": "Checking their phone constantly",
+    "C": "Yawning repeatedly",
+    "D": "Mentioning their ex 12 times",
+    "correct": "A"
+  },
+  {
+    "q": "Which is proven to kill romantic relationships?",
+    "A": "Different toothpaste preferences",
+    "B": "Contempt and criticism",
+    "C": "Mismatched sock wearing",
+    "D": "Using different phone chargers",
+    "correct": "B"
+  },
+  {
+    "q": "Which hormone is called the 'love hormone'?",
+    "A": "Oxytocin",
+    "B": "Testosterone",
+    "C": "Dopamine",
+    "D": "Tequila",
+    "correct": "A"
+  },
+  {
+    "q": "Which is the average duration of a rebound relationship?",
+    "A": "2-3 months",
+    "B": "6-9 months", 
+    "C": "1-2 years",
+    "D": "However long it takes your ex to notice",
+    "correct": "A"
+  },
+  {
+    "q": "Which dating behavior is considered a green flag?",
+    "A": "Consistent communication",
+    "B": "Love bombing early on",
+    "C": "Immediately saying 'I love you'",
+    "D": "Showing up to your work unannounced",
+    "correct": "A"
+  },
+  {
+    "q": "Which is a real sex statistic?",
+    "A": "Average sex lasts 5-7 minutes",
+    "B": "Most people have sex 3 times a week",
+    "C": "Women fake orgasms 67% of the time",
+    "D": "Foreplay averages 37 minutes",
+    "correct": "A"
+  },
+  {
+    "q": "Which texting behavior kills relationships?",
+    "A": "Too many emojis",
+    "B": "Read receipts turned off",
+    "C": "Poor grammar",
+    "D": "Double texting",
+    "correct": "D"
+  },
+  {
+    "q": "Which is an actual evolutionary mating behavior?",
+    "A": "Men peacock by showing off",
+    "B": "Women collect shiny objects",
+    "C": "Couples synchronize Netflix preferences",
+    "D": "Partners exchange Instagram passwords",
+    "correct": "A"
+  },
+  {
+    "q": "Which social media platform is best for dating?",
+    "A": "LinkedIn",
+    "B": "Instagram DMs",
+    "C": "TikTok comments",
+    "D": "Venmo transaction history",
+    "correct": "B"
+  },
+  {
+    "q": "Which is a proven aphrodisiac?",
+    "A": "Chocolate",
+    "B": "Oysters",
+    "C": "Confidence",
+    "D": "Matching your energy level",
+    "correct": "C"
+  },
+  {
+    "q": "Which relationship phase lasts longest on average?",
+    "A": "Honeymoon phase",
+    "B": "Power struggle phase",
+    "C": "Stable commitment phase",
+    "D": "The 'it's complicated' phase",
+    "correct": "C"
+  },
+  {
+    "q": "Which is the most effective way to get over an ex?",
+    "A": "No contact rule",
+    "B": "Immediate rebound dating",
+    "C": "Social media stalking",
+    "D": "Voodoo dolls",
+    "correct": "A"
+  },
+  {
+    "q": "Which dating app has the highest success rate for relationships?",
+    "A": "Tinder",
+    "B": "Hinge",
+    "C": "Bumble",
+    "D": "Christian Mingle",
+    "correct": "B"
+  },
+  {
+    "q": "Which is a real psychological attachment style?",
+    "A": "Anxious attachment",
+    "B": "Chaotic attachment",
+    "C": "Dramatic attachment",
+    "D": "WiFi attachment",
+    "correct": "A"
+  },
+  {
+    "q": "Which age do most people get married?",
+    "A": "22-25",
+    "B": "26-30",
+    "C": "31-35",
+    "D": "When their parents stop asking",
+    "correct": "B"
+  },
+  {
+    "q": "Which is proven to increase relationship satisfaction?",
+    "A": "Shared hobbies",
+    "B": "Expressing gratitude",
+    "C": "Matching outfits",
+    "D": "Synchronized phone upgrades",
+    "correct": "B"
+  },
+  {
+    "q": "Which percentage of relationships start online now?",
+    "A": "25%",
+    "B": "40%",
+    "C": "55%",
+    "D": "Everyone except you apparently",
+    "correct": "B"
+  },
+  {
+    "q": "Which is the biggest predictor of relationship longevity?",
+    "A": "Physical attraction",
+    "B": "Similar values",
+    "C": "Good sex",
+    "D": "Shared Netflix account",
+    "correct": "B"
+  },
+  {
+    "q": "Which is a real thing people do when they're crushing?",
+    "A": "Stalk their social media",
+    "B": "Learn their horoscope",
+    "C": "Research their ex",
+    "D": "All of the above",
+    "correct": "D"
+  },
+  {
+    "q": "Which emotion is most commonly felt after a hookup?",
+    "A": "Regret",
+    "B": "Satisfaction",
+    "C": "Confusion",
+    "D": "Hunger for tacos",
+    "correct": "A"
+  },
+  {
+    "q": "Which is the average number of people someone dates before marriage?",
+    "A": "3-5",
+    "B": "7-10",
+    "C": "15-20",
+    "D": "Enough to fill a small wedding",
+    "correct": "B"
+  },
+  {
+    "q": "Which pickup location has highest success rate?",
+    "A": "Bars/clubs",
+    "B": "Grocery stores",
+    "C": "Through friends",
+    "D": "Emergency room waiting areas",
+    "correct": "C"
+  },
+  {
+    "q": "Which is proven to make someone more attractive?",
+    "A": "Expensive clothes",
+    "B": "Confident body language",
+    "C": "Luxury car",
+    "D": "Paid verification checkmark",
+    "correct": "B"
+  },
+  {
+    "q": "Which relationship length is most likely to end in breakup?",
+    "A": "3-6 months",
+    "B": "1-2 years",
+    "C": "3-5 years",
+    "D": "After the Netflix password is changed",
+    "correct": "A"
+  },
+  {
+    "q": "Which is the most common first date activity?",
+    "A": "Dinner",
+    "B": "Coffee",
+    "C": "Movies",
+    "D": "Mutual therapy session",
+    "correct": "B"
+  },
+  {
+    "q": "Which personality trait is most attractive to potential partners?",
+    "A": "Humor",
+    "B": "Intelligence",
+    "C": "Kindness",
+    "D": "Premium subscription services",
+    "correct": "A"
+  },
+  {
+    "q": "Which is the biggest turn-off on first dates?",
+    "A": "Bad breath",
+    "B": "Talking about ex",
+    "C": "Being rude to servers",
+    "D": "Ordering the most expensive item",
+    "correct": "C"
+  },
+  {
+    "q": "Which dating phase has the highest breakup rate?",
+    "A": "First 3 months",
+    "B": "6 month mark",
+    "C": "One year mark",
+    "D": "After meeting the parents",
+    "correct": "A"
+  },
+  {
+    "q": "Which is proven to repair relationships after fights?",
+    "A": "Grand romantic gestures",
+    "B": "Genuine apologies",
+    "C": "Expensive gifts",
+    "D": "Matching tattoos",
+    "correct": "B"
+  },
+  {
+    "q": "Which is the most effective flirting technique?",
+    "A": "Playing hard to get",
+    "B": "Eye contact and smiling",
+    "C": "Negging",
+    "D": "Helicopter stalking",
+    "correct": "B"
+  },
+  {
+    "q": "Which percentage of people have cheated at least once?",
+    "A": "15-20%",
+    "B": "25-30%",
+    "C": "35-40%",
+    "D": "Everyone except who you're dating",
+    "correct": "B"
+  },
+  {
+    "q": "Which is the most common way relationships end?",
+    "A": "Big dramatic fight",
+    "B": "Gradual growing apart",
+    "C": "Someone cheats",
+    "D": "They discover your browser history",
+    "correct": "B"
+  },
+  {
+    "q": "Which dating advice actually works?",
+    "A": "Be yourself",
+    "B": "Play hard to get",
+    "C": "Text back immediately",
+    "D": "Pretend to be mysterious",
+    "correct": "A"
+  },
+  {
+    "q": "Which is proven to increase attraction?",
+    "A": "Mimicking their body language",
+    "B": "Wearing red",
+    "C": "Having a pet in photos",
+    "D": "All of the above",
+    "correct": "D"
+  },
+  {
+    "q": "Which is the biggest relationship deal-breaker?",
+    "A": "Different political views",
+    "B": "Bad hygiene",
+    "C": "Dishonesty",
+    "D": "Using Internet Explorer",
+    "correct": "C"
+  },
+  {
+    "q": "Which emotion do people feel most when seeing an ex happy?",
+    "A": "Jealousy",
+    "B": "Happiness for them",
+    "C": "Regret",
+    "D": "Urge to post better photos",
+    "correct": "A"
+  },
+  {
+    "q": "Which is the most common reason people ghost?",
+    "A": "Lost interest",
+    "B": "Found someone else",
+    "C": "Conflict avoidance",
+    "D": "Their phone actually broke",
+    "correct": "C"
+  },
+  {
+    "q": "Which anniversary is hardest for couples?",
+    "A": "6 months",
+    "B": "1 year",
+    "C": "2 years",
+    "D": "After the first Netflix argument",
+    "correct": "C"
+  },
+  {
+    "q": "Which is proven to predict relationship success?",
+    "A": "How they treat service workers",
+    "B": "Their social media activity",
+    "C": "Their relationship with their parents",
+    "D": "Their credit score",
+    "correct": "C"
+  },
+  {
+    "q": "Which percentage of people have reconnected with an ex?",
+    "A": "40%",
+    "B": "55%",
+    "C": "70%",
+    "D": "Everyone at 2am on weekends",
+    "correct": "C"
+  },
+  {
+    "q": "Which is the most important factor in long-term relationships?",
+    "A": "Physical attraction",
+    "B": "Shared interests",
+    "C": "Communication skills",
+    "D": "WiFi password compatibility",
+    "correct": "C"
+  },
+  {
+    "q": "Which dating behavior indicates genuine interest?",
+    "A": "Quick response times",
+    "B": "Asking follow-up questions",
+    "C": "Making future plans",
+    "D": "Sending good morning texts",
+    "correct": "C"
+  },
+  {
+    "q": "Which is the average time before couples say 'I love you'?",
+    "A": "1-2 months",
+    "B": "3-5 months",
+    "C": "6-8 months",
+    "D": "After three drinks",
+    "correct": "B"
+  },
+  {
+    "q": "Which social media behavior indicates relationship problems?",
+    "A": "Posting solo photos more",
+    "B": "Less couple content",
+    "C": "Vague posting about loyalty",
+    "D": "All of the above",
+    "correct": "D"
+  },
+  {
+    "q": "Which is proven to make breakups easier?",
+    "A": "Staying friends",
+    "B": "Complete no contact",
+    "C": "Dating immediately",
+    "D": "Sharing custody of streaming accounts",
+    "correct": "B"
+  },
+  {
+    "q": "Which type of humor is most attractive?",
+    "A": "Self-deprecating",
+    "B": "Sarcastic",
+    "C": "Observational",
+    "D": "Dad jokes",
+    "correct": "A"
+  },
+  {
+    "q": "Which is the biggest indicator of future infidelity?",
+    "A": "Past cheating history",
+    "B": "High social media usage",
+    "C": "Having attractive friends",
+    "D": "Sliding into DMs while dating",
+    "correct": "A"
+  },
+  {
+    "q": "Which percentage of people check their partner's phone?",
+    "A": "25%",
+    "B": "45%",
+    "C": "65%",
+    "D": "Only the ones with trust issues",
+    "correct": "C"
+  },
+  {
+    "q": "Which is the most effective way to show love?",
+    "A": "Expensive gifts",
+    "B": "Quality time together",
+    "C": "Physical affection",
+    "D": "Sharing your Netflix password",
+    "correct": "B"
+  },
+  {
+    "q": "Which dating mistake do most people make?",
+    "A": "Moving too fast",
+    "B": "Being too picky",
+    "C": "Settling for less",
+    "D": "Swiping while drunk",
+    "correct": "A"
+  },
+  {
+    "q": "Which is proven to increase relationship longevity?",
+    "A": "Regular date nights",
+    "B": "Shared goals",
+    "C": "Maintaining friendships",
+    "D": "All of the above",
+    "correct": "D"
+  },
+  {
+    "q": "Which emotion is strongest after a breakup?",
+    "A": "Sadness",
+    "B": "Anger",
+    "C": "Relief",
+    "D": "Fear of dying alone",
+    "correct": "A"
+  },
+  {
+    "q": "Which is the most common relationship regret?",
+    "A": "Staying too long",
+    "B": "Not trying harder",
+    "C": "Wasting time",
+    "D": "Sharing your HBO password",
+    "correct": "A"
   }
 ]

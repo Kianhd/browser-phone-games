@@ -1,290 +1,634 @@
 [
   {
-    "q": "What is the capital of Canada?",
-    "A": "Vancouver",
-    "B": "Toronto",
-    "C": "Ottawa",
-    "D": "Montreal",
-    "correct": "C"
-  },
-  {
-    "q": "Which planet is known as the Red Planet?",
-    "A": "Venus",
-    "B": "Mars",
-    "C": "Mercury",
-    "D": "Jupiter",
-    "correct": "B"
-  },
-  {
-    "q": "The chemical symbol for gold is?",
-    "A": "Gd",
-    "B": "Au",
-    "C": "Go",
-    "D": "Ag",
-    "correct": "B"
-  },
-  {
-    "q": "What is the largest ocean on Earth?",
-    "A": "Indian Ocean",
-    "B": "Arctic Ocean",
-    "C": "Pacific Ocean",
-    "D": "Atlantic Ocean",
-    "correct": "C"
-  },
-  {
-    "q": "Who painted the Mona Lisa?",
-    "A": "Raphael",
-    "B": "Leonardo da Vinci",
-    "C": "Michelangelo",
-    "D": "Donatello",
-    "correct": "B"
-  },
-  {
-    "q": "What gas do plants primarily absorb for photosynthesis?",
-    "A": "Nitrogen",
-    "B": "Oxygen",
-    "C": "Hydrogen",
-    "D": "Carbon dioxide",
-    "correct": "D"
-  },
-  {
-    "q": "What is the smallest country in the world by area?",
-    "A": "Monaco",
-    "B": "Vatican City",
-    "C": "San Marino",
-    "D": "Liechtenstein",
-    "correct": "B"
-  },
-  {
-    "q": "In which country would you find the city of Kyoto?",
-    "A": "Japan",
-    "B": "Thailand",
-    "C": "South Korea",
-    "D": "China",
+    "q": "What percentage of marriages end in divorce in the US?",
+    "A": "Around 50%",
+    "B": "Around 30%",
+    "C": "Around 70%",
+    "D": "100% if you count emotional divorce",
     "correct": "A"
-  },
-  {
-    "q": "Which instrument has keys, pedals and strings?",
-    "A": "Piano",
-    "B": "Violin",
-    "C": "Trumpet",
-    "D": "Flute",
-    "correct": "A"
-  },
-  {
-    "q": "How many continents are there?",
-    "A": "6",
-    "B": "5",
-    "C": "8",
-    "D": "7",
-    "correct": "D"
-  },
-  {
-    "q": "Which language has the most native speakers?",
-    "A": "Mandarin Chinese",
-    "B": "Spanish",
-    "C": "English",
-    "D": "Hindi",
-    "correct": "A"
-  },
-  {
-    "q": "What is H2O commonly known as?",
-    "A": "Salt",
-    "B": "Hydrogen peroxide",
-    "C": "Oxygen",
-    "D": "Water",
-    "correct": "D"
-  },
-  {
-    "q": "Which organ pumps blood through the body?",
-    "A": "Kidneys",
-    "B": "Lungs",
-    "C": "Liver",
-    "D": "Heart",
-    "correct": "D"
-  },
-  {
-    "q": "What is the capital of Australia?",
-    "A": "Melbourne",
-    "B": "Sydney",
-    "C": "Perth",
-    "D": "Canberra",
-    "correct": "D"
-  },
-  {
-    "q": "Which scientist proposed the theory of relativity?",
-    "A": "Albert Einstein",
-    "B": "Niels Bohr",
-    "C": "Isaac Newton",
-    "D": "Galileo Galilei",
-    "correct": "A"
-  },
-  {
-    "q": "How many degrees are in a right angle?",
-    "A": "45",
-    "B": "120",
-    "C": "60",
-    "D": "90",
-    "correct": "D"
-  },
-  {
-    "q": "What is the hardest natural substance?",
-    "A": "Topaz",
-    "B": "Corundum",
-    "C": "Quartz",
-    "D": "Diamond",
-    "correct": "D"
-  },
-  {
-    "q": "Which country gifted the Statue of Liberty to the USA?",
-    "A": "United Kingdom",
-    "B": "Italy",
-    "C": "Spain",
-    "D": "France",
-    "correct": "D"
-  },
-  {
-    "q": "Which metal is liquid at room temperature?",
-    "A": "Lead",
-    "B": "Aluminum",
-    "C": "Sodium",
-    "D": "Mercury",
-    "correct": "D"
-  },
-  {
-    "q": "What is the largest desert in the world?",
-    "A": "Sahara",
-    "B": "Gobi",
-    "C": "Arabian",
-    "D": "Antarctic Desert",
-    "correct": "D"
-  },
-  {
-    "q": "Who wrote '1984'?",
-    "A": "Aldous Huxley",
-    "B": "J.D. Salinger",
-    "C": "Ray Bradbury",
-    "D": "George Orwell",
-    "correct": "D"
-  },
-  {
-    "q": "Which blood type is known as the universal donor?",
-    "A": "A negative",
-    "B": "O negative",
-    "C": "O positive",
-    "D": "AB positive",
-    "correct": "B"
-  },
-  {
-    "q": "What is the currency of Japan?",
-    "A": "Won",
-    "B": "Yuan",
-    "C": "Yen",
-    "D": "Ringgit",
-    "correct": "C"
   },
   {
     "q": "Which planet has the most moons?",
-    "A": "Uranus",
-    "B": "Neptune",
-    "C": "Saturn",
-    "D": "Jupiter",
-    "correct": "C"
+    "A": "Jupiter",
+    "B": "Saturn",
+    "C": "Uranus",
+    "D": "Your ex's Instagram orbit",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common lie told by adults?",
+    "A": "I'm fine",
+    "B": "On my way",
+    "C": "I've read the terms and conditions",
+    "D": "My phone was dead",
+    "correct": "A"
   },
   {
     "q": "How many bones are in the adult human body?",
-    "A": "210",
+    "A": "186",
     "B": "206",
-    "C": "220",
-    "D": "201",
+    "C": "226",
+    "D": "None if you're spineless",
     "correct": "B"
   },
   {
-    "q": "Which city hosted the 2012 Summer Olympics?",
-    "A": "Athens",
-    "B": "Beijing",
-    "C": "Rio de Janeiro",
-    "D": "London",
-    "correct": "D"
+    "q": "What's the world's most expensive spice by weight?",
+    "A": "Vanilla",
+    "B": "Cardamom",
+    "C": "Saffron",
+    "D": "Whatever's in that overpriced latte",
+    "correct": "C"
   },
   {
-    "q": "What does CPU stand for?",
-    "A": "Central Processing Unit",
-    "B": "Central Peripheral Unit",
-    "C": "Core Processing Utility",
-    "D": "Computer Personal Unit",
+    "q": "What percentage of people admit to peeing in the pool?",
+    "A": "12%",
+    "B": "19%",
+    "C": "31%",
+    "D": "The other 81% are liars",
+    "correct": "B"
+  },
+  {
+    "q": "Which country consumes the most alcohol per capita?",
+    "A": "Russia",
+    "B": "Czech Republic",
+    "C": "Ireland",
+    "D": "Wherever your ex lives now",
+    "correct": "B"
+  },
+  {
+    "q": "What's the average number of sexual partners for adults?",
+    "A": "4-6",
+    "B": "7-8",
+    "C": "10-12",
+    "D": "Nice try, mom",
+    "correct": "B"
+  },
+  {
+    "q": "How long does the average person spend on the toilet per week?",
+    "A": "1.5 hours",
+    "B": "3 hours",
+    "C": "5 hours",
+    "D": "Not enough time to escape reality",
     "correct": "A"
   },
   {
-    "q": "Which country is known as the Land of the Rising Sun?",
-    "A": "South Korea",
-    "B": "Thailand",
-    "C": "Japan",
-    "D": "China",
-    "correct": "C"
-  },
-  {
-    "q": "What is the boiling point of water at sea level?",
-    "A": "120°C",
-    "B": "80°C",
-    "C": "90°C",
-    "D": "100°C",
-    "correct": "D"
-  },
-  {
-    "q": "Who painted 'The Starry Night'?",
-    "A": "Claude Monet",
-    "B": "Pablo Picasso",
-    "C": "Paul Cézanne",
-    "D": "Vincent van Gogh",
-    "correct": "D"
-  },
-  {
-    "q": "Which element has the symbol Fe?",
-    "A": "Tin",
-    "B": "Iron",
-    "C": "Fermium",
-    "D": "Fluorine",
+    "q": "What's the most shoplifted item in the world?",
+    "A": "Clothing",
+    "B": "Cheese",
+    "C": "Electronics",
+    "D": "Hearts at the club",
     "correct": "B"
   },
   {
-    "q": "What is the tallest mountain above sea level?",
-    "A": "K2",
-    "B": "Lhotse",
-    "C": "Kangchenjunga",
-    "D": "Mount Everest",
-    "correct": "D"
-  },
-  {
-    "q": "What is the national animal of Scotland?",
-    "A": "Red deer",
-    "B": "Highland cow",
-    "C": "Unicorn",
-    "D": "Lion",
-    "correct": "C"
-  },
-  {
-    "q": "Which vitamin do we mainly get from sunlight?",
-    "A": "Vitamin A",
-    "B": "Vitamin D",
-    "C": "Vitamin C",
-    "D": "Vitamin B12",
+    "q": "At what blood alcohol level are you legally drunk in most US states?",
+    "A": "0.05%",
+    "B": "0.08%",
+    "C": "0.10%",
+    "D": "When you text your ex",
     "correct": "B"
   },
   {
-    "q": "Which continent is the Nile River primarily associated with?",
-    "A": "South America",
-    "B": "Asia",
-    "C": "Africa",
-    "D": "Europe",
-    "correct": "C"
+    "q": "What percentage of people have cheated on their partner?",
+    "A": "10-15%",
+    "B": "20-25%",
+    "C": "30-35%",
+    "D": "Everyone except you, apparently",
+    "correct": "B"
   },
   {
-    "q": "Which artist is known as the 'King of Pop'?",
-    "A": "Michael Jackson",
-    "B": "Prince",
-    "C": "Justin Bieber",
-    "D": "Elvis Presley",
+    "q": "How many times does the average person check their phone daily?",
+    "A": "58 times",
+    "B": "96 times",
+    "C": "144 times",
+    "D": "Every time their crush posts",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common fetish according to surveys?",
+    "A": "Feet",
+    "B": "BDSM",
+    "C": "Role-play",
+    "D": "Financial stability",
     "correct": "A"
+  },
+  {
+    "q": "How many minutes does the average sexual encounter last?",
+    "A": "3-7 minutes",
+    "B": "5-10 minutes",
+    "C": "15-20 minutes",
+    "D": "Netflix says 'Are you still watching?'",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have had sex at work?",
+    "A": "8%",
+    "B": "14%",
+    "C": "22%",
+    "D": "HR wants to know your location",
+    "correct": "B"
+  },
+  {
+    "q": "Which drug is responsible for the most ER visits?",
+    "A": "Cocaine",
+    "B": "Alcohol",
+    "C": "Heroin",
+    "D": "Love",
+    "correct": "B"
+  },
+  {
+    "q": "What's the average age people lose their virginity?",
+    "A": "15-16",
+    "B": "17-18",
+    "C": "19-20",
+    "D": "Still waiting for the right person",
+    "correct": "B"
+  },
+  {
+    "q": "How much does the average wedding cost in the US?",
+    "A": "$15,000",
+    "B": "$28,000",
+    "C": "$35,000",
+    "D": "Your sanity and savings",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have faked an orgasm?",
+    "A": "25%",
+    "B": "48%",
+    "C": "67%",
+    "D": "Oscar-worthy performances nightly",
+    "correct": "C"
+  },
+  {
+    "q": "How many people has the average person kissed?",
+    "A": "8-10",
+    "B": "15-20",
+    "C": "20-25",
+    "D": "Counting drunk mistakes?",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common STI in the US?",
+    "A": "Chlamydia",
+    "B": "HPV",
+    "C": "Herpes",
+    "D": "Catching feelings",
+    "correct": "B"
+  },
+  {
+    "q": "How many calories does 30 minutes of sex burn?",
+    "A": "50-100",
+    "B": "100-150",
+    "C": "200-300",
+    "D": "Not enough to skip the gym",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have sent nudes?",
+    "A": "31%",
+    "B": "46%",
+    "C": "57%",
+    "D": "Delete your search history",
+    "correct": "C"
+  },
+  {
+    "q": "What's the deadliest creature to humans annually?",
+    "A": "Sharks",
+    "B": "Snakes",
+    "C": "Mosquitoes",
+    "D": "Your mother-in-law",
+    "correct": "C"
+  },
+  {
+    "q": "How long can sperm survive inside the body?",
+    "A": "1-2 days",
+    "B": "3-5 days",
+    "C": "7-10 days",
+    "D": "Long enough to ruin your plans",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have had a threesome?",
+    "A": "8%",
+    "B": "18%",
+    "C": "29%",
+    "D": "Disappointed it wasn't like the movies",
+    "correct": "B"
+  },
+  {
+    "q": "What's the average penis size when erect?",
+    "A": "4.5-5 inches",
+    "B": "5-5.5 inches",
+    "C": "6-6.5 inches",
+    "D": "Bigger on the internet",
+    "correct": "B"
+  },
+  {
+    "q": "How many people admit to stalking an ex on social media?",
+    "A": "45%",
+    "B": "70%",
+    "C": "88%",
+    "D": "The rest use fake accounts",
+    "correct": "C"
+  },
+  {
+    "q": "What's the most common cause of house fires?",
+    "A": "Cooking",
+    "B": "Heating equipment",
+    "C": "Electrical",
+    "D": "My mixtape",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have had sex on the first date?",
+    "A": "25%",
+    "B": "35%",
+    "C": "45%",
+    "D": "Depends who's asking",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of lottery winners go broke within 5 years?",
+    "A": "33%",
+    "B": "50%",
+    "C": "70%",
+    "D": "Still better odds than dating apps",
+    "correct": "C"
+  },
+  {
+    "q": "How many adults still sleep with a stuffed animal?",
+    "A": "12%",
+    "B": "25%",
+    "C": "40%",
+    "D": "It's called emotional support",
+    "correct": "C"
+  },
+  {
+    "q": "What's the average number of times couples have sex per week?",
+    "A": "Once",
+    "B": "Twice",
+    "C": "Three times",
+    "D": "You guys are having sex?",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have gotten back with an ex?",
+    "A": "29%",
+    "B": "44%",
+    "C": "50%",
+    "D": "Currently typing 'hey' at 2am",
+    "correct": "C"
+  },
+  {
+    "q": "What percentage of people lie on their dating profile?",
+    "A": "53%",
+    "B": "72%",
+    "C": "81%",
+    "D": "Only about their height",
+    "correct": "C"
+  },
+  {
+    "q": "How long does it take to fall in love on average?",
+    "A": "2-4 weeks",
+    "B": "2-3 months",
+    "C": "4-6 months",
+    "D": "One tequila shot",
+    "correct": "C"
+  },
+  {
+    "q": "What's the most popular day to break up?",
+    "A": "Monday",
+    "B": "Friday",
+    "C": "Sunday",
+    "D": "Right before Valentine's Day",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have used a dating app?",
+    "A": "30%",
+    "B": "48%",
+    "C": "52%",
+    "D": "Everyone pretending they haven't",
+    "correct": "C"
+  },
+  {
+    "q": "What percentage of people have ghosted someone?",
+    "A": "45%",
+    "B": "65%",
+    "C": "80%",
+    "D": "Currently ignoring this question",
+    "correct": "B"
+  },
+  {
+    "q": "How many adults can't swim?",
+    "A": "17%",
+    "B": "31%",
+    "C": "54%",
+    "D": "But they can still slide into DMs",
+    "correct": "C"
+  },
+  {
+    "q": "What's the average credit card debt per American?",
+    "A": "$3,000",
+    "B": "$5,700",
+    "C": "$8,400",
+    "D": "Pretending it doesn't exist",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have called in sick when not actually sick?",
+    "A": "52%",
+    "B": "67%",
+    "C": "80%",
+    "D": "Cough cough, definitely sick",
+    "correct": "C"
+  },
+  {
+    "q": "What percentage of gym memberships go unused?",
+    "A": "37%",
+    "B": "55%",
+    "C": "67%",
+    "D": "January 2nd onwards",
+    "correct": "C"
+  },
+  {
+    "q": "How many people have cried at work?",
+    "A": "28%",
+    "B": "41%",
+    "C": "53%",
+    "D": "Only in the bathroom",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most regretted tattoo theme?",
+    "A": "Names",
+    "B": "Tribal",
+    "C": "Chinese symbols",
+    "D": "That spring break decision",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have had a one-night stand?",
+    "A": "44%",
+    "B": "60%",
+    "C": "66%",
+    "D": "Define 'one night'",
+    "correct": "C"
+  },
+  {
+    "q": "What percentage of people sleep naked?",
+    "A": "8%",
+    "B": "17%",
+    "C": "29%",
+    "D": "Until the earthquake hits",
+    "correct": "B"
+  },
+  {
+    "q": "How many times does the average person lie per day?",
+    "A": "1-2",
+    "B": "2-3",
+    "C": "4-5",
+    "D": "This question? Never",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common password still used?",
+    "A": "123456",
+    "B": "password",
+    "C": "qwerty",
+    "D": "TryAndGuessThis1!",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have sexted while at work?",
+    "A": "11%",
+    "B": "19%",
+    "C": "28%",
+    "D": "IT knows everything",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have eaten food past its expiration date?",
+    "A": "55%",
+    "B": "73%",
+    "C": "91%",
+    "D": "It's just a suggestion",
+    "correct": "C"
+  },
+  {
+    "q": "How many adults believe in ghosts?",
+    "A": "25%",
+    "B": "42%",
+    "C": "58%",
+    "D": "Only when home alone",
+    "correct": "B"
+  },
+  {
+    "q": "What's the average time people spend in the shower?",
+    "A": "5-6 minutes",
+    "B": "8-9 minutes",
+    "C": "12-13 minutes",
+    "D": "Until the hot water runs out",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have had sex in a car?",
+    "A": "48%",
+    "B": "60%",
+    "C": "74%",
+    "D": "Parking spot memories",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have been caught masturbating?",
+    "A": "17%",
+    "B": "29%",
+    "C": "41%",
+    "D": "Knock first, please",
+    "correct": "C"
+  },
+  {
+    "q": "How many people have stolen from work?",
+    "A": "43%",
+    "B": "58%",
+    "C": "75%",
+    "D": "Just office supplies, right?",
+    "correct": "C"
+  },
+  {
+    "q": "What's the average age gap in relationships?",
+    "A": "1-2 years",
+    "B": "2-3 years",
+    "C": "3-4 years",
+    "D": "Daddy issues confirmed",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have walked in on their parents having sex?",
+    "A": "14%",
+    "B": "26%",
+    "C": "35%",
+    "D": "Still in therapy",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have revenge on an ex?",
+    "A": "22%",
+    "B": "37%",
+    "C": "48%",
+    "D": "Karma's handling it",
+    "correct": "B"
+  },
+  {
+    "q": "How many adults pick their nose?",
+    "A": "70%",
+    "B": "85%",
+    "C": "91%",
+    "D": "Not in public though",
+    "correct": "C"
+  },
+  {
+    "q": "What's the most common drunk text topic?",
+    "A": "Love confessions",
+    "B": "Apologies",
+    "C": "Booty calls",
+    "D": "Philosophical nonsense",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have lied about their 'body count'?",
+    "A": "41%",
+    "B": "59%",
+    "C": "67%",
+    "D": "Math was never my strong suit",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have joined the Mile High Club?",
+    "A": "3%",
+    "B": "5%",
+    "C": "8%",
+    "D": "Still stuck in economy",
+    "correct": "B"
+  },
+  {
+    "q": "How many people Google their symptoms instead of seeing a doctor?",
+    "A": "55%",
+    "B": "72%",
+    "C": "89%",
+    "D": "WebMD says it's cancer",
+    "correct": "C"
+  },
+  {
+    "q": "What's the average number of drinks before drunk texting an ex?",
+    "A": "2-3",
+    "B": "4-5",
+    "C": "6-7",
+    "D": "Just one wine bottle",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have fantasized about a coworker?",
+    "A": "40%",
+    "B": "55%",
+    "C": "70%",
+    "D": "Monday morning meetings hit different",
+    "correct": "C"
+  },
+  {
+    "q": "What percentage of people have been to therapy?",
+    "A": "20%",
+    "B": "30%",
+    "C": "42%",
+    "D": "The rest use alcohol",
+    "correct": "C"
+  },
+  {
+    "q": "How many adults have peed in the ocean?",
+    "A": "48%",
+    "B": "62%",
+    "C": "78%",
+    "D": "The fish don't mind",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common relationship dealbreaker?",
+    "A": "Cheating",
+    "B": "Bad hygiene",
+    "C": "Different values",
+    "D": "Pineapple on pizza",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have snooped through their partner's phone?",
+    "A": "34%",
+    "B": "48%",
+    "C": "58%",
+    "D": "Trust issues loading...",
+    "correct": "C"
+  },
+  {
+    "q": "What percentage of people have had a friends with benefits situation?",
+    "A": "33%",
+    "B": "47%",
+    "C": "60%",
+    "D": "It's complicated",
+    "correct": "C"
+  },
+  {
+    "q": "How many adults still live with their parents?",
+    "A": "18%",
+    "B": "29%",
+    "C": "35%",
+    "D": "In this economy?",
+    "correct": "B"
+  },
+  {
+    "q": "What's the average amount of time before saying 'I love you'?",
+    "A": "1-2 months",
+    "B": "3-4 months",
+    "C": "5-6 months",
+    "D": "After 3 drinks",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have been catfished online?",
+    "A": "15%",
+    "B": "23%",
+    "C": "31%",
+    "D": "That wasn't their real photo?",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have had shower sex?",
+    "A": "44%",
+    "B": "58%",
+    "C": "72%",
+    "D": "Slippery when wet",
+    "correct": "B"
+  },
+  {
+    "q": "How many adults have never been in love?",
+    "A": "8%",
+    "B": "14%",
+    "C": "20%",
+    "D": "Love is a social construct",
+    "correct": "C"
+  },
+  {
+    "q": "What's the most common reason for divorce?",
+    "A": "Infidelity",
+    "B": "Money problems",
+    "C": "Lack of commitment",
+    "D": "They chewed too loud",
+    "correct": "C"
+  },
+  {
+    "q": "How many people have dated a friend's ex?",
+    "A": "17%",
+    "B": "28%",
+    "C": "36%",
+    "D": "Former friend now",
+    "correct": "B"
   }
 ]

@@ -1,162 +1,626 @@
 [
   {
-    "q": "Netflix and ____.",
-    "A": "Chill",
-    "B": "Grill",
-    "C": "Bill",
-    "D": "Cry in the shower",
+    "q": "The best part about being drunk is...",
+    "A": "The confidence boost",
+    "B": "Forgetting your problems",
+    "C": "The dancing skills",
+    "D": "Tomorrow's regret collection",
     "correct": "A"
   },
   {
-    "q": "Break a ____.",
-    "A": "Rule",
-    "B": "Leg",
-    "C": "Group chat",
-    "D": "Record",
+    "q": "Love is like...",
+    "A": "A warm embrace",
+    "B": "A roller coaster",
+    "C": "A beautiful dream",
+    "D": "A subscription you forgot to cancel",
     "correct": "B"
   },
   {
-    "q": "Spill the ____.",
-    "A": "Tea",
-    "B": "Beans",
-    "C": "Juice",
-    "D": "Entire kitchen",
+    "q": "The secret to a happy relationship is...",
+    "A": "Communication",
+    "B": "Trust and respect",
+    "C": "Compromise",
+    "D": "Separate bathrooms",
     "correct": "A"
   },
   {
-    "q": "Keep calm and ____.",
-    "A": "Blame your ex",
-    "B": "Eat cake",
-    "C": "Carry on",
-    "D": "Call mom",
+    "q": "My biggest turn-on is...",
+    "A": "Intelligence",
+    "B": "Sense of humor",
+    "C": "Confidence",
+    "D": "Someone who texts back",
     "correct": "C"
   },
   {
-    "q": "The early bird catches the ____.",
-    "A": "Cold",
-    "B": "Worm",
-    "C": "Bus",
-    "D": "Wi-Fi",
+    "q": "The worst thing about dating apps is...",
+    "A": "Fake profiles",
+    "B": "Ghosting",
+    "C": "Endless swiping",
+    "D": "Realizing you peaked in your profile pics",
     "correct": "B"
   },
   {
-    "q": "When life gives you lemons, make ____.",
-    "A": "Margaritas",
-    "B": "Excuses",
-    "C": "Lemonade",
-    "D": "Tea",
-    "correct": "C"
-  },
-  {
-    "q": "Hit the nail on the ____.",
-    "A": "DMs",
-    "B": "Head",
-    "C": "Table",
-    "D": "Thumb",
-    "correct": "B"
-  },
-  {
-    "q": "A picture is worth a thousand ____.",
-    "A": "Words",
-    "B": "Pixels",
-    "C": "Memes",
-    "D": "Likes",
+    "q": "Marriage is basically...",
+    "A": "A partnership",
+    "B": "Finding your best friend",
+    "C": "A lifelong commitment",
+    "D": "Asking 'what's for dinner' forever",
     "correct": "A"
   },
   {
-    "q": "Don't count your chickens before they ____.",
-    "A": "Hatch",
-    "B": "Fry",
-    "C": "Post",
-    "D": "Cry",
+    "q": "The key to great sex is...",
+    "A": "Communication",
+    "B": "Chemistry",
+    "C": "Being present",
+    "D": "Lower expectations",
     "correct": "A"
   },
   {
-    "q": "Bite off more than you can ____.",
-    "A": "Chew",
-    "B": "Stream",
-    "C": "Budget",
-    "D": "Swipe",
+    "q": "My toxic trait is...",
+    "A": "Overthinking",
+    "B": "Being too trusting",
+    "C": "Avoiding confrontation",
+    "D": "Thinking I can fix them",
     "correct": "A"
   },
   {
-    "q": "Let the cat out of the ____.",
-    "A": "Room",
-    "B": "Box",
-    "C": "Bag",
-    "D": "Inbox",
-    "correct": "C"
+    "q": "The best cure for a hangover is...",
+    "A": "Hydration and rest",
+    "B": "Greasy food",
+    "C": "Hair of the dog",
+    "D": "Time travel to stop yourself",
+    "correct": "A"
   },
   {
-    "q": "Beat around the ____.",
-    "A": "Mic",
-    "B": "Block",
-    "C": "Group chat",
-    "D": "Bush",
-    "correct": "D"
+    "q": "Adulting means...",
+    "A": "Taking responsibility",
+    "B": "Paying bills on time",
+    "C": "Making tough decisions",
+    "D": "Googling everything your parents used to do",
+    "correct": "A"
   },
   {
-    "q": "Burning the midnight ____.",
-    "A": "Data",
-    "B": "Toast",
-    "C": "Oil",
-    "D": "Playlist",
-    "correct": "C"
-  },
-  {
-    "q": "Add fuel to the ____.",
-    "A": "Playlist",
-    "B": "Rumor",
-    "C": "Car",
-    "D": "Fire",
-    "correct": "D"
-  },
-  {
-    "q": "On cloud ____.",
-    "A": "Eleven",
-    "B": "Nine",
-    "C": "Storage",
-    "D": "Seven",
+    "q": "The worst part about your 30s is...",
+    "A": "Slower metabolism",
+    "B": "Hangovers last days",
+    "C": "Everyone's getting married",
+    "D": "Your back hurts for no reason",
     "correct": "B"
   },
   {
-    "q": "Barking up the wrong ____.",
-    "A": "Door",
-    "B": "Chat",
-    "C": "Tree",
-    "D": "Thread",
-    "correct": "C"
+    "q": "True friendship is...",
+    "A": "Being there no matter what",
+    "B": "Accepting each other's flaws",
+    "C": "Honest communication",
+    "D": "Sharing passwords without fear",
+    "correct": "A"
   },
   {
-    "q": "A blessing in ____.",
-    "A": "Noise",
-    "B": "Disguise",
-    "C": "Crocs",
-    "D": "Comments",
+    "q": "The biggest lie we tell ourselves is...",
+    "A": "I'll do it tomorrow",
+    "B": "Just one more episode",
+    "C": "I don't care what they think",
+    "D": "This is my last drink",
+    "correct": "A"
+  },
+  {
+    "q": "Money can't buy happiness but...",
+    "A": "It helps with stress",
+    "B": "It buys freedom",
+    "C": "It solves many problems",
+    "D": "Have you tried being sad on a yacht?",
     "correct": "B"
   },
   {
-    "q": "Don't put all your eggs in one ____.",
-    "A": "Cart",
-    "B": "Basket",
-    "C": "Story",
-    "D": "App",
+    "q": "The best thing about being single is...",
+    "A": "Complete freedom",
+    "B": "No compromises",
+    "C": "Self-discovery",
+    "D": "The whole bed to yourself",
+    "correct": "A"
+  },
+  {
+    "q": "Growing up means realizing...",
+    "A": "Your parents were right",
+    "B": "Life isn't fair",
+    "C": "Time goes too fast",
+    "D": "Metabolism was a temporary gift",
+    "correct": "A"
+  },
+  {
+    "q": "The hardest part about dating is...",
+    "A": "Being vulnerable",
+    "B": "Finding genuine connection",
+    "C": "Managing expectations",
+    "D": "Pretending to be normal",
     "correct": "B"
   },
   {
-    "q": "Throw in the ____.",
-    "A": "Fork",
-    "B": "Mic",
-    "C": "Towel",
-    "D": "Like",
+    "q": "Success is really just...",
+    "A": "Hard work and luck",
+    "B": "Persistence paying off",
+    "C": "Being in the right place",
+    "D": "Faking it till you make it",
+    "correct": "A"
+  },
+  {
+    "q": "The secret to looking good is...",
+    "A": "Confidence",
+    "B": "Good lighting",
+    "C": "Staying hydrated",
+    "D": "Strategic angles and filters",
+    "correct": "A"
+  },
+  {
+    "q": "Real maturity is when...",
+    "A": "You take accountability",
+    "B": "You stop caring about drama",
+    "C": "You choose peace over being right",
+    "D": "You get excited about new kitchen appliances",
     "correct": "C"
   },
   {
-    "q": "Hit the ____ sack.",
-    "A": "Like",
-    "B": "Snooze",
-    "C": "Hay",
-    "D": "Gym",
+    "q": "The worst thing about your ex is...",
+    "A": "They wasted your time",
+    "B": "They never communicated",
+    "C": "They were selfish",
+    "D": "They still look good on Instagram",
+    "correct": "A"
+  },
+  {
+    "q": "Happiness is actually...",
+    "A": "A choice you make",
+    "B": "Found in small moments",
+    "C": "About gratitude",
+    "D": "Cancelled plans on a Friday",
+    "correct": "B"
+  },
+  {
+    "q": "The problem with social media is...",
+    "A": "It's all fake",
+    "B": "Constant comparison",
+    "C": "It's addictive",
+    "D": "Your ex can see you thriving",
+    "correct": "B"
+  },
+  {
+    "q": "Being an adult is basically...",
+    "A": "Constant decision making",
+    "B": "Endless responsibilities",
+    "C": "Figuring it out as you go",
+    "D": "Wondering if you need to see a doctor",
+    "correct": "C"
+  },
+  {
+    "q": "The best revenge is...",
+    "A": "Living well",
+    "B": "Success",
+    "C": "Moving on",
+    "D": "Looking hot at their friend's party",
+    "correct": "A"
+  },
+  {
+    "q": "Work-life balance means...",
+    "A": "Setting boundaries",
+    "B": "Prioritizing health",
+    "C": "Making time for yourself",
+    "D": "Crying in the car between both",
+    "correct": "A"
+  },
+  {
+    "q": "The truth about love is...",
+    "A": "It takes work",
+    "B": "It's not like the movies",
+    "C": "Timing is everything",
+    "D": "It makes smart people stupid",
+    "correct": "A"
+  },
+  {
+    "q": "Getting older means...",
+    "A": "Gaining wisdom",
+    "B": "Caring less about opinions",
+    "C": "Appreciating simple things",
+    "D": "Sounds when you stand up",
+    "correct": "B"
+  },
+  {
+    "q": "The best part of weekends is...",
+    "A": "Sleeping in",
+    "B": "No alarms",
+    "C": "Free time",
+    "D": "Socially acceptable day drinking",
+    "correct": "A"
+  },
+  {
+    "q": "Trust is like...",
+    "A": "Glass - once broken, never the same",
+    "B": "A plant that needs nurturing",
+    "C": "Currency in relationships",
+    "D": "My phone battery at 1%",
+    "correct": "A"
+  },
+  {
+    "q": "The morning after drinking is...",
+    "A": "Full of regret",
+    "B": "A reality check",
+    "C": "Dehydration station",
+    "D": "Checking your texts in horror",
+    "correct": "A"
+  },
+  {
+    "q": "Dating in your 30s is...",
+    "A": "More serious",
+    "B": "Less games",
+    "C": "Knowing what you want",
+    "D": "Everyone has baggage or children",
+    "correct": "C"
+  },
+  {
+    "q": "The best thing about therapy is...",
+    "A": "Self-awareness",
+    "B": "Having someone listen",
+    "C": "Learning coping skills",
+    "D": "Blaming your parents professionally",
+    "correct": "A"
+  },
+  {
+    "q": "Life is too short to...",
+    "A": "Hold grudges",
+    "B": "Not take risks",
+    "C": "Please everyone",
+    "D": "Pretend you like their music taste",
+    "correct": "C"
+  },
+  {
+    "q": "The secret to good mental health is...",
+    "A": "Setting boundaries",
+    "B": "Self-care",
+    "C": "Asking for help",
+    "D": "Deleting your ex's number",
+    "correct": "A"
+  },
+  {
+    "q": "Real confidence comes from...",
+    "A": "Self-acceptance",
+    "B": "Experience",
+    "C": "Not needing validation",
+    "D": "A really good hair day",
+    "correct": "A"
+  },
+  {
+    "q": "The worst part about family gatherings is...",
+    "A": "Personal questions",
+    "B": "Political discussions",
+    "C": "Comparing achievements",
+    "D": "When are you getting married?",
+    "correct": "A"
+  },
+  {
+    "q": "Being in love feels like...",
+    "A": "Coming home",
+    "B": "Flying without wings",
+    "C": "Everything makes sense",
+    "D": "Temporary insanity",
+    "correct": "A"
+  },
+  {
+    "q": "The problem with expectations is...",
+    "A": "They lead to disappointment",
+    "B": "Reality rarely matches",
+    "C": "They ruin surprises",
+    "D": "Mine are unreasonably high",
+    "correct": "A"
+  },
+  {
+    "q": "Self-care is really just...",
+    "A": "Setting priorities",
+    "B": "Not feeling guilty",
+    "C": "Basic maintenance",
+    "D": "Canceling plans without lying",
+    "correct": "A"
+  },
+  {
+    "q": "The truth about your 20s is...",
+    "A": "Nobody knows what they're doing",
+    "B": "It's not like TV shows",
+    "C": "Mistakes are necessary",
+    "D": "Ramen is a food group",
+    "correct": "A"
+  },
+  {
+    "q": "Karma is...",
+    "A": "Real and patient",
+    "B": "The universe balancing",
+    "C": "What goes around comes around",
+    "D": "My ex's upcoming problem",
+    "correct": "C"
+  },
+  {
+    "q": "The best part about getting older is...",
+    "A": "Wisdom",
+    "B": "Not caring what people think",
+    "C": "Knowing yourself",
+    "D": "Earlier bedtimes aren't shameful",
+    "correct": "B"
+  },
+  {
+    "q": "Chemistry between two people is...",
+    "A": "Instant and undeniable",
+    "B": "Rare and precious",
+    "C": "Can't be forced",
+    "D": "Usually influenced by alcohol",
+    "correct": "C"
+  },
+  {
+    "q": "The key to staying young is...",
+    "A": "Curiosity",
+    "B": "Laughter",
+    "C": "Staying active",
+    "D": "Good skincare and denial",
+    "correct": "B"
+  },
+  {
+    "q": "Closure is actually...",
+    "A": "Something you give yourself",
+    "B": "Overrated",
+    "C": "Rarely satisfying",
+    "D": "That block button",
+    "correct": "A"
+  },
+  {
+    "q": "The biggest relationship red flag is...",
+    "A": "Love bombing",
+    "B": "Controlling behavior",
+    "C": "Lack of accountability",
+    "D": "They're still friends with their ex",
+    "correct": "C"
+  },
+  {
+    "q": "Healing really means...",
+    "A": "Facing your trauma",
+    "B": "Letting go",
+    "C": "Growing from pain",
+    "D": "Not checking their Instagram",
+    "correct": "B"
+  },
+  {
+    "q": "The best drunk food is...",
+    "A": "Pizza",
+    "B": "Tacos",
+    "C": "Burgers",
+    "D": "Whatever's in the Uber driver's car",
+    "correct": "A"
+  },
+  {
+    "q": "Anxiety feels like...",
+    "A": "Drowning in air",
+    "B": "Your mind racing",
+    "C": "Impending doom",
+    "D": "Checking if you locked the door 47 times",
+    "correct": "B"
+  },
+  {
+    "q": "The secret to a good life is...",
+    "A": "Balance",
+    "B": "Gratitude",
+    "C": "Meaningful connections",
+    "D": "Low expectations and wine",
+    "correct": "B"
+  },
+  {
+    "q": "Breaking up is like...",
+    "A": "Ripping off a bandaid",
+    "B": "Losing a part of yourself",
+    "C": "Starting over",
+    "D": "Finally using the whole bed",
+    "correct": "B"
+  },
+  {
+    "q": "The worst part about Mondays is...",
+    "A": "The weekend is over",
+    "B": "Reality hits",
+    "C": "Five days until Friday",
+    "D": "Pretending to be functional",
+    "correct": "A"
+  },
+  {
+    "q": "Finding the one means...",
+    "A": "Feeling complete",
+    "B": "No more searching",
+    "C": "True partnership",
+    "D": "Someone who tolerates your crazy",
+    "correct": "C"
+  },
+  {
+    "q": "The truth about first dates is...",
+    "A": "Everyone's nervous",
+    "B": "They rarely go as planned",
+    "C": "First impressions matter",
+    "D": "We all lie a little",
+    "correct": "A"
+  },
+  {
+    "q": "Forgiveness is really...",
+    "A": "For yourself",
+    "B": "Letting go of anger",
+    "C": "A sign of strength",
+    "D": "Optional when they're trash",
+    "correct": "A"
+  },
+  {
+    "q": "The best thing about bad dates is...",
+    "A": "Great stories later",
+    "B": "Knowing what you don't want",
+    "C": "They eventually end",
+    "D": "The group chat content",
+    "correct": "A"
+  },
+  {
+    "q": "Communication in relationships is...",
+    "A": "Everything",
+    "B": "Harder than it looks",
+    "C": "A learned skill",
+    "D": "Expecting them to read minds",
+    "correct": "A"
+  },
+  {
+    "q": "The problem with perfection is...",
+    "A": "It doesn't exist",
+    "B": "It's boring",
+    "C": "The pressure is exhausting",
+    "D": "Instagram makes it look easy",
+    "correct": "A"
+  },
+  {
+    "q": "Loyalty means...",
+    "A": "Having their back",
+    "B": "Choosing them daily",
+    "C": "Being trustworthy",
+    "D": "Deleting dating apps without being asked",
+    "correct": "A"
+  },
+  {
+    "q": "The worst part about jealousy is...",
+    "A": "It consumes you",
+    "B": "It ruins trust",
+    "C": "It's often unfounded",
+    "D": "Admitting you stalked their ex",
+    "correct": "A"
+  },
+  {
+    "q": "Freedom feels like...",
+    "A": "Weight off your shoulders",
+    "B": "Endless possibilities",
+    "C": "Being yourself",
+    "D": "No one asking where you're going",
+    "correct": "A"
+  },
+  {
+    "q": "The best part about your hometown is...",
+    "A": "The memories",
+    "B": "Familiarity",
+    "C": "Old friends",
+    "D": "Leaving it",
+    "correct": "A"
+  },
+  {
+    "q": "Compromise in relationships means...",
+    "A": "Meeting in the middle",
+    "B": "Both people sacrifice",
+    "C": "Choosing battles wisely",
+    "D": "Watching their shows sometimes",
+    "correct": "A"
+  },
+  {
+    "q": "The truth about social media stalking is...",
+    "A": "Everyone does it",
+    "B": "It's unhealthy",
+    "C": "You'll find what you're looking for",
+    "D": "Private accounts ruin everything",
+    "correct": "A"
+  },
+  {
+    "q": "Boundaries are basically...",
+    "A": "Self-respect",
+    "B": "Protecting your peace",
+    "C": "Necessary for health",
+    "D": "Why I'm single",
+    "correct": "B"
+  },
+  {
+    "q": "The morning after a one-night stand is...",
+    "A": "Awkward",
+    "B": "Full of regret",
+    "C": "A reality check",
+    "D": "An Uber ride of shame",
+    "correct": "A"
+  },
+  {
+    "q": "Passion without trust is...",
+    "A": "Toxic",
+    "B": "Temporary",
+    "C": "Destructive",
+    "D": "My dating history",
+    "correct": "A"
+  },
+  {
+    "q": "The best part about wine is...",
+    "A": "It relaxes you",
+    "B": "It's sophisticated",
+    "C": "Pairs with everything",
+    "D": "Socially acceptable at lunch",
+    "correct": "A"
+  },
+  {
+    "q": "Being vulnerable means...",
+    "A": "Showing your true self",
+    "B": "Risking hurt",
+    "C": "Building deeper connections",
+    "D": "Crying on the third date",
+    "correct": "A"
+  },
+  {
+    "q": "The secret to moving on is...",
+    "A": "Time and distance",
+    "B": "Accepting what happened",
+    "C": "Focusing on yourself",
+    "D": "A revenge body",
+    "correct": "C"
+  },
+  {
+    "q": "Regret feels like...",
+    "A": "A weight on your chest",
+    "B": "Wishing for time travel",
+    "C": "Learning the hard way",
+    "D": "Reading your drunk texts",
+    "correct": "A"
+  },
+  {
+    "q": "The best relationship advice is...",
+    "A": "Be yourself",
+    "B": "Communicate openly",
+    "C": "Don't lose yourself",
+    "D": "Check their phone when they shower",
+    "correct": "B"
+  },
+  {
+    "q": "Growing apart means...",
+    "A": "Different paths",
+    "B": "Natural evolution",
+    "C": "Time to let go",
+    "D": "They got boring",
+    "correct": "A"
+  },
+  {
+    "q": "The truth about happiness is...",
+    "A": "It comes from within",
+    "B": "It's not constant",
+    "C": "You create it yourself",
+    "D": "It's directly related to tacos",
+    "correct": "A"
+  },
+  {
+    "q": "Red flags look like...",
+    "A": "Normal flags through rose-colored glasses",
+    "B": "Warning signs",
+    "C": "Future problems",
+    "D": "My type apparently",
+    "correct": "A"
+  },
+  {
+    "q": "The worst part about heartbreak is...",
+    "A": "It physically hurts",
+    "B": "Everything reminds you of them",
+    "C": "Starting over",
+    "D": "They moved on first",
+    "correct": "B"
+  },
+  {
+    "q": "True love is...",
+    "A": "Unconditional",
+    "B": "Worth waiting for",
+    "C": "Rare but real",
+    "D": "A Disney conspiracy",
     "correct": "C"
   }
 ]

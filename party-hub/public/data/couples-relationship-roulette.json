@@ -1,42 +1,634 @@
 [
   {
     "q": "If I won $1M, first thing I'd buy:",
-    "A": "A car",
-    "B": "Vacation",
-    "C": "A house",
-    "D": "Invest it all",
-    "correct": "C"
+    "A": "A house",
+    "B": "A car",
+    "C": "A vacation",
+    "D": "Your love... oh wait, I already have that",
+    "correct": "A"
   },
   {
     "q": "On a free day I'd rather:",
-    "A": "Go for brunch",
-    "B": "Hit the gym",
-    "C": "Sleep in",
-    "D": "Binge Netflix",
-    "correct": "C"
+    "A": "Sleep in",
+    "B": "Go for brunch",
+    "C": "Hit the gym",
+    "D": "Pretend I'm productive while binge-watching Netflix",
+    "correct": "A"
   },
   {
     "q": "My ideal date night is:",
     "A": "Dinner and movie",
-    "B": "Adventure activity",
-    "C": "Live music",
-    "D": "Stay home cooking",
+    "B": "Stay home cooking",
+    "C": "Adventure activity",
+    "D": "Arguing about what to watch for 2 hours",
     "correct": "A"
   },
   {
     "q": "If we had a pet, it would be:",
     "A": "A dog",
-    "B": "No pets please",
-    "C": "A cat",
-    "D": "Something exotic",
+    "B": "A cat",
+    "C": "Something exotic",
+    "D": "A plant (I can barely keep us alive)",
     "correct": "A"
   },
   {
     "q": "My biggest fear about our relationship:",
     "A": "Growing apart",
-    "B": "Meeting your parents",
-    "C": "Getting too comfortable",
-    "D": "Running out of things to say",
+    "B": "Getting too comfortable",
+    "C": "Meeting your parents",
+    "D": "You discovering my true Netflix viewing habits",
+    "correct": "A"
+  },
+  {
+    "q": "For our anniversary I'd prefer:",
+    "A": "Romantic dinner out",
+    "B": "Weekend getaway",
+    "C": "Home-cooked meal together",
+    "D": "Anything that doesn't involve me planning it",
+    "correct": "A"
+  },
+  {
+    "q": "If we moved in together, I'd want:",
+    "A": "Our own place",
+    "B": "To live with roommates",
+    "C": "To move in with family temporarily",
+    "D": "Separate bathrooms so you never see me human",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest relationship weakness is:",
+    "A": "Communication",
+    "B": "Being too jealous",
+    "C": "Avoiding conflict",
+    "D": "My ability to eat entire pizzas alone",
+    "correct": "A"
+  },
+  {
+    "q": "When we fight, I usually:",
+    "A": "Want to talk it out immediately",
+    "B": "Need space to cool down",
+    "C": "Get emotional",
+    "D": "Bring up that thing you did three years ago",
+    "correct": "B"
+  },
+  {
+    "q": "My love language is:",
+    "A": "Quality time",
+    "B": "Physical touch",
+    "C": "Words of affirmation",
+    "D": "You doing the dishes without being asked",
+    "correct": "A"
+  },
+  {
+    "q": "If I could change one thing about you:",
+    "A": "Nothing",
+    "B": "Your messy habits",
+    "C": "Your snoring",
+    "D": "Your ability to find anything I've lost",
+    "correct": "A"
+  },
+  {
+    "q": "My ideal vacation with you is:",
+    "A": "Beach resort",
+    "B": "European cities",
+    "C": "Mountain cabin",
+    "D": "Anywhere with room service and no pants required",
+    "correct": "A"
+  },
+  {
+    "q": "When I'm stressed, I need:",
+    "A": "Your support",
+    "B": "Space to decompress",
+    "C": "Physical comfort",
+    "D": "Wine and the ability to complain for exactly 47 minutes",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest insecurity in relationships:",
+    "A": "Not being good enough",
+    "B": "Being too clingy",
+    "C": "My appearance",
+    "D": "My cooking skills (or lack thereof)",
+    "correct": "A"
+  },
+  {
+    "q": "If we broke up, I'd:",
+    "A": "Be heartbroken but move on",
+    "B": "Try to stay friends",
+    "C": "Need time to heal",
+    "D": "Change all my passwords immediately",
+    "correct": "A"
+  },
+  {
+    "q": "My family's opinion of you matters:",
+    "A": "Very much",
+    "B": "Somewhat",
+    "C": "Not really",
+    "D": "Only if they're paying for dinner",
+    "correct": "A"
+  },
+  {
+    "q": "I show love best through:",
+    "A": "Actions",
+    "B": "Words",
+    "C": "Gifts",
+    "D": "Sharing my food with you",
+    "correct": "A"
+  },
+  {
+    "q": "When you're sick, I:",
+    "A": "Take care of everything",
+    "B": "Give you space but check in",
+    "C": "Panic and google your symptoms",
+    "D": "Assume you're being dramatic but bring soup anyway",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest relationship dealbreaker:",
+    "A": "Dishonesty",
+    "B": "Cheating",
+    "C": "Lack of ambition",
+    "D": "Not laughing at my jokes",
+    "correct": "A"
+  },
+  {
+    "q": "If I had to pick your best quality:",
+    "A": "Your kindness",
+    "B": "Your humor",
+    "C": "Your intelligence",
+    "D": "Your ability to reach high shelves",
+    "correct": "A"
+  },
+  {
+    "q": "Our biggest relationship challenge is:",
+    "A": "Communication",
+    "B": "Different schedules",
+    "C": "Money management",
+    "D": "Deciding what to watch on Netflix",
+    "correct": "A"
+  },
+  {
+    "q": "I prefer to resolve conflict by:",
+    "A": "Talking it through",
+    "B": "Taking a break first",
+    "C": "Physical affection",
+    "D": "Passive-aggressive Post-it notes",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest fear about marriage:",
+    "A": "Losing independence",
+    "B": "Things changing",
+    "C": "The responsibility",
+    "D": "Having to share a closet",
+    "correct": "A"
+  },
+  {
+    "q": "If we had kids, I'd want:",
+    "A": "2-3 children",
+    "B": "Just one",
+    "C": "A big family",
+    "D": "To practice on a houseplant first",
+    "correct": "A"
+  },
+  {
+    "q": "When making decisions together, I:",
+    "A": "Want us to decide together",
+    "B": "Usually defer to you",
+    "C": "Like to take the lead",
+    "D": "Pretend to have opinions about things I don't care about",
+    "correct": "A"
+  },
+  {
+    "q": "My ideal way to spend a Sunday:",
+    "A": "Relaxing together at home",
+    "B": "Being active outdoors",
+    "C": "Visiting family/friends",
+    "D": "In bed until it's technically Monday",
+    "correct": "A"
+  },
+  {
+    "q": "I need reassurance about:",
+    "A": "Your feelings for me",
+    "B": "Our future together",
+    "C": "My appearance",
+    "D": "Whether that text sounded weird",
+    "correct": "A"
+  },
+  {
+    "q": "My favorite way to show affection:",
+    "A": "Physical touch",
+    "B": "Doing things for you",
+    "C": "Verbal appreciation",
+    "D": "Letting you control the remote",
+    "correct": "A"
+  },
+  {
+    "q": "If money wasn't an issue, I'd:",
+    "A": "Travel the world with you",
+    "B": "Buy a dream house",
+    "C": "Quit working",
+    "D": "Finally try that expensive restaurant without checking prices",
+    "correct": "A"
+  },
+  {
+    "q": "When I'm angry, I:",
+    "A": "Need to talk about it",
+    "B": "Get quiet and withdraw",
+    "C": "Express it immediately",
+    "D": "Passive-aggressively reorganize your stuff",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest worry about our future:",
+    "A": "Growing apart",
+    "B": "Financial stability",
+    "C": "External pressures",
+    "D": "Running out of shows to binge together",
+    "correct": "A"
+  },
+  {
+    "q": "I handle jealousy by:",
+    "A": "Talking about it",
+    "B": "Keeping it to myself",
+    "C": "Getting passive-aggressive",
+    "D": "Stalking their social media at 2 AM",
+    "correct": "A"
+  },
+  {
+    "q": "My ideal engagement would be:",
+    "A": "Private and intimate",
+    "B": "In front of family/friends",
+    "C": "Somewhere special to us",
+    "D": "Anywhere but a sporting event jumbotron",
+    "correct": "A"
+  },
+  {
+    "q": "When we disagree, I:",
+    "A": "Try to see your perspective",
+    "B": "Stand firm in my opinion",
+    "C": "Look for compromise",
+    "D": "Bring up receipts from previous arguments",
+    "correct": "A"
+  },
+  {
+    "q": "My favorite thing about our relationship:",
+    "A": "How comfortable we are",
+    "B": "Our chemistry",
+    "C": "How we make each other laugh",
+    "D": "You laugh at my dad jokes",
+    "correct": "A"
+  },
+  {
+    "q": "I prefer to celebrate milestones:",
+    "A": "With a special night together",
+    "B": "With friends and family",
+    "C": "Simply and low-key",
+    "D": "By posting about it on social media",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest relationship strength is:",
+    "A": "Being loyal",
+    "B": "Good communication",
+    "C": "Being supportive",
+    "D": "My ability to remember what you like on your pizza",
+    "correct": "A"
+  },
+  {
+    "q": "If we're running late, I:",
+    "A": "Get stressed and rush",
+    "B": "Stay calm and focused",
+    "C": "Blame you for not being ready",
+    "D": "Suggest we just skip it and order takeout",
+    "correct": "A"
+  },
+  {
+    "q": "I want to grow old together by:",
+    "A": "Building a life together",
+    "B": "Traveling and adventuring",
+    "C": "Staying active and healthy",
+    "D": "Competing to see who complains about their back more",
+    "correct": "A"
+  },
+  {
+    "q": "When planning our future, I think about:",
+    "A": "Our shared goals",
+    "B": "Financial security",
+    "C": "Family planning",
+    "D": "Whether we'll still find each other attractive",
+    "correct": "A"
+  },
+  {
+    "q": "My approach to social media in relationships:",
+    "A": "Share some things but keep it private",
+    "B": "Post about us regularly",
+    "C": "Keep it completely private",
+    "D": "Use couple photos to make my ex jealous",
+    "correct": "A"
+  },
+  {
+    "q": "If I could plan the perfect surprise for you:",
+    "A": "Something thoughtful and personal",
+    "B": "An adventure or experience",
+    "C": "Something romantic",
+    "D": "I'd actually remember what you mentioned wanting",
+    "correct": "A"
+  },
+  {
+    "q": "When you're upset with me, I:",
+    "A": "Want to fix it immediately",
+    "B": "Give you space to cool down",
+    "C": "Try to understand what I did wrong",
+    "D": "Panic and start making your favorite food",
+    "correct": "A"
+  },
+  {
+    "q": "My idea of couple time is:",
+    "A": "Quality conversation",
+    "B": "Doing activities together",
+    "C": "Physical closeness",
+    "D": "Sitting in comfortable silence while scrolling phones",
+    "correct": "A"
+  },
+  {
+    "q": "I prefer to handle money in relationships:",
+    "A": "Split everything equally",
+    "B": "Pool our resources",
+    "C": "Keep separate accounts",
+    "D": "Let you handle it while I provide commentary",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest hope for us:",
+    "A": "Long-term commitment",
+    "B": "Continuous growth together",
+    "C": "Always being happy",
+    "D": "That you never discover my true pizza consumption levels",
+    "correct": "A"
+  },
+  {
+    "q": "When I need emotional support, I:",
+    "A": "Come to you directly",
+    "B": "Need some space first",
+    "C": "Want physical comfort",
+    "D": "Eat my feelings and then talk",
+    "correct": "A"
+  },
+  {
+    "q": "If we lived together, I'd be responsible for:",
+    "A": "Cooking",
+    "B": "Cleaning",
+    "C": "Managing finances",
+    "D": "Providing running commentary on reality TV",
+    "correct": "A"
+  },
+  {
+    "q": "My favorite memory of us is:",
+    "A": "Our first trip together",
+    "B": "A quiet moment at home",
+    "C": "Meeting your family",
+    "D": "When you finally laughed at my terrible joke",
+    "correct": "A"
+  },
+  {
+    "q": "I show I'm ready for commitment by:",
+    "A": "Including you in future plans",
+    "B": "Meeting your family/friends",
+    "C": "Talking about serious topics",
+    "D": "Letting you see me without makeup/before coffee",
+    "correct": "A"
+  },
+  {
+    "q": "When we're apart, I:",
+    "A": "Miss you but stay busy",
+    "B": "Text you constantly",
+    "C": "Count down until I see you",
+    "D": "Wonder what you're doing every 15 minutes",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest relationship goal is:",
+    "A": "Building a strong partnership",
+    "B": "Maintaining romance",
+    "C": "Growing together",
+    "D": "Successfully assembling IKEA furniture without fighting",
+    "correct": "A"
+  },
+  {
+    "q": "I prefer to express disagreement by:",
+    "A": "Direct honest conversation",
+    "B": "Writing it out first",
+    "C": "Taking time to think",
+    "D": "Subtle hints you'll never pick up on",
+    "correct": "A"
+  },
+  {
+    "q": "My ideal wedding would be:",
+    "A": "Small and intimate",
+    "B": "Big celebration",
+    "C": "Destination wedding",
+    "D": "Eloping to avoid the stress",
+    "correct": "A"
+  },
+  {
+    "q": "When planning dates, I prefer:",
+    "A": "Taking turns planning",
+    "B": "You plan most of them",
+    "C": "I plan most of them",
+    "D": "Mutual agreement that Netflix counts as a date",
+    "correct": "A"
+  },
+  {
+    "q": "My response to relationship advice from others:",
+    "A": "Listen but make my own decisions",
+    "B": "Value input from close friends",
+    "C": "Keep our business private",
+    "D": "Nod politely while ignoring completely",
+    "correct": "A"
+  },
+  {
+    "q": "If I had to describe our chemistry:",
+    "A": "Natural and easy",
+    "B": "Passionate and intense",
+    "C": "Comfortable and stable",
+    "D": "Like a science experiment that somehow worked",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest compromise in relationships:",
+    "A": "Sharing personal space",
+    "B": "Adjusting my schedule",
+    "C": "Changing some habits",
+    "D": "Pretending to like your favorite music",
+    "correct": "A"
+  },
+  {
+    "q": "When meeting your friends, I:",
+    "A": "Want to make a good impression",
+    "B": "Try to be myself",
+    "C": "Feel a bit nervous",
+    "D": "Wonder which ones have the best stories about you",
+    "correct": "A"
+  },
+  {
+    "q": "My approach to anniversaries:",
+    "A": "They're very important to remember",
+    "B": "Simple acknowledgment is enough",
+    "C": "Big celebrations every time",
+    "D": "Put reminders in my phone because I will forget",
+    "correct": "A"
+  },
+  {
+    "q": "If we had different political views:",
+    "A": "We could agree to disagree",
+    "B": "It would cause problems",
+    "C": "We'd avoid the topic",
+    "D": "I'd pretend to care about politics",
+    "correct": "A"
+  },
+  {
+    "q": "My favorite way to relax together:",
+    "A": "Watching movies/shows",
+    "B": "Talking and catching up",
+    "C": "Physical intimacy",
+    "D": "Judging other couples on reality TV",
+    "correct": "A"
+  },
+  {
+    "q": "When it comes to PDA, I prefer:",
+    "A": "Light affection in public",
+    "B": "Very minimal contact",
+    "C": "I don't mind showing affection",
+    "D": "Holding hands so you can't escape",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest relationship pet peeve:",
+    "A": "Poor communication",
+    "B": "Taking me for granted",
+    "C": "Not making time for us",
+    "D": "You leaving your dishes in the sink",
+    "correct": "A"
+  },
+  {
+    "q": "If we went to couples therapy:",
+    "A": "I'd be open to it",
+    "B": "Only if absolutely necessary",
+    "C": "I'd prefer to work things out ourselves",
+    "D": "I'd prepare my list of your issues in advance",
+    "correct": "A"
+  },
+  {
+    "q": "My definition of a perfect relationship:",
+    "A": "Partnership and mutual respect",
+    "B": "Passionate love and romance",
+    "C": "Best friends who are lovers",
+    "D": "Someone who gets all my references",
+    "correct": "A"
+  },
+  {
+    "q": "When we have different opinions on something important:",
+    "A": "We discuss until we understand each other",
+    "B": "We agree to disagree",
+    "C": "One of us usually gives in",
+    "D": "We flip a coin like mature adults",
+    "correct": "A"
+  },
+  {
+    "q": "My approach to your ex-partners:",
+    "A": "Part of your past, no concern",
+    "B": "Curious but don't need details",
+    "C": "Prefer not to know anything",
+    "D": "Will definitely compare myself to them",
+    "correct": "A"
+  },
+  {
+    "q": "If I could change one thing about relationships in general:",
+    "A": "Better communication skills",
+    "B": "Less pressure from society",
+    "C": "More honesty",
+    "D": "Telepathic abilities to know what you want for dinner",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest fear about long-term commitment:",
+    "A": "Getting too comfortable",
+    "B": "Losing individual identity",
+    "C": "Things becoming routine",
+    "D": "Running out of conversation topics",
+    "correct": "A"
+  },
+  {
+    "q": "When it comes to sharing household chores:",
+    "A": "Split them equally",
+    "B": "Each person has specific responsibilities",
+    "C": "Whoever has time does them",
+    "D": "Ignore them until one of us breaks",
+    "correct": "A"
+  },
+  {
+    "q": "My ideal way to spend Valentine's Day:",
+    "A": "Intimate dinner together",
+    "B": "Fun activity or experience",
+    "C": "Low-key acknowledgment",
+    "D": "Avoiding the commercial madness entirely",
+    "correct": "A"
+  },
+  {
+    "q": "If we disagreed about having kids:",
+    "A": "We'd need to work it out",
+    "B": "It would be a dealbreaker",
+    "C": "We'd table the discussion",
+    "D": "We'd start with a pet and see how that goes",
+    "correct": "A"
+  },
+  {
+    "q": "My favorite quality in a long-term partner:",
+    "A": "Dependability",
+    "B": "Sense of humor",
+    "C": "Emotional intelligence",
+    "D": "Ability to find things I've lost",
+    "correct": "A"
+  },
+  {
+    "q": "When planning our future together, I focus on:",
+    "A": "Practical goals and milestones",
+    "B": "Emotional connection and growth",
+    "C": "Adventure and experiences",
+    "D": "Making sure we'll still like each other",
+    "correct": "A"
+  },
+  {
+    "q": "My approach to relationship social media:",
+    "A": "Share special moments occasionally",
+    "B": "Keep it mostly private",
+    "C": "Post about us regularly",
+    "D": "Use it to prove we're happy to everyone else",
+    "correct": "A"
+  },
+  {
+    "q": "If I had to pick our strongest connection:",
+    "A": "Emotional intimacy",
+    "B": "Physical chemistry",
+    "C": "Intellectual compatibility",
+    "D": "Shared appreciation for pizza at any hour",
+    "correct": "A"
+  },
+  {
+    "q": "My biggest hope for how we'll communicate:",
+    "A": "Always be honest with each other",
+    "B": "Learn to read each other's moods",
+    "C": "Never go to bed angry",
+    "D": "Develop telepathic powers for dinner decisions",
+    "correct": "A"
+  },
+  {
+    "q": "In this lifetime and the next, I would:",
+    "A": "Choose you again",
+    "B": "Want to find you sooner",
+    "C": "Love you even more",
+    "D": "Remember to write down your coffee order",
     "correct": "A"
   }
 ]

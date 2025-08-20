@@ -1,42 +1,602 @@
 [
   {
-    "q": "Your ex texts 'U up?' What's the healthiest response?",
+    "q": "Your ex texts 'U up?' at 2am. What do you do?",
     "A": "Block or ignore",
-    "B": "Reply: Only if you bring pizza",
-    "C": "Reply: Yes but busy",
-    "D": "Reply: New phone, who dis",
+    "B": "Reply with screenshot of their text to the group chat",
+    "C": "Send back 'New phone, who dis?'",
+    "D": "Screenshot and post on social media",
     "correct": "A"
   },
   {
-    "q": "You pocket-dial your boss. What do you do?",
-    "A": "Do nothing for a week",
-    "B": "Pretend it's research",
-    "C": "Call again and breathe loudly",
-    "D": "Hang up and send a short apology text",
-    "correct": "D"
+    "q": "You find out your friend's partner is cheating. What's your move?",
+    "A": "Tell your friend immediately",
+    "B": "Confront the cheater first",
+    "C": "Mind your own business",
+    "D": "Create a fake dating profile to catfish them",
+    "correct": "A"
   },
   {
-    "q": "Group chat has 200 unread messages. Best move?",
-    "A": "Mark all as read, never look",
-    "B": "Leave the chat dramatically",
-    "C": "Reply to everything",
-    "D": "Skim and respond only where you're needed",
-    "correct": "D"
+    "q": "Your crush posts thirst traps. How do you respond?",
+    "A": "Like it casually",
+    "B": "Leave fire emojis in comments",
+    "C": "Screenshot and analyze with friends",
+    "D": "Slide into DMs with 'hey beautiful'",
+    "correct": "A"
   },
   {
-    "q": "You posted with a typo. Fix?",
-    "A": "Ignore it forever",
-    "B": "Edit or delete-and-repost quickly",
-    "C": "Blame autocorrect publicly",
-    "D": "Argue it's a new dialect",
-    "correct": "B"
+    "q": "You drunk text your ex a paragraph about your feelings. Next morning you:",
+    "A": "Own it and don't apologize",
+    "B": "Pretend your phone was hacked",
+    "C": "Send 'sorry, meant for someone else'",
+    "D": "Double down and send another paragraph",
+    "correct": "A"
   },
   {
-    "q": "You're late to a call. Proper etiquette?",
-    "A": "Join silently and say nothing",
-    "B": "Ghost the call",
-    "C": "Notify ASAP and give a new ETA",
-    "D": "Blame your pet",
-    "correct": "C"
+    "q": "Your partner's ex likes all their social media posts. You:",
+    "A": "Talk to your partner about it",
+    "B": "Block the ex yourself",
+    "C": "Start liking all their posts first",
+    "D": "Create fake accounts to mess with them",
+    "correct": "A"
+  },
+  {
+    "q": "You see your friend's partner on dating apps. What do you do?",
+    "A": "Screenshot and tell your friend",
+    "B": "Swipe right to gather evidence",
+    "C": "Report the profile",
+    "D": "Make a fake profile to match and investigate",
+    "correct": "A"
+  },
+  {
+    "q": "Someone ghosts you after a great date. You:",
+    "A": "Move on and don't contact them",
+    "B": "Send one follow-up text then stop",
+    "C": "Keep texting until they respond",
+    "D": "Show up at their workplace",
+    "correct": "A"
+  },
+  {
+    "q": "Your one-night stand wants to be friends on social media. You:",
+    "A": "Politely decline or ignore",
+    "B": "Accept but set boundaries",
+    "C": "Block them completely",
+    "D": "Accept and then post couple-y photos to confuse them",
+    "correct": "A"
+  },
+  {
+    "q": "You discover your partner has been sliding into DMs. You:",
+    "A": "Have a direct conversation about it",
+    "B": "Do the same thing back to them",
+    "C": "Go through all their messages secretly",
+    "D": "Post vague quotes about loyalty on social media",
+    "correct": "A"
+  },
+  {
+    "q": "Your ex starts dating your friend. The mature response is:",
+    "A": "Distance yourself if needed, don't interfere",
+    "B": "Tell your friend all your ex's secrets",
+    "C": "Try to break them up",
+    "D": "Date their ex to get revenge",
+    "correct": "A"
+  },
+  {
+    "q": "You accidentally like your ex's post from 2 years ago while stalking. You:",
+    "A": "Leave it and pretend it didn't happen",
+    "B": "Unlike it immediately",
+    "C": "Send a casual 'oops' message",
+    "D": "Delete your entire social media presence",
+    "correct": "A"
+  },
+  {
+    "q": "Someone screenshots your private story and shares it. You:",
+    "A": "Confront them directly",
+    "B": "Remove them from your close friends",
+    "C": "Post about fake friends vaguely",
+    "D": "Hack their account and delete it",
+    "correct": "A"
+  },
+  {
+    "q": "Your crush views your story instantly every time but never messages. You:",
+    "A": "Take the hint and move on",
+    "B": "Make your stories more obvious",
+    "C": "Ask them directly what they want",
+    "D": "Stop viewing their stories to make them jealous",
+    "correct": "A"
+  },
+  {
+    "q": "You find out someone has been talking behind your back. You:",
+    "A": "Address it directly with them",
+    "B": "Start spreading rumors about them",
+    "C": "Cut them off without explanation",
+    "D": "Create group chat drama about it",
+    "correct": "A"
+  },
+  {
+    "q": "Your friend keeps venting about their relationship but won't take advice. You:",
+    "A": "Set boundaries about the complaining",
+    "B": "Tell them what they want to hear",
+    "C": "Stop giving advice entirely",
+    "D": "Start charging them for therapy sessions",
+    "correct": "A"
+  },
+  {
+    "q": "You see your ex with someone new on social media. The healthy response:",
+    "A": "Feel your feelings privately and move on",
+    "B": "Immediately post photos with someone else",
+    "C": "Stalk their new person's entire profile",
+    "D": "Send screenshots to all your mutual friends",
+    "correct": "A"
+  },
+  {
+    "q": "Someone you rejected keeps messaging you. You should:",
+    "A": "Be clear about boundaries and block if needed",
+    "B": "Ignore and hope they get the hint",
+    "C": "Be mean so they leave you alone",
+    "D": "String them along for the attention",
+    "correct": "A"
+  },
+  {
+    "q": "Your partner's friend clearly doesn't like you. You:",
+    "A": "Talk to your partner about it calmly",
+    "B": "Try harder to win them over",
+    "C": "Ignore them completely",
+    "D": "Start drama in the friend group",
+    "correct": "A"
+  },
+  {
+    "q": "You realize you've been the side piece. What's your next move?",
+    "A": "Leave immediately and tell their partner",
+    "B": "Confront them and demand they choose",
+    "C": "Keep it secret and continue",
+    "D": "Blackmail them with evidence",
+    "correct": "A"
+  },
+  {
+    "q": "Your best friend starts dating someone you hate. You:",
+    "A": "Support your friend while being honest",
+    "B": "Pretend to like their partner",
+    "C": "Try to sabotage the relationship",
+    "D": "Give them an ultimatum",
+    "correct": "A"
+  },
+  {
+    "q": "You catch your partner in a lie. The mature approach is:",
+    "A": "Address it directly and calmly",
+    "B": "Set a trap to catch them lying again",
+    "C": "Lie back to them about something",
+    "D": "Post cryptic quotes about trust",
+    "correct": "A"
+  },
+  {
+    "q": "Your ex wants their stuff back that's at your place. You:",
+    "A": "Arrange a time for them to get it",
+    "B": "Make them ask nicely first",
+    "C": "Hold it hostage until they apologize",
+    "D": "Burn it all and send them the video",
+    "correct": "A"
+  },
+  {
+    "q": "Someone slides into your DMs with just 'hey.' You:",
+    "A": "Respond if you're interested, ignore if not",
+    "B": "Send back 'hey' and see what happens",
+    "C": "Leave them on read to seem mysterious",
+    "D": "Screenshot and roast them in group chat",
+    "correct": "A"
+  },
+  {
+    "q": "You discover your friend has been copying your style/personality. You:",
+    "A": "Talk to them about how it makes you feel",
+    "B": "Change your entire aesthetic",
+    "C": "Call them out publicly",
+    "D": "Start doing everything they do back to them",
+    "correct": "A"
+  },
+  {
+    "q": "Your partner's ex texts them asking to meet up. The healthy boundary is:",
+    "A": "Your partner should decline or include you",
+    "B": "Forbid any contact with exes",
+    "C": "Demand to read all their messages",
+    "D": "Meet up with your ex to make it even",
+    "correct": "A"
+  },
+  {
+    "q": "You overhear someone talking about your private business. You:",
+    "A": "Confront them directly about it",
+    "B": "Start spreading their secrets too",
+    "C": "Cut them off without explanation",
+    "D": "Pretend you didn't hear anything",
+    "correct": "A"
+  },
+  {
+    "q": "Your friend keeps canceling plans last minute. You should:",
+    "A": "Talk to them about valuing your time",
+    "B": "Do the same thing back to them",
+    "C": "Stop making plans with them",
+    "D": "Make fake plans just to cancel on them",
+    "correct": "A"
+  },
+  {
+    "q": "You find out someone you trusted shared your nudes. You:",
+    "A": "Report it and cut all contact immediately",
+    "B": "Threaten to sue them",
+    "C": "Share their personal info publicly",
+    "D": "Send worse photos of them to everyone",
+    "correct": "A"
+  },
+  {
+    "q": "Your crush starts dating someone else. The mature response:",
+    "A": "Respect their choice and move on",
+    "B": "Try to prove you're better than their new person",
+    "C": "Wait for them to break up",
+    "D": "Sabotage their new relationship",
+    "correct": "A"
+  },
+  {
+    "q": "Someone keeps viewing your stories but won't follow you back. You:",
+    "A": "Accept that social media isn't that deep",
+    "B": "Block them from viewing your stories",
+    "C": "Call them out publicly",
+    "D": "Create fake accounts to follow them",
+    "correct": "A"
+  },
+  {
+    "q": "Your partner gets jealous of your friendship. You should:",
+    "A": "Discuss boundaries and reassure them",
+    "B": "End the friendship to keep peace",
+    "C": "Hide the friendship instead",
+    "D": "Make them even more jealous on purpose",
+    "correct": "A"
+  },
+  {
+    "q": "You realize you've been trauma dumping on someone. You:",
+    "A": "Apologize and find appropriate support",
+    "B": "Keep doing it since they haven't stopped you",
+    "C": "Switch topics and pretend it didn't happen",
+    "D": "Get them to trauma dump back so it's even",
+    "correct": "A"
+  },
+  {
+    "q": "Your ex reaches out wanting closure. You:",
+    "A": "Decide based on your own healing needs",
+    "B": "Give them what they want to be nice",
+    "C": "Use it as a chance to hurt them more",
+    "D": "Demand closure from all your exes too",
+    "correct": "A"
+  },
+  {
+    "q": "Someone you dated briefly announces they're in a relationship. You:",
+    "A": "Feel your feelings privately and move on",
+    "B": "Check if it's the person they said was 'just a friend'",
+    "C": "Message them congratulations sarcastically",
+    "D": "Announce your own fake relationship",
+    "correct": "A"
+  },
+  {
+    "q": "You discover a friend has been lying about their life. You:",
+    "A": "Decide if you can accept them as they are",
+    "B": "Call them out in front of everyone",
+    "C": "Start fact-checking everything they say",
+    "D": "Make up bigger lies to compete",
+    "correct": "A"
+  },
+  {
+    "q": "Your partner wants to post couple photos but you're private. You:",
+    "A": "Communicate and find a compromise",
+    "B": "Let them post whatever they want",
+    "C": "Forbid them from posting about you",
+    "D": "Break up since you're incompatible",
+    "correct": "A"
+  },
+  {
+    "q": "You see someone cheating on their partner at a party. You:",
+    "A": "Mind your business unless it's your close friend",
+    "B": "Take photos as evidence",
+    "C": "Confront them at the party",
+    "D": "Post about it on social media anonymously",
+    "correct": "A"
+  },
+  {
+    "q": "Your friend keeps bringing up your embarrassing moment. You:",
+    "A": "Ask them to stop bringing it up",
+    "B": "Bring up their embarrassing moments too",
+    "C": "Laugh it off every time",
+    "D": "Create new embarrassing moments for them",
+    "correct": "A"
+  },
+  {
+    "q": "Someone you're dating is still active on dating apps. You:",
+    "A": "Have a conversation about exclusivity",
+    "B": "Create fake profiles to test them",
+    "C": "Screenshot their profile and expose them",
+    "D": "Download more dating apps yourself",
+    "correct": "A"
+  },
+  {
+    "q": "Your ex posts a thirst trap clearly aimed at making you jealous. You:",
+    "A": "Don't engage and continue moving on",
+    "B": "Like it to show you don't care",
+    "C": "Post a better thirst trap yourself",
+    "D": "Comment something petty",
+    "correct": "A"
+  },
+  {
+    "q": "A friend constantly talks about how much money they make. You:",
+    "A": "Change the subject or limit conversations",
+    "B": "Start talking about your money more",
+    "C": "Ask them to pay for everything",
+    "D": "Make up stories about being even richer",
+    "correct": "A"
+  },
+  {
+    "q": "You're in a situationship but want more. You should:",
+    "A": "Be honest about what you want",
+    "B": "Play games to make them jealous",
+    "C": "Wait for them to bring it up first",
+    "D": "Give them an ultimatum",
+    "correct": "A"
+  },
+  {
+    "q": "Your partner's friend hits on you when they're not around. You:",
+    "A": "Tell your partner immediately",
+    "B": "Handle it yourself and don't tell",
+    "C": "Flirt back to see what happens",
+    "D": "Use it as leverage in future arguments",
+    "correct": "A"
+  },
+  {
+    "q": "Someone screenshots your private conversation and shares it. You:",
+    "A": "Confront them and set clear boundaries",
+    "B": "Do the same thing to their conversations",
+    "C": "Post about fake friends on social media",
+    "D": "Share even more embarrassing stuff about them",
+    "correct": "A"
+  },
+  {
+    "q": "Your friend's new relationship is clearly toxic but they won't listen. You:",
+    "A": "Be supportive but don't enable",
+    "B": "Keep giving unwanted advice",
+    "C": "Cut them off until they break up",
+    "D": "Try to prove their partner is toxic",
+    "correct": "A"
+  },
+  {
+    "q": "You realize you've been emotionally cheating. You should:",
+    "A": "Be honest with your partner and work on it",
+    "B": "End the emotional affair quietly",
+    "C": "Continue but be more careful",
+    "D": "Turn it into physical cheating",
+    "correct": "A"
+  },
+  {
+    "q": "Your ex starts dating someone who looks exactly like you. You:",
+    "A": "Take it as a compliment and move on",
+    "B": "Feel creeped out but don't say anything",
+    "C": "Message the new person to warn them",
+    "D": "Post about how you're clearly their type",
+    "correct": "A"
+  },
+  {
+    "q": "Someone keeps copying your social media posts. You:",
+    "A": "Block them or make your account private",
+    "B": "Call them out publicly",
+    "C": "Start posting fake stuff to confuse them",
+    "D": "Copy their posts back",
+    "correct": "A"
+  },
+  {
+    "q": "Your friend won't stop trying to set you up despite saying no. You:",
+    "A": "Be firm about your boundaries",
+    "B": "Go on one date to make them stop",
+    "C": "Set them up with someone terrible",
+    "D": "Avoid them until they get the hint",
+    "correct": "A"
+  },
+  {
+    "q": "You discover your partner has been hiding debt from you. You:",
+    "A": "Have a serious conversation about finances",
+    "B": "Start hiding your own financial secrets",
+    "C": "Demand access to all their accounts",
+    "D": "Leave immediately without discussion",
+    "correct": "A"
+  },
+  {
+    "q": "Someone you barely know asks you to be their emergency contact. You:",
+    "A": "Politely decline and suggest someone closer",
+    "B": "Agree but never answer if they call",
+    "C": "Say yes but give them a fake number",
+    "D": "Report them to authorities for being weird",
+    "correct": "A"
+  },
+  {
+    "q": "Your friend keeps asking you to lie to their partner for them. You:",
+    "A": "Refuse and tell them to handle their own relationship",
+    "B": "Lie to keep the peace",
+    "C": "Tell their partner the truth yourself",
+    "D": "Ask for payment for your lying services",
+    "correct": "A"
+  },
+  {
+    "q": "You find out someone has been pretending to be you online. You:",
+    "A": "Report it to the platform and authorities",
+    "B": "Create a profile pretending to be them",
+    "C": "Message people to tell them it's fake",
+    "D": "Let it go since imitation is flattery",
+    "correct": "A"
+  },
+  {
+    "q": "Your partner wants to go through your phone to 'build trust.' You:",
+    "A": "Discuss why they feel the need to do this",
+    "B": "Let them look to prove you have nothing to hide",
+    "C": "Demand to go through their phone first",
+    "D": "Delete everything suspicious then let them look",
+    "correct": "A"
+  },
+  {
+    "q": "Someone keeps 'forgetting' their wallet when you hang out. You:",
+    "A": "Address it directly or stop hanging out",
+    "B": "Start forgetting your wallet too",
+    "C": "Only suggest free activities",
+    "D": "Send them a Venmo request before every hangout",
+    "correct": "A"
+  },
+  {
+    "q": "Your ex's new partner adds you on social media. You:",
+    "A": "Decline or ignore the request",
+    "B": "Accept but don't interact",
+    "C": "Accept and like all their old photos",
+    "D": "Accept and send them screenshots of your ex's messages",
+    "correct": "A"
+  },
+  {
+    "q": "You realize you've been love-bombing someone. You should:",
+    "A": "Step back and examine your attachment patterns",
+    "B": "Continue but tone it down slightly",
+    "C": "Switch to being completely distant",
+    "D": "Find someone new to love-bomb instead",
+    "correct": "A"
+  },
+  {
+    "q": "Your friend keeps posting about how happy they are but privately tells you they're miserable. You:",
+    "A": "Encourage them to be authentic and get help",
+    "B": "Call them out on their fake posts",
+    "C": "Stop listening to them complain",
+    "D": "Screenshot their posts when they complain to you",
+    "correct": "A"
+  },
+  {
+    "q": "Someone you're dating says they're not ready for a relationship but keeps acting like you're in one. You:",
+    "A": "Call out the mixed signals directly",
+    "B": "Go along with it hoping they'll change their mind",
+    "C": "Start dating other people openly",
+    "D": "Give them an ultimatum",
+    "correct": "A"
+  },
+  {
+    "q": "Your friend constantly interrupts you and talks over you. You:",
+    "A": "Address their interrupting behavior directly",
+    "B": "Start talking louder to compete",
+    "C": "Stop talking when they're around",
+    "D": "Interrupt them back every time they do it",
+    "correct": "A"
+  },
+  {
+    "q": "You discover someone has been reading your diary/private messages. You:",
+    "A": "Confront them and secure your privacy",
+    "B": "Start writing fake entries to mess with them",
+    "C": "Move everything to a secret location",
+    "D": "Read their private stuff in revenge",
+    "correct": "A"
+  },
+  {
+    "q": "Your partner's family clearly doesn't approve of you. You:",
+    "A": "Talk to your partner about setting boundaries",
+    "B": "Try harder to win them over",
+    "C": "Match their energy and be rude back",
+    "D": "Demand your partner choose between you and them",
+    "correct": "A"
+  },
+  {
+    "q": "Someone keeps making jokes at your expense in front of others. You:",
+    "A": "Tell them privately that it bothers you",
+    "B": "Make worse jokes about them",
+    C": "Laugh along to avoid confrontation",
+    "D": "Roast them publicly next time they do it",
+    "correct": "A"
+  },
+  {
+    "q": "You realize you've been the toxic one in your friendships. You should:",
+    "A": "Take accountability and work on changing",
+    "B": "Blame your friends for enabling you",
+    "C": "Find new friends who accept your toxicity",
+    "D": "Double down and be even more toxic",
+    "correct": "A"
+  },
+  {
+    "q": "Your crush posts about wanting someone to ask them out. You:",
+    "A": "Ask them out directly if you're interested",
+    "B": "Like the post and hope they get the hint",
+    "C": "Send an anonymous message",
+    "D": "Get a friend to ask them about you",
+    "correct": "A"
+  },
+  {
+    "q": "Someone keeps trauma dumping on you without asking. You:",
+    "A": "Set boundaries about when and how much you can listen",
+    "B": "Just stop responding to their messages",
+    "C": "Trauma dump back to make it even",
+    "D": "Give them terrible advice so they stop coming to you",
+    "correct": "A"
+  },
+  {
+    "q": "You find out your friend has been talking badly about you behind your back. You:",
+    "A": "Confront them directly about what you heard",
+    "B": "Start talking badly about them too",
+    "C": "Cut them off without explanation",
+    "D": "Gather evidence before confronting them",
+    "correct": "A"
+  },
+  {
+    "q": "Your ex keeps showing up to places they know you'll be. You:",
+    "A": "Tell them directly to stop or involve authorities if needed",
+    "B": "Start going to different places",
+    "C": "Bring someone intimidating with you",
+    "D": "Show up to places they'll be to make it even",
+    "correct": "A"
+  },
+  {
+    "q": "Someone you rejected keeps trying to win you over with gifts. You:",
+    "A": "Firmly decline and return the gifts",
+    "B": "Accept the gifts but maintain boundaries",
+    "C": "Keep the gifts but don't give them false hope",
+    "D": "Accept everything until they go broke",
+    "correct": "A"
+  },
+  {
+    "q": "You realize you've been stringing someone along. You should:",
+    "A": "Be honest about your intentions and let them go",
+    "B": "Continue but feel bad about it",
+    "C": "Find someone else to replace them first",
+    "D": "Make them break things off so you're not the bad guy",
+    "correct": "A"
+  },
+  {
+    "q": "Your friend keeps making plans and then flaking at the last minute. You:",
+    "A": "Tell them how their flaking affects you",
+    "B": "Start flaking on them too",
+    "C": "Make backup plans every time",
+    "D": "Charge them a cancellation fee",
+    "correct": "A"
+  },
+  {
+    "q": "You discover your partner has been lying about their past. You:",
+    "A": "Have an honest conversation about trust and truth",
+    "B": "Hire a private investigator to find out more",
+    "C": "Start lying about your past too",
+    "D": "Use their lies against them in arguments",
+    "correct": "A"
+  },
+  {
+    "q": "Someone keeps borrowing money and 'forgetting' to pay you back. You:",
+    "A": "Stop lending money and ask for what's owed",
+    "B": "Keep lending but passive aggressively mention it",
+    "C": "Borrow something expensive from them",
+    "D": "Add interest to what they owe you",
+    "correct": "A"
+  },
+  {
+    "q": "Your friend's success makes you feel insecure and jealous. You:",
+    "A": "Work on your insecurity and celebrate their success",
+    "B": "Try to one-up them constantly",
+    "C": "Distance yourself from them",
+    "D": "Point out their flaws to make yourself feel better",
+    "correct": "A"
+  },
+  {
+    "q": "You catch someone taking photos of you without permission. You:",
+    "A": "Confront them immediately and demand deletion",
+    "B": "Take photos of them back",
+    "C": "Report it to authorities",
+    "D": "Post the photos they took on social media",
+    "correct": "A"
   }
 ]

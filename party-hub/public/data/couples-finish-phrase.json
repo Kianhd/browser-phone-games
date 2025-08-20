@@ -3,40 +3,648 @@
     "q": "Love is like ____.",
     "A": "A warm hug",
     "B": "A rollercoaster",
-    "C": "A pizza slice",
-    "D": "A Netflix subscription",
-    "correct": "A"
+    "C": "A marathon",
+    "D": "A Netflix subscription - you pay monthly and sometimes wonder if it's worth it",
+    "correct": "B"
   },
   {
     "q": "Home is where ____.",
-    "A": "We cuddle",
-    "B": "The heart is",
-    "C": "The Wi-Fi connects",
-    "D": "The snacks live",
-    "correct": "B"
+    "A": "The heart is",
+    "B": "We can be ourselves",
+    "C": "Love grows",
+    "D": "the Wi-Fi password is saved",
+    "correct": "A"
   },
   {
     "q": "You complete ____.",
     "A": "Me",
-    "B": "My Netflix queue",
-    "C": "My grocery list",
-    "D": "My sentences",
+    "B": "My thoughts",
+    "C": "My world",
+    "D": "my online shopping cart",
     "correct": "A"
   },
   {
     "q": "Love conquers ____.",
-    "A": "Bad internet",
-    "B": "All",
-    "C": "Hunger",
-    "D": "Laundry",
-    "correct": "B"
+    "A": "All",
+    "B": "Fear",
+    "C": "Distance",
+    "D": "the urge to check your phone during dinner",
+    "correct": "A"
   },
   {
     "q": "Two hearts beat as ____.",
-    "A": "Bass drops",
-    "B": "One",
-    "C": "Backup",
-    "D": "Heart attacks",
+    "A": "One",
+    "B": "A symphony",
+    "C": "Partners",
+    "D": "awkwardly as first date small talk",
+    "correct": "A"
+  },
+  {
+    "q": "Better together than ____.",
+    "A": "Apart",
+    "B": "Alone",
+    "C": "Ever imagined",
+    "D": "your cooking skills combined",
+    "correct": "A"
+  },
+  {
+    "q": "You are my ____.",
+    "A": "Everything",
+    "B": "Sunshine",
+    "C": "Soulmate",
+    "D": "personal space invader",
+    "correct": "A"
+  },
+  {
+    "q": "Together we can ____.",
+    "A": "Conquer the world",
+    "B": "Face anything",
+    "C": "Build dreams",
+    "D": "argue about what to watch for 3 hours",
     "correct": "B"
+  },
+  {
+    "q": "Love means never having to ____.",
+    "A": "Say you're sorry",
+    "B": "Feel alone",
+    "C": "Pretend",
+    "D": "split the bill",
+    "correct": "A"
+  },
+  {
+    "q": "You make my heart ____.",
+    "A": "Skip a beat",
+    "B": "Feel complete",
+    "C": "Race",
+    "D": "worry about my cholesterol levels",
+    "correct": "A"
+  },
+  {
+    "q": "In your arms I feel ____.",
+    "A": "Safe",
+    "B": "Complete",
+    "C": "At peace",
+    "D": "like I should do more push-ups",
+    "correct": "A"
+  },
+  {
+    "q": "We were meant to ____.",
+    "A": "Be together",
+    "B": "Find each other",
+    "C": "Love",
+    "D": "share streaming service passwords",
+    "correct": "A"
+  },
+  {
+    "q": "You are the peanut butter to my ____.",
+    "A": "Jelly",
+    "B": "Sandwich",
+    "C": "Toast",
+    "D": "lactose intolerance",
+    "correct": "A"
+  },
+  {
+    "q": "Love is a journey ____.",
+    "A": "Not a destination",
+    "B": "We take together",
+    "C": "Worth taking",
+    "D": "without GPS or common sense",
+    "correct": "A"
+  },
+  {
+    "q": "You had me at ____.",
+    "A": "Hello",
+    "B": "First sight",
+    "C": "Your smile",
+    "D": "free Wi-Fi",
+    "correct": "A"
+  },
+  {
+    "q": "Growing old together ____.",
+    "A": "Is my dream",
+    "B": "Sounds perfect",
+    "C": "Excites me",
+    "D": "means double the medication reminders",
+    "correct": "A"
+  },
+  {
+    "q": "You make every day ____.",
+    "A": "Better",
+    "B": "Special",
+    "C": "Brighter",
+    "D": "slightly more chaotic",
+    "correct": "A"
+  },
+  {
+    "q": "Love is patient, love is ____.",
+    "A": "Kind",
+    "B": "Understanding",
+    "C": "Forgiving",
+    "D": "really bad at directions",
+    "correct": "A"
+  },
+  {
+    "q": "You are my happy ____.",
+    "A": "Place",
+    "B": "Ending",
+    "C": "Thought",
+    "D": "meal delivery notification",
+    "correct": "A"
+  },
+  {
+    "q": "I love you more than ____.",
+    "A": "Words can say",
+    "B": "Yesterday",
+    "C": "Life itself",
+    "D": "my phone battery loves dying at 1%",
+    "correct": "A"
+  },
+  {
+    "q": "Together we are ____.",
+    "A": "Unstoppable",
+    "B": "Complete",
+    "C": "Stronger",
+    "D": "probably overthinking this",
+    "correct": "A"
+  },
+  {
+    "q": "You stole my ____.",
+    "A": "Heart",
+    "B": "Soul",
+    "C": "Breath",
+    "D": "favorite hoodie",
+    "correct": "A"
+  },
+  {
+    "q": "Love is the bridge between ____.",
+    "A": "Two hearts",
+    "B": "Two souls",
+    "C": "Us",
+    "D": "my bank account and broke",
+    "correct": "A"
+  },
+  {
+    "q": "You are my ____.",
+    "A": "Forever",
+    "B": "Always",
+    "C": "Constant",
+    "D": "favorite reason to procrastinate",
+    "correct": "A"
+  },
+  {
+    "q": "In this crazy world, you are my ____.",
+    "A": "Sanity",
+    "B": "Peace",
+    "C": "Constant",
+    "D": "co-conspirator",
+    "correct": "A"
+  },
+  {
+    "q": "You make the ordinary ____.",
+    "A": "Extraordinary",
+    "B": "Special",
+    "C": "Magical",
+    "D": "slightly less boring",
+    "correct": "A"
+  },
+  {
+    "q": "My heart belongs to ____.",
+    "A": "You",
+    "B": "Us",
+    "C": "This love",
+    "D": "whoever remembers to charge it",
+    "correct": "A"
+  },
+  {
+    "q": "You are the reason I ____.",
+    "A": "Smile",
+    "B": "Wake up happy",
+    "C": "Believe in love",
+    "D": "check my phone every 30 seconds",
+    "correct": "A"
+  },
+  {
+    "q": "Love is not about finding someone perfect, it's about ____.",
+    "A": "Finding someone perfect for you",
+    "B": "Accepting imperfections",
+    "C": "Growing together",
+    "D": "finding someone who tolerates your weirdness",
+    "correct": "A"
+  },
+  {
+    "q": "You are my favorite ____.",
+    "A": "Person",
+    "B": "Thing",
+    "C": "Human",
+    "D": "notification sound",
+    "correct": "A"
+  },
+  {
+    "q": "With you, I can be ____.",
+    "A": "Myself",
+    "B": "Completely honest",
+    "C": "Vulnerable",
+    "D": "inappropriately comfortable",
+    "correct": "A"
+  },
+  {
+    "q": "You turn my house into a ____.",
+    "A": "Home",
+    "B": "Paradise",
+    "C": "Haven",
+    "D": "place where I actually want to be",
+    "correct": "A"
+  },
+  {
+    "q": "Love is not what you say, love is ____.",
+    "A": "What you do",
+    "B": "How you act",
+    "C": "What you show",
+    "D": "remembering their coffee order",
+    "correct": "A"
+  },
+  {
+    "q": "You are my once in a ____.",
+    "A": "Lifetime",
+    "B": "Million",
+    "C": "Generation",
+    "D": "really good WiFi connection",
+    "correct": "A"
+  },
+  {
+    "q": "Together we write our own ____.",
+    "A": "Love story",
+    "B": "Future",
+    "C": "Rules",
+    "D": "grocery lists",
+    "correct": "A"
+  },
+  {
+    "q": "You are the calm in my ____.",
+    "A": "Storm",
+    "B": "Chaos",
+    "C": "Madness",
+    "D": "search for the remote",
+    "correct": "A"
+  },
+  {
+    "q": "Love is friendship ____.",
+    "A": "Set on fire",
+    "B": "With passion",
+    "C": "Ignited",
+    "D": "with better benefits",
+    "correct": "A"
+  },
+  {
+    "q": "You make my world ____.",
+    "A": "Complete",
+    "B": "Brighter",
+    "C": "Better",
+    "D": "slightly more expensive",
+    "correct": "A"
+  },
+  {
+    "q": "In a sea of people, my eyes ____.",
+    "A": "Always find you",
+    "B": "Search for you",
+    "C": "Look for you",
+    "D": "wonder why you're wearing that",
+    "correct": "A"
+  },
+  {
+    "q": "You are my today and all my ____.",
+    "A": "Tomorrows",
+    "B": "Future",
+    "C": "Days ahead",
+    "D": "dinner plans",
+    "correct": "A"
+  },
+  {
+    "q": "Love is sharing your ____.",
+    "A": "Life",
+    "B": "Heart",
+    "C": "Dreams",
+    "D": "Netflix password",
+    "correct": "A"
+  },
+  {
+    "q": "You are my greatest ____.",
+    "A": "Adventure",
+    "B": "Love",
+    "C": "Gift",
+    "D": "source of laundry",
+    "correct": "A"
+  },
+  {
+    "q": "Together we can weather any ____.",
+    "A": "Storm",
+    "B": "Challenge",
+    "C": "Hardship",
+    "D": "argument about directions",
+    "correct": "A"
+  },
+  {
+    "q": "You are the song in my ____.",
+    "A": "Heart",
+    "B": "Soul",
+    "C": "Life",
+    "D": "Spotify playlist",
+    "correct": "A"
+  },
+  {
+    "q": "Love means growing ____.",
+    "A": "Together",
+    "B": "As one",
+    "C": "Stronger",
+    "D": "a shared music taste",
+    "correct": "A"
+  },
+  {
+    "q": "You are my partner in ____.",
+    "A": "Crime",
+    "B": "Life",
+    "C": "Everything",
+    "D": "finishing entire seasons in one day",
+    "correct": "A"
+  },
+  {
+    "q": "With you, every moment is ____.",
+    "A": "Precious",
+    "B": "Perfect",
+    "C": "Special",
+    "D": "documented for Instagram",
+    "correct": "A"
+  },
+  {
+    "q": "You are my safe ____.",
+    "A": "Harbor",
+    "B": "Place",
+    "C": "Haven",
+    "D": "space to ugly cry",
+    "correct": "A"
+  },
+  {
+    "q": "Love is not about perfection, it's about ____.",
+    "A": "Connection",
+    "B": "Understanding",
+    "C": "Acceptance",
+    "D": "pretending not to notice their weird habits",
+    "correct": "A"
+  },
+  {
+    "q": "You make my heart feel ____.",
+    "A": "Full",
+    "B": "Complete",
+    "C": "Whole",
+    "D": "like it needs more exercise",
+    "correct": "A"
+  },
+  {
+    "q": "Together we are writing the most beautiful ____.",
+    "A": "Love story",
+    "B": "Chapter",
+    "C": "Beginning",
+    "D": "grocery list",
+    "correct": "A"
+  },
+  {
+    "q": "You are the best part of my ____.",
+    "A": "Day",
+    "B": "Life",
+    "C": "World",
+    "D": "internet search history",
+    "correct": "A"
+  },
+  {
+    "q": "Love is finding someone who ____.",
+    "A": "Accepts you completely",
+    "B": "Gets your jokes",
+    "C": "Sees your worth",
+    "D": "thinks your bed hair is cute",
+    "correct": "A"
+  },
+  {
+    "q": "You are my sunshine on a ____.",
+    "A": "Cloudy day",
+    "B": "Rainy day",
+    "C": "Dark day",
+    "D": "Monday morning",
+    "correct": "A"
+  },
+  {
+    "q": "With you, I want to ____.",
+    "A": "Grow old",
+    "B": "Build a life",
+    "C": "Share everything",
+    "D": "split the cost of everything",
+    "correct": "A"
+  },
+  {
+    "q": "You are my favorite ____.",
+    "A": "Hello",
+    "B": "Sight",
+    "C": "Feeling",
+    "D": "excuse to stay in bed",
+    "correct": "A"
+  },
+  {
+    "q": "Love is not just looking at each other, but looking ____.",
+    "A": "In the same direction",
+    "B": "Toward the future",
+    "C": "At shared dreams",
+    "D": "for the TV remote together",
+    "correct": "A"
+  },
+  {
+    "q": "You make every day feel like ____.",
+    "A": "A gift",
+    "B": "An adventure",
+    "C": "A celebration",
+    "D": "I should probably shower",
+    "correct": "A"
+  },
+  {
+    "q": "My love for you grows ____.",
+    "A": "Stronger every day",
+    "B": "Without limits",
+    "C": "Endlessly",
+    "D": "like my credit card debt",
+    "correct": "A"
+  },
+  {
+    "q": "You are the key to my ____.",
+    "A": "Heart",
+    "B": "Happiness",
+    "C": "Soul",
+    "D": "apartment and heart",
+    "correct": "A"
+  },
+  {
+    "q": "Together we create our own ____.",
+    "A": "Magic",
+    "B": "World",
+    "C": "Universe",
+    "D": "inside jokes",
+    "correct": "A"
+  },
+  {
+    "q": "You are my dream come ____.",
+    "A": "True",
+    "B": "To life",
+    "C": "Reality",
+    "D": "to my Netflix queue",
+    "correct": "A"
+  },
+  {
+    "q": "Love is when you find someone who ____.",
+    "A": "Makes you better",
+    "B": "Completes you",
+    "C": "Inspires you",
+    "D": "laughs at your terrible jokes",
+    "correct": "A"
+  },
+  {
+    "q": "You are my first thought in the morning and my last ____.",
+    "A": "Thought at night",
+    "B": "Dream",
+    "C": "Wish",
+    "D": "chance to check my phone",
+    "correct": "A"
+  },
+  {
+    "q": "With you, I am ____.",
+    "A": "Home",
+    "B": "Complete",
+    "C": "Myself",
+    "D": "slightly more tolerable",
+    "correct": "A"
+  },
+  {
+    "q": "You turn ordinary moments into ____.",
+    "A": "Memories",
+    "B": "Magic",
+    "C": "Something special",
+    "D": "photo opportunities",
+    "correct": "A"
+  },
+  {
+    "q": "Love is a promise to ____.",
+    "A": "Always be there",
+    "B": "Never give up",
+    "C": "Support each other",
+    "D": "share your fries",
+    "correct": "A"
+  },
+  {
+    "q": "You are my favorite ____.",
+    "A": "Love story",
+    "B": "Chapter",
+    "C": "Adventure",
+    "D": "person to annoy",
+    "correct": "A"
+  },
+  {
+    "q": "Together we are ____.",
+    "A": "Infinite",
+    "B": "Unstoppable",
+    "C": "Perfect",
+    "D": "really good at ordering takeout",
+    "correct": "A"
+  },
+  {
+    "q": "You make me want to be ____.",
+    "A": "Better",
+    "B": "The best version of myself",
+    "C": "More",
+    "D": "awake before noon",
+    "correct": "A"
+  },
+  {
+    "q": "In your smile I find my ____.",
+    "A": "Happiness",
+    "B": "Peace",
+    "C": "Joy",
+    "D": "reason to take more photos",
+    "correct": "A"
+  },
+  {
+    "q": "You are my always and ____.",
+    "A": "Forever",
+    "B": "Eternity",
+    "C": "Infinity",
+    "D": "emergency contact",
+    "correct": "A"
+  },
+  {
+    "q": "Love is when two people ____.",
+    "A": "Become one",
+    "B": "Share everything",
+    "C": "Understand each other",
+    "D": "can share a pizza without fighting",
+    "correct": "A"
+  },
+  {
+    "q": "You are the love of my ____.",
+    "A": "Life",
+    "B": "Existence",
+    "C": "Everything",
+    "D": "current Netflix series",
+    "correct": "A"
+  },
+  {
+    "q": "With you, I have found my ____.",
+    "A": "Forever",
+    "B": "Home",
+    "C": "Purpose",
+    "D": "reason to actually cook dinner",
+    "correct": "A"
+  },
+  {
+    "q": "You are my heart's ____.",
+    "A": "Desire",
+    "B": "Choice",
+    "C": "Truth",
+    "D": "favorite cardio workout",
+    "correct": "A"
+  },
+  {
+    "q": "Together we can conquer ____.",
+    "A": "The world",
+    "B": "Anything",
+    "C": "Our fears",
+    "D": "IKEA furniture assembly",
+    "correct": "A"
+  },
+  {
+    "q": "You are my missing ____.",
+    "A": "Piece",
+    "B": "Half",
+    "C": "Part",
+    "D": "sock from the laundry",
+    "correct": "A"
+  },
+  {
+    "q": "Love is finding your other ____.",
+    "A": "Half",
+    "B": "Soul",
+    "C": "Self",
+    "D": "Netflix account user",
+    "correct": "A"
+  },
+  {
+    "q": "You make my life ____.",
+    "A": "Complete",
+    "B": "Beautiful",
+    "C": "Meaningful",
+    "D": "slightly more complicated",
+    "correct": "A"
+  },
+  {
+    "q": "In this lifetime and all others, I choose ____.",
+    "A": "You",
+    "B": "Us",
+    "C": "This love",
+    "D": "the same Wi-Fi password",
+    "correct": "A"
   }
 ]

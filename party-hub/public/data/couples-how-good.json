@@ -1,82 +1,570 @@
 [
   {
-    "q": "What's my go-to comfort food?",
-    "A": "Sushi",
-    "B": "Ice cream",
-    "C": "Pizza",
-    "D": "Tacos",
-    "correct": "C"
-  },
-  {
-    "q": "My dream vacation vibe?",
-    "A": "City",
-    "B": "Mountains",
-    "C": "Countryside",
-    "D": "Beach",
-    "correct": "D"
-  },
-  {
-    "q": "My coffee order is:",
-    "A": "Black coffee",
-    "B": "Latte",
-    "C": "Cappuccino",
-    "D": "Americano",
-    "correct": "B"
-  },
-  {
-    "q": "What stresses me out most?",
-    "A": "Technology",
-    "B": "Running late",
-    "C": "Crowds",
-    "D": "Loud noises",
-    "correct": "B"
-  },
-  {
-    "q": "My favorite way to relax?",
-    "A": "Reading",
-    "B": "Music",
-    "C": "Netflix",
-    "D": "Gaming",
+    "q": "What's my biggest turn-on?",
+    "A": "Confidence",
+    "B": "Intelligence",
+    "C": "Sense of humor",
+    "D": "You doing the dishes without being asked",
     "correct": "A"
   },
   {
-    "q": "What do I do when I'm really excited?",
-    "A": "Get quiet",
-    "B": "Laugh loudly",
-    "C": "Talk fast",
-    "D": "Jump around",
-    "correct": "C"
-  },
-  {
-    "q": "My biggest pet peeve is:",
-    "A": "Messy spaces",
-    "B": "People being late",
-    "C": "Loud chewing",
-    "D": "Bad drivers",
-    "correct": "B"
-  },
-  {
-    "q": "How do I handle conflict?",
-    "A": "Talk it out immediately",
-    "B": "Get emotional",
-    "C": "Need time to think",
-    "D": "Avoid it",
+    "q": "What's my biggest fear in our relationship?",
+    "A": "Growing apart",
+    "B": "Infidelity",
+    "C": "Losing myself",
+    "D": "You finding out I've been faking orgasms",
     "correct": "A"
+  },
+  {
+    "q": "What would I do if you cheated on me?",
+    "A": "Try to work it out",
+    "B": "Leave immediately",
+    "C": "Get revenge",
+    "D": "Post about it on social media",
+    "correct": "B"
   },
   {
     "q": "What's my love language?",
-    "A": "Quality time",
+    "A": "Physical touch",
     "B": "Words of affirmation",
-    "C": "Acts of service",
-    "D": "Physical touch",
+    "C": "Quality time",
+    "D": "Not leaving dirty dishes in the sink",
+    "correct": "C"
+  },
+  {
+    "q": "What's my biggest insecurity about my body?",
+    "A": "My weight",
+    "B": "My face",
+    "C": "My height",
+    "D": "My ability to look human before coffee",
     "correct": "A"
   },
   {
-    "q": "When I'm sad, I usually:",
-    "A": "Want to be alone",
-    "B": "Get busy",
-    "C": "Sleep it off",
-    "D": "Seek comfort",
+    "q": "What's the most romantic thing I've ever done?",
+    "A": "Planned a surprise date",
+    "B": "Written you a letter",
+    "C": "Cooked your favorite meal",
+    "D": "Let you have the last slice of pizza",
     "correct": "A"
+  },
+  {
+    "q": "What's my biggest pet peeve about you?",
+    "A": "You leave things everywhere",
+    "B": "You're always on your phone",
+    "C": "You don't listen sometimes",
+    "D": "You steal all the blankets like a sleep thief",
+    "correct": "A"
+  },
+  {
+    "q": "What's my dream vacation with you?",
+    "A": "Beach resort",
+    "B": "European cities",
+    "C": "Mountain cabin",
+    "D": "Anywhere with room service and no pants",
+    "correct": "B"
+  },
+  {
+    "q": "What's my biggest relationship dealbreaker?",
+    "A": "Dishonesty",
+    "B": "Lack of ambition",
+    "C": "Bad hygiene",
+    "D": "Not laughing at my jokes",
+    "correct": "A"
+  },
+  {
+    "q": "What do I think about most during sex?",
+    "A": "You",
+    "B": "How I look",
+    "C": "What feels good",
+    "D": "Whether I remembered to lock the door",
+    "correct": "C"
+  },
+  {
+    "q": "What's my favorite thing about our relationship?",
+    "A": "How comfortable we are together",
+    "B": "Our shared humor",
+    "C": "The intimacy we share",
+    "D": "You pretend my cooking is good",
+    "correct": "A"
+  },
+  {
+    "q": "What's my biggest worry about our future?",
+    "A": "Financial stability",
+    "B": "Keeping the spark alive",
+    "C": "Family acceptance",
+    "D": "Whether we'll still like each other's Netflix choices",
+    "correct": "B"
+  },
+  {
+    "q": "What would I change about our sex life?",
+    "A": "More frequency",
+    "B": "More variety",
+    "C": "Better communication",
+    "D": "A bed that doesn't squeak when my parents visit",
+    "correct": "B"
+  },
+  {
+    "q": "What's my biggest regret in our relationship?",
+    "A": "Not being more open earlier",
+    "B": "Past arguments",
+    "C": "Not making more time for us",
+    "D": "Telling you my real body count",
+    "correct": "A"
+  },
+  {
+    "q": "What makes me feel most loved by you?",
+    "A": "When you surprise me",
+    "B": "When you really listen",
+    "C": "Physical affection",
+    "D": "When you laugh at my terrible jokes",
+    "correct": "B"
+  },
+  {
+    "q": "What's my favorite memory of us?",
+    "A": "Our first kiss",
+    "B": "A special trip we took",
+    "C": "A quiet moment together",
+    "D": "When you finally admitted I was right",
+    "correct": "B"
+  },
+  {
+    "q": "What do I find most attractive about you?",
+    "A": "Your eyes",
+    "B": "Your smile",
+    "C": "Your personality",
+    "D": "Your ability to reach high shelves",
+    "correct": "C"
+  },
+  {
+    "q": "What's my biggest fantasy about us?",
+    "A": "Growing old together",
+    "B": "Traveling the world",
+    "C": "Having a family",
+    "D": "You doing all the cooking forever",
+    "correct": "A"
+  },
+  {
+    "q": "What would I do if we broke up?",
+    "A": "Be heartbroken but move on",
+    "B": "Try to win you back",
+    "C": "Focus on myself",
+    "D": "Immediately change all my passwords",
+    "correct": "A"
+  },
+  {
+    "q": "What's my favorite way you show affection?",
+    "A": "Hugs and kisses",
+    "B": "Little gestures",
+    "C": "Compliments",
+    "D": "Bringing me food when I'm hangry",
+    "correct": "B"
+  },
+  {
+    "q": "What's my biggest fear about getting married?",
+    "A": "Losing independence",
+    "B": "The pressure",
+    "C": "Change in relationship",
+    "D": "Having to share a closet",
+    "correct": "A"
+  },
+  {
+    "q": "What do I think is our biggest strength as a couple?",
+    "A": "Communication",
+    "B": "Trust",
+    "C": "Shared values",
+    "D": "We both hate the same people",
+    "correct": "A"
+  },
+  {
+    "q": "What's my ideal date night with you?",
+    "A": "Dinner and a movie",
+    "B": "Staying in together",
+    "C": "Something adventurous",
+    "D": "Anywhere without your phone buzzing",
+    "correct": "B"
+  },
+  {
+    "q": "What do I think we need to work on?",
+    "A": "Communication",
+    "B": "Spending more time together",
+    "C": "Being more affectionate",
+    "D": "Your ability to load the dishwasher correctly",
+    "correct": "A"
+  },
+  {
+    "q": "What's my biggest turn-off in bed?",
+    "A": "Lack of foreplay",
+    "B": "Being selfish",
+    "C": "No communication",
+    "D": "When you check your phone during",
+    "correct": "B"
+  },
+  {
+    "q": "What do I love most about your personality?",
+    "A": "Your kindness",
+    "B": "Your sense of humor",
+    "C": "Your intelligence",
+    "D": "You pretend to find me interesting",
+    "correct": "A"
+  },
+  {
+    "q": "What's my biggest hope for our future?",
+    "A": "Marriage",
+    "B": "Kids",
+    "C": "Growing together",
+    "D": "You finally learning to aim in the bathroom",
+    "correct": "C"
+  },
+  {
+    "q": "What makes me feel most secure in our relationship?",
+    "A": "Your consistency",
+    "B": "Open communication",
+    "C": "Physical affection",
+    "D": "You haven't run away screaming yet",
+    "correct": "A"
+  },
+  {
+    "q": "What's my favorite thing you do in bed?",
+    "A": "Take your time",
+    "B": "Focus on my pleasure",
+    "C": "Make me feel desired",
+    "D": "Finally use the good pillows",
+    "correct": "C"
+  },
+  {
+    "q": "What do I think is our biggest challenge?",
+    "A": "Different communication styles",
+    "B": "Balancing independence and togetherness",
+    "C": "External pressures",
+    "D": "Agreeing on what to watch on Netflix",
+    "correct": "B"
+  },
+  {
+    "q": "What's my favorite quality about myself in our relationship?",
+    "A": "How supportive I am",
+    "B": "My honesty",
+    "C": "How I make you laugh",
+    "D": "My incredible modesty",
+    "correct": "A"
+  },
+  {
+    "q": "What would make me happiest in our relationship?",
+    "A": "More quality time together",
+    "B": "Better communication",
+    "C": "More spontaneity",
+    "D": "You admitting I'm always right",
+    "correct": "A"
+  },
+  {
+    "q": "What's my biggest fear about intimacy?",
+    "A": "Being vulnerable",
+    "B": "Not being good enough",
+    "C": "Losing passion over time",
+    "D": "You seeing me without makeup",
+    "correct": "A"
+  },
+  {
+    "q": "What do I think makes a relationship last?",
+    "A": "Love and commitment",
+    "B": "Friendship and respect",
+    "C": "Communication and compromise",
+    "D": "Separate bathrooms",
+    "correct": "C"
+  },
+  {
+    "q": "What's my favorite way to resolve conflicts?",
+    "A": "Talk it out immediately",
+    "B": "Take time to cool down first",
+    "C": "Compromise",
+    "D": "Pretend it never happened",
+    "correct": "B"
+  },
+  {
+    "q": "What makes me feel most connected to you?",
+    "A": "Deep conversations",
+    "B": "Physical intimacy",
+    "C": "Shared experiences",
+    "D": "When we both hate the same movie",
+    "correct": "A"
+  },
+  {
+    "q": "What's my biggest relationship insecurity?",
+    "A": "Not being attractive enough",
+    "B": "Not being interesting enough",
+    "C": "You finding someone better",
+    "D": "You discovering my browser history",
+    "correct": "C"
+  },
+  {
+    "q": "What do I think is the key to good sex?",
+    "A": "Communication",
+    "B": "Chemistry",
+    "C": "Trust",
+    "D": "Wine and dim lighting",
+    "correct": "A"
+  },
+  {
+    "q": "What's my favorite thing about how we met?",
+    "A": "It felt natural",
+    "B": "The timing was perfect",
+    "C": "It was unexpected",
+    "D": "You didn't immediately run away",
+    "correct": "A"
+  },
+  {
+    "q": "What would I want you to know if we broke up?",
+    "A": "That I loved you",
+    "B": "That you made me better",
+    "C": "No hard feelings",
+    "D": "The Netflix password is changing",
+    "correct": "B"
+  },
+  {
+    "q": "What's my favorite way you make me laugh?",
+    "A": "Your silly voices",
+    "B": "Your random observations",
+    "C": "Your impressions",
+    "D": "When you trip over nothing",
+    "correct": "B"
+  },
+  {
+    "q": "What do I think our relationship needs more of?",
+    "A": "Romance",
+    "B": "Adventure",
+    "C": "Intimacy",
+    "D": "You cooking dinner",
+    "correct": "A"
+  },
+  {
+    "q": "What's my biggest fear about moving in together?",
+    "A": "Losing personal space",
+    "B": "Different living habits",
+    "C": "The relationship changing",
+    "D": "You seeing how messy I really am",
+    "correct": "B"
+  },
+  {
+    "q": "What makes me feel most beautiful/handsome?",
+    "A": "The way you look at me",
+    "B": "Your compliments",
+    "C": "When you touch me",
+    "D": "Good lighting and filters",
+    "correct": "A"
+  },
+  {
+    "q": "What's my favorite thing about our communication?",
+    "A": "We can talk about anything",
+    "B": "We really listen to each other",
+    "C": "We're honest",
+    "D": "We've mastered the art of arguing about nothing",
+    "correct": "B"
+  },
+  {
+    "q": "What do I think is our best shared quality?",
+    "A": "Our sense of humor",
+    "B": "Our values",
+    "C": "Our adventurous spirit",
+    "D": "Our ability to order way too much takeout",
+    "correct": "A"
+  },
+  {
+    "q": "What's my favorite way to show I love you?",
+    "A": "Saying it",
+    "B": "Acts of service",
+    "C": "Physical affection",
+    "D": "Sharing my food with you",
+    "correct": "B"
+  },
+  {
+    "q": "What makes me most proud of our relationship?",
+    "A": "How we've grown together",
+    "B": "How we support each other",
+    "C": "How happy we are",
+    "D": "We haven't killed each other yet",
+    "correct": "A"
+  },
+  {
+    "q": "What's my biggest hope for our intimacy?",
+    "A": "It keeps getting better",
+    "B": "We stay connected",
+    "C": "We keep exploring together",
+    "D": "You learn where the clitoris is",
+    "correct": "A"
+  },
+  {
+    "q": "What do I find most comforting about you?",
+    "A": "Your presence",
+    "B": "Your voice",
+    "C": "Your hugs",
+    "D": "You don't judge my weird habits",
+    "correct": "A"
+  },
+  {
+    "q": "What's my favorite relationship milestone we've hit?",
+    "A": "Saying 'I love you'",
+    "B": "Meeting each other's families",
+    "C": "Moving in together",
+    "D": "You seeing me without makeup and staying",
+    "correct": "A"
+  },
+  {
+    "q": "What would make me feel most supported?",
+    "A": "You believing in my dreams",
+    "B": "You being there when I need you",
+    "C": "You understanding my struggles",
+    "D": "You pretending my cooking is edible",
+    "correct": "A"
+  },
+  {
+    "q": "What's my favorite way we spend time together?",
+    "A": "Just talking",
+    "B": "Watching movies",
+    "C": "Going on adventures",
+    "D": "Judging other couples together",
+    "correct": "A"
+  },
+  {
+    "q": "What do I think is our strongest emotional bond?",
+    "A": "Trust",
+    "B": "Understanding",
+    "C": "Shared experiences",
+    "D": "Mutual hatred of your ex",
+    "correct": "B"
+  },
+  {
+    "q": "What's my biggest relationship goal?",
+    "A": "Building a life together",
+    "B": "Never going to bed angry",
+    "C": "Growing old together",
+    "D": "Finally winning an argument",
+    "correct": "A"
+  },
+  {
+    "q": "What makes me feel most grateful for you?",
+    "A": "How you love me as I am",
+    "B": "How you make me better",
+    "C": "How you support my dreams",
+    "D": "You tolerate my morning breath",
+    "correct": "A"
+  },
+  {
+    "q": "What's my favorite thing about our future plans?",
+    "A": "We're building something together",
+    "B": "We're on the same page",
+    "C": "The adventures ahead",
+    "D": "Joint bank accounts mean double the money",
+    "correct": "A"
+  },
+  {
+    "q": "What do I think we do best as a team?",
+    "A": "Support each other",
+    "B": "Make decisions together",
+    "C": "Handle challenges",
+    "D": "Order food and binge Netflix",
+    "correct": "A"
+  },
+  {
+    "q": "What's my favorite way you surprise me?",
+    "A": "Thoughtful gestures",
+    "B": "Random acts of kindness",
+    "C": "Planning special moments",
+    "D": "Actually cleaning without being asked",
+    "correct": "A"
+  },
+  {
+    "q": "What makes me most excited about our relationship?",
+    "A": "How it keeps evolving",
+    "B": "The depth we're building",
+    "C": "Our potential together",
+    "D": "You might actually learn to cook",
+    "correct": "A"
+  },
+  {
+    "q": "What's my biggest relationship strength?",
+    "A": "I'm a good communicator",
+    "B": "I'm loyal and committed",
+    "C": "I'm supportive",
+    "D": "I'm humble about my awesomeness",
+    "correct": "B"
+  },
+  {
+    "q": "What do I love most about your love for me?",
+    "A": "It's unconditional",
+    "B": "It makes me feel safe",
+    "C": "It brings out my best",
+    "D": "It means free back rubs",
+    "correct": "C"
+  },
+  {
+    "q": "What's my favorite thing about being in love?",
+    "A": "Having someone who gets me",
+    "B": "Feeling completely accepted",
+    "C": "Having a best friend and lover",
+    "D": "Someone to kill spiders for me",
+    "correct": "C"
+  },
+  {
+    "q": "What makes me feel most lucky to have you?",
+    "A": "Your kindness",
+    "B": "Your love",
+    "C": "Your partnership",
+    "D": "You laugh at my terrible jokes",
+    "correct": "C"
+  },
+  {
+    "q": "What's my favorite way we've grown together?",
+    "A": "We're more open and honest",
+    "B": "We understand each other better",
+    "C": "We've learned to compromise",
+    "D": "We finally agreed on pizza toppings",
+    "correct": "B"
+  },
+  {
+    "q": "What do I think makes us perfect for each other?",
+    "A": "We complement each other",
+    "B": "We share the same values",
+    "C": "We bring out the best in each other",
+    "D": "We're both equally weird",
+    "correct": "C"
+  },
+  {
+    "q": "What's my favorite promise I've made to you?",
+    "A": "To always be honest",
+    "B": "To love you unconditionally",
+    "C": "To support your dreams",
+    "D": "To share the last slice of pizza",
+    "correct": "B"
+  },
+  {
+    "q": "What makes me most confident about our future?",
+    "A": "How well we work together",
+    "B": "How much we love each other",
+    "C": "How we handle challenges",
+    "D": "You haven't changed the WiFi password",
+    "correct": "A"
+  },
+  {
+    "q": "What's my favorite way you make me feel special?",
+    "A": "You remember little things",
+    "B": "You make time for me",
+    "C": "You show me off to others",
+    "D": "You let me control the remote",
+    "correct": "A"
+  },
+  {
+    "q": "What do I think is the most important thing in our relationship?",
+    "A": "Honesty and trust",
+    "B": "Love and respect",
+    "C": "Communication and understanding",
+    "D": "Agreeing that pineapple doesn't belong on pizza",
+    "correct": "C"
+  },
+  {
+    "q": "What's my favorite thing about loving you?",
+    "A": "How natural it feels",
+    "B": "How it's changed me for the better",
+    "C": "How deep it goes",
+    "D": "The unlimited cuddle access",
+    "correct": "B"
   }
 ]

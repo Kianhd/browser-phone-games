@@ -1,42 +1,618 @@
 [
   {
-    "q": "Capital of Canada?",
-    "A": "Montreal",
-    "B": "Ottawa",
-    "C": "Quebec City",
-    "D": "Toronto",
+    "q": "What percentage of people have had sex in their parents' bed?",
+    "A": "18%",
+    "B": "31%",
+    "C": "45%",
+    "D": "Everyone except you, apparently",
     "correct": "B"
   },
   {
-    "q": "Most abundant gas in Earth's atmosphere?",
-    "A": "Oxygen",
-    "B": "Argon",
-    "C": "Carbon dioxide",
-    "D": "Nitrogen",
-    "correct": "D"
-  },
-  {
-    "q": "Who painted Guernica?",
-    "A": "Joan Miró",
-    "B": "Pablo Picasso",
-    "C": "Salvador Dalí",
-    "D": "Francis Bacon",
+    "q": "How many people does the average person sleep with in their lifetime?",
+    "A": "4-6",
+    "B": "7-9",
+    "C": "12-15",
+    "D": "Nice try, mom",
     "correct": "B"
   },
   {
-    "q": "SI unit of electric current:",
-    "A": "Ohm",
-    "B": "Volt",
-    "C": "Watt",
-    "D": "Ampere",
-    "correct": "D"
+    "q": "What's the most common place couples have their first fight?",
+    "A": "Over text message",
+    "B": "In the car",
+    "C": "At dinner",
+    "D": "IKEA furniture section",
+    "correct": "B"
   },
   {
-    "q": "Which metal's symbol is Fe?",
-    "A": "Tin",
-    "B": "Iron",
-    "C": "Fluorine",
-    "D": "Francium",
+    "q": "How long does the average person take to get ready for a hookup?",
+    "A": "15 minutes",
+    "B": "30 minutes",
+    "C": "45 minutes",
+    "D": "However long it takes to hide the laundry pile",
     "correct": "B"
+  },
+  {
+    "q": "What percentage of people have googled their date before meeting?",
+    "A": "67%",
+    "B": "78%",
+    "C": "89%",
+    "D": "The other 11% are liars",
+    "correct": "C"
+  },
+  {
+    "q": "How many times does the average person check their phone on a first date?",
+    "A": "3-5 times",
+    "B": "7-12 times",
+    "C": "15-20 times",
+    "D": "Every time there's an awkward silence",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common drunk mistake according to surveys?",
+    "A": "Texting an ex",
+    "B": "Overspending",
+    "C": "Eating too much",
+    "D": "Thinking you can sing karaoke",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have lied about being on birth control?",
+    "A": "8%",
+    "B": "16%",
+    "C": "23%",
+    "D": "Plot twist loading...",
+    "correct": "B"
+  },
+  {
+    "q": "What's the average number of dating app matches that lead to actual dates?",
+    "A": "1 in 10",
+    "B": "1 in 25",
+    "C": "1 in 50",
+    "D": "Your mom gets more matches",
+    "correct": "C"
+  },
+  {
+    "q": "How many people have had sex at work?",
+    "A": "14%",
+    "B": "22%",
+    "C": "28%",
+    "D": "HR wants to know your location",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have faked being sick to avoid a date?",
+    "A": "31%",
+    "B": "47%",
+    "C": "52%",
+    "D": "Suddenly feeling symptoms right now",
+    "correct": "B"
+  },
+  {
+    "q": "How many adults still sleep with stuffed animals?",
+    "A": "25%",
+    "B": "35%",
+    "C": "40%",
+    "D": "Mr. Snuggles isn't judging",
+    "correct": "C"
+  },
+  {
+    "q": "What's the most common reason for breaking up via text?",
+    "A": "Avoiding confrontation",
+    "B": "Cowardice",
+    "C": "Convenience",
+    "D": "All of the above cowardly convenience",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have masturbated thinking about someone they know?",
+    "A": "78%",
+    "B": "85%",
+    "C": "91%",
+    "D": "Sorry, did I make this weird?",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have hooked up with a friend's ex?",
+    "A": "19%",
+    "B": "27%",
+    "C": "34%",
+    "D": "Former friends now",
+    "correct": "B"
+  },
+  {
+    "q": "How long do most people wait before having sex in a relationship?",
+    "A": "3 dates",
+    "B": "1-2 weeks",
+    "C": "3-5 dates",
+    "D": "However long Netflix takes to buffer",
+    "correct": "C"
+  },
+  {
+    "q": "What's the most common lie told during sex?",
+    "A": "That feels amazing",
+    "B": "I'm almost there",
+    "C": "You're so big",
+    "D": "Oscar-worthy performance",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have sent nudes to the wrong person?",
+    "A": "12%",
+    "B": "18%",
+    "C": "23%",
+    "D": "Plot twist: it was intentional",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have cried after sex?",
+    "A": "15%",
+    "B": "28%",
+    "C": "34%",
+    "D": "Both happy and sad tears count",
+    "correct": "B"
+  },
+  {
+    "q": "How many adults have peed in the shower?",
+    "A": "62%",
+    "B": "78%",
+    "C": "91%",
+    "D": "The other 9% are liars",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common place people meet for hookups?",
+    "A": "Bars",
+    "B": "Dating apps",
+    "C": "Through friends",
+    "D": "Your mom's book club",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have had a threesome?",
+    "A": "8%",
+    "B": "14%",
+    "C": "18%",
+    "D": "Disappointed it wasn't like porn",
+    "correct": "C"
+  },
+  {
+    "q": "What percentage of people have been walked in on during sex?",
+    "A": "34%",
+    "B": "41%",
+    "C": "48%",
+    "D": "Knock first, people!",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have lied about their sexual history?",
+    "A": "43%",
+    "B": "58%",
+    "C": "67%",
+    "D": "Math was never my strong suit",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common reason for faking an orgasm?",
+    "A": "To end it faster",
+    "B": "Partner's ego",
+    "C": "Boredom",
+    "D": "Netflix episode starting soon",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have hooked up in a bathroom?",
+    "A": "22%",
+    "B": "35%",
+    "C": "41%",
+    "D": "Questionable hygiene choices",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have dated someone just for their money?",
+    "A": "8%",
+    "B": "15%",
+    "C": "21%",
+    "D": "In this economy?",
+    "correct": "B"
+  },
+  {
+    "q": "How many adults still live with their parents?",
+    "A": "18%",
+    "B": "29%",
+    "C": "35%",
+    "D": "Rent prices are insane, okay?",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common drunk text sent?",
+    "A": "I miss you",
+    "B": "Are you up?",
+    "C": "I'm sorry",
+    "D": "Incoherent gibberish",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have had sex in a car?",
+    "A": "45%",
+    "B": "58%",
+    "C": "67%",
+    "D": "Parking lot memories",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have ghosted someone?",
+    "A": "45%",
+    "B": "61%",
+    "C": "73%",
+    "D": "Currently ignoring someone",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have had sex with someone whose name they forgot?",
+    "A": "16%",
+    "B": "23%",
+    "C": "31%",
+    "D": "Hey you works fine",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common place to hide a vibrator?",
+    "A": "Bedside drawer",
+    "B": "Under the bed",
+    "C": "Closet",
+    "D": "Next to the emergency chocolate",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have lied about having an orgasm?",
+    "A": "48%",
+    "B": "67%",
+    "C": "78%",
+    "D": "Academy Award performances",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have hooked up at a wedding?",
+    "A": "12%",
+    "B": "19%",
+    "C": "26%",
+    "D": "Open bar = bad decisions",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have used food during sex?",
+    "A": "18%",
+    "B": "27%",
+    "C": "33%",
+    "D": "Cleanup in aisle bedroom",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common reason for ending friends with benefits?",
+    "A": "Caught feelings",
+    "B": "Found someone else",
+    "C": "Got complicated",
+    "D": "It was supposed to be simple!",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have had sex on the first date?",
+    "A": "25%",
+    "B": "35%",
+    "C": "42%",
+    "D": "Depends who's asking",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have been cheated on?",
+    "A": "34%",
+    "B": "46%",
+    "C": "53%",
+    "D": "Trust issues loading...",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have kissed someone of the same sex?",
+    "A": "28%",
+    "B": "37%",
+    "C": "44%",
+    "D": "College doesn't count, right?",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common reason for deleting dating apps?",
+    "A": "Found someone",
+    "B": "Got discouraged",
+    "C": "Too overwhelming",
+    "D": "Ran out of people in your area",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have hooked up with a coworker?",
+    "A": "22%",
+    "B": "33%",
+    "C": "41%",
+    "D": "HR's worst nightmare",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have sent a nude and regretted it?",
+    "A": "31%",
+    "B": "45%",
+    "C": "52%",
+    "D": "Screenshot anxiety activated",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have had period sex?",
+    "A": "34%",
+    "B": "48%",
+    "C": "61%",
+    "D": "Towels recommended",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common sexual fantasy?",
+    "A": "Multiple partners",
+    "B": "Someone famous",
+    "C": "Past relationship",
+    "D": "Someone who does dishes",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have lied about their age on dating apps?",
+    "A": "28%",
+    "B": "41%",
+    "C": "54%",
+    "D": "29 forever",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have masturbated at work?",
+    "A": "8%",
+    "B": "15%",
+    "C": "22%",
+    "D": "Bathroom break productivity",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have had shower sex?",
+    "A": "41%",
+    "B": "56%",
+    "C": "68%",
+    "D": "Slippery when wet warning",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common reason for breaking up?",
+    "A": "Growing apart",
+    "B": "Cheating",
+    "C": "Different goals",
+    "D": "They got boring",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have hooked up in their childhood bedroom?",
+    "A": "32%",
+    "B": "47%",
+    "C": "58%",
+    "D": "Trying to be quiet was impossible",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have been in a situationship?",
+    "A": "43%",
+    "B": "58%",
+    "C": "67%",
+    "D": "It's complicated",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have had sex outdoors?",
+    "A": "38%",
+    "B": "51%",
+    "C": "63%",
+    "D": "Nature is beautiful",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common reason for staying in a bad relationship?",
+    "A": "Fear of being alone",
+    "B": "Convenience",
+    "C": "Hope they'll change",
+    "D": "Shared Netflix account",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have used dating apps while in a relationship?",
+    "A": "11%",
+    "B": "18%",
+    "C": "24%",
+    "D": "Just for validation, obviously",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have had a one-night stand?",
+    "A": "48%",
+    "B": "61%",
+    "C": "74%",
+    "D": "Define 'one night'",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have sexted while at work?",
+    "A": "15%",
+    "B": "23%",
+    "C": "31%",
+    "D": "Boss makes a dollar, I make a dime",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common post-hookup feeling?",
+    "A": "Satisfaction",
+    "B": "Regret",
+    "C": "Awkwardness",
+    "D": "Hunger for tacos",
+    "correct": "C"
+  },
+  {
+    "q": "How many people have hooked up with an ex after breaking up?",
+    "A": "41%",
+    "B": "56%",
+    "C": "68%",
+    "D": "Closure? Or confusion?",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have had sex while roommates were home?",
+    "A": "54%",
+    "B": "67%",
+    "C": "78%",
+    "D": "Sorry not sorry",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have lied about being single?",
+    "A": "18%",
+    "B": "27%",
+    "C": "34%",
+    "D": "It's complicated counts as single",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common reason for having makeup sex?",
+    "A": "Horniness",
+    "B": "Avoiding the real issue",
+    "C": "Habit",
+    "D": "Better than talking about feelings",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have fantasized about their boss?",
+    "A": "19%",
+    "B": "28%",
+    "C": "35%",
+    "D": "Power dynamics are complicated",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have had drunk sex they regretted?",
+    "A": "31%",
+    "B": "44%",
+    "C": "52%",
+    "D": "Tequila makes clothes fall off",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have looked through their partner's phone without permission?",
+    "A": "38%",
+    "B": "51%",
+    "C": "62%",
+    "D": "Trust but verify",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common reason for sliding into DMs?",
+    "A": "Genuine interest",
+    "B": "Boredom",
+    "C": "Horniness",
+    "D": "Liquid courage",
+    "correct": "C"
+  },
+  {
+    "q": "How many people have had sex in a public place?",
+    "A": "26%",
+    "B": "38%",
+    "C": "45%",
+    "D": "Adrenaline rush activated",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have been in love with someone unavailable?",
+    "A": "54%",
+    "B": "67%",
+    "C": "78%",
+    "D": "Story of my life",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have had sex while their parents were home?",
+    "A": "43%",
+    "B": "58%",
+    "C": "71%",
+    "D": "Teenage rebellion never dies",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common thing people lie about in relationships?",
+    "A": "Past relationships",
+    "B": "Feelings",
+    "C": "Sexual satisfaction",
+    "D": "How much they spent",
+    "correct": "C"
+  },
+  {
+    "q": "How many people have masturbated thinking about a celebrity?",
+    "A": "61%",
+    "B": "74%",
+    "C": "85%",
+    "D": "Ryan Reynolds doesn't judge",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have had phone sex?",
+    "A": "28%",
+    "B": "41%",
+    "C": "53%",
+    "D": "Long distance relationships are hard",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have pretended to be asleep to avoid sex?",
+    "A": "22%",
+    "B": "34%",
+    "C": "45%",
+    "D": "Oscar-worthy fake snoring",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common reason for breaking up over text?",
+    "A": "Cowardice",
+    "B": "Convenience",
+    "C": "Avoiding drama",
+    "D": "All of the above",
+    "correct": "A"
+  },
+  {
+    "q": "How many people have had sex with someone significantly older?",
+    "A": "31%",
+    "B": "43%",
+    "C": "54%",
+    "D": "Experience is valuable",
+    "correct": "B"
+  },
+  {
+    "q": "What percentage of people have been friendzoned?",
+    "A": "56%",
+    "B": "68%",
+    "C": "78%",
+    "D": "Population: everyone",
+    "correct": "B"
+  },
+  {
+    "q": "How many people have googled 'am I pregnant' in panic?",
+    "A": "34%",
+    "B": "47%",
+    "C": "59%",
+    "D": "WebMD says you're definitely pregnant",
+    "correct": "B"
+  },
+  {
+    "q": "What's the most common reason people stay single?",
+    "A": "Haven't found the right person",
+    "B": "Enjoying freedom",
+    "C": "Past relationship trauma",
+    "D": "Dating apps are exhausting",
+    "correct": "A"
   }
 ]

@@ -1,50 +1,658 @@
 [
   {
-    "q": "Which of these is an actual law (USA)?",
-    "A": "It's illegal to whistle underwater in Florida",
-    "B": "It's illegal to yawn in public on Mondays in Ohio",
-    "C": "It's illegal to walk backwards after sunset in Arizona",
-    "D": "It's illegal to eat fried chicken with a fork in Gainesville, Georgia",
-    "correct": "D"
-  },
-  {
-    "q": "Which of these is scientifically true?",
-    "A": "Bananas are botanically berries",
-    "B": "Tomatoes are roots",
-    "C": "Cucumbers are fungi",
-    "D": "Strawberries are true nuts",
-    "correct": "A"
-  },
-  {
-    "q": "Which animal can hibernate for years?",
-    "A": "Some snails can sleep up to 3 years",
-    "B": "Parrots hibernate in winter",
-    "C": "Sharks sleep for weeks on land",
-    "D": "Cheetahs nap for 48 hours",
-    "correct": "A"
-  },
-  {
-    "q": "Which is a real world capital fact?",
-    "A": "Melbourne is the capital of Australia",
-    "B": "Canberra is the capital of Australia",
-    "C": "Sydney is the capital of Australia",
-    "D": "Perth is the capital of Australia",
+    "q": "Drinking your own urine can be medically beneficial in survival situations",
+    "A": "Fact",
+    "B": "Fiction", 
+    "C": "Only on Tuesdays",
+    "D": "Ask Bear Grylls",
     "correct": "B"
   },
   {
-    "q": "Which is a verified record holder?",
-    "A": "The Arctic is the largest ocean",
-    "B": "The Pacific is the largest ocean",
-    "C": "The Indian is the largest ocean",
-    "D": "The Atlantic is the largest ocean",
+    "q": "The average person spends 2 weeks of their life kissing",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "More if you're lucky",
+    "D": "Less if you're me",
+    "correct": "A"
+  },
+  {
+    "q": "You can die from a broken heart (literally)",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Only during Taylor Swift songs",
+    "D": "My ex is immortal then",
+    "correct": "A"
+  },
+  {
+    "q": "Humans share 60% of their DNA with bananas",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Explains my ex's personality",
+    "D": "That's why I'm appealing",
+    "correct": "A"
+  },
+  {
+    "q": "Women fake orgasms more than men do",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Men fake everything else though",
+    "D": "I don't fake anything... obviously",
+    "correct": "A"
+  },
+  {
+    "q": "Chocolate releases the same chemicals as being in love",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Chocolate is more reliable",
+    "D": "Explains my relationship status",
+    "correct": "A"
+  },
+  {
+    "q": "The pull-out method is 96% effective when done perfectly",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Tell that to teen pregnancy rates",
+    "D": "Define 'perfectly'",
+    "correct": "A"
+  },
+  {
+    "q": "Men think about sex every 7 seconds",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Only 7 seconds? Rookie numbers",
+    "D": "What were we talking about?",
     "correct": "B"
   },
   {
-    "q": "Which plant fact is true?",
-    "A": "Plants absorb methane to make sugar",
-    "B": "Plants breathe nitrogen at night",
-    "C": "Plants don't need gases",
-    "D": "Plants primarily absorb CO₂ during photosynthesis",
-    "correct": "D"
+    "q": "Alcohol kills brain cells permanently",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Explains college",
+    "D": "Worth it for the memories I can't remember",
+    "correct": "B"
+  },
+  {
+    "q": "You eat 8 spiders per year while sleeping",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Free protein",
+    "D": "Still better than my cooking",
+    "correct": "B"
+  },
+  {
+    "q": "Goldfish have a 3-second memory",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Like drunk people",
+    "D": "Wish my ex did",
+    "correct": "B"
+  },
+  {
+    "q": "Cracking knuckles causes arthritis",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "But it's still annoying",
+    "D": "Worth the satisfaction",
+    "correct": "B"
+  },
+  {
+    "q": "The human brain uses 20% of the body's energy",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Mine uses 0% apparently",
+    "D": "Explains why thinking is exhausting",
+    "correct": "A"
+  },
+  {
+    "q": "Swallowed gum stays in your stomach for 7 years",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Like my regrets",
+    "D": "Still processing gum from 3rd grade",
+    "correct": "B"
+  },
+  {
+    "q": "Humans can live without sleep for 11 days maximum",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Challenge accepted",
+    "D": "Already testing this theory",
+    "correct": "A"
+  },
+  {
+    "q": "Your hair and nails continue growing after death",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Finally good hair days",
+    "D": "Death glow-up incoming",
+    "correct": "B"
+  },
+  {
+    "q": "Lightning never strikes the same place twice",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Unlike my bad luck",
+    "D": "Tell that to my dating life",
+    "correct": "B"
+  },
+  {
+    "q": "You can get pregnant while already pregnant",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "My worst nightmare",
+    "D": "Double the trouble",
+    "correct": "A"
+  },
+  {
+    "q": "Sitting too close to the TV damages your eyes",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Mom's been lying this whole time",
+    "D": "Explains why I need glasses",
+    "correct": "B"
+  },
+  {
+    "q": "You can die from holding in your pee too long",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Road trip anxiety intensifies",
+    "D": "Excuse me, nature calls",
+    "correct": "A"
+  },
+  {
+    "q": "Humans only use 10% of their brain",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Some use even less",
+    "D": "Explains my life choices",
+    "correct": "B"
+  },
+  {
+    "q": "Cold weather makes you sick",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Mom's been right about everything",
+    "D": "Correlation vs causation vibes",
+    "correct": "B"
+  },
+  {
+    "q": "It's impossible to lick your own elbow",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Stop trying right now",
+    "D": "Challenge accepted, spine",
+    "correct": "A"
+  },
+  {
+    "q": "Shaving makes hair grow back thicker",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Then why am I still bald?",
+    "D": "Razor companies' conspiracy",
+    "correct": "B"
+  },
+  {
+    "q": "Reading in low light damages your eyes",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "All those late-night novels",
+    "D": "Worth it for plot twists",
+    "correct": "B"
+  },
+  {
+    "q": "Oysters are only safe to eat in months with 'R'",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Random but specific",
+    "D": "May through August are sus",
+    "correct": "A"
+  },
+  {
+    "q": "You can't fold a piece of paper more than 7 times",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "My attention span is shorter",
+    "D": "Physics ruins everything fun",
+    "correct": "A"
+  },
+  {
+    "q": "Carrots improve your eyesight significantly",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "WWII propaganda lives on",
+    "D": "Bugs Bunny lied to us",
+    "correct": "B"
+  },
+  {
+    "q": "You lose most body heat through your head",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Hat industry propaganda",
+    "D": "My bald head disagrees",
+    "correct": "B"
+  },
+  {
+    "q": "Bananas are radioactive",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Explains my superpowers",
+    "D": "Still safer than my cooking",
+    "correct": "A"
+  },
+  {
+    "q": "You can survive longer without food than water",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "But not without wifi",
+    "D": "Coffee counts as water, right?",
+    "correct": "A"
+  },
+  {
+    "q": "Bulls get angry when they see red",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Like my ex with my credit card",
+    "D": "Motion is the real trigger",
+    "correct": "B"
+  },
+  {
+    "q": "Swimming immediately after eating causes cramps",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Pool party buzzkill",
+    "D": "Mom's summer safety myth",
+    "correct": "B"
+  },
+  {
+    "q": "Humans can smell fear",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "I reek of anxiety then",
+    "D": "Dating apps should warn people",
+    "correct": "A"
+  },
+  {
+    "q": "You swallow more saliva than spiders in your sleep",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Thanks, I hate both facts",
+    "D": "Sleep just got weirder",
+    "correct": "A"
+  },
+  {
+    "q": "Penguins have knees",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "More flexible than me",
+    "D": "Explains their waddle swagger",
+    "correct": "A"
+  },
+  {
+    "q": "Alcohol warms you up in cold weather",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Winter survival myth",
+    "D": "Irish people disagree",
+    "correct": "B"
+  },
+  {
+    "q": "Diamonds are made from compressed coal",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Still overpriced carbon",
+    "D": "My bank account confirms fiction",
+    "correct": "B"
+  },
+  {
+    "q": "Women blink more than men",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Constant eye-rolling counts",
+    "D": "Men miss obvious hints",
+    "correct": "A"
+  },
+  {
+    "q": "Cracking your back is addictive",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Can confirm, am addict",
+    "D": "That satisfaction though",
+    "correct": "B"
+  },
+  {
+    "q": "You can get herpes from toilet seats",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Public bathroom paranoia",
+    "D": "Hover-squat validated",
+    "correct": "B"
+  },
+  {
+    "q": "Your tongue has taste zones for different flavors",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Elementary school lied",
+    "D": "Explains my refined palate",
+    "correct": "B"
+  },
+  {
+    "q": "Spicy food causes ulcers",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "My stomach disagrees",
+    "D": "But the flavor is worth it",
+    "correct": "B"
+  },
+  {
+    "q": "You need 8 glasses of water daily",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Coffee counts though, right?",
+    "D": "My kidneys beg to differ",
+    "correct": "B"
+  },
+  {
+    "q": "Masturbation causes blindness",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Still wearing glasses",
+    "D": "Religious guilt intensifies",
+    "correct": "B"
+  },
+  {
+    "q": "You can catch STDs from public hot tubs",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Hot tub anxiety activated",
+    "D": "Chemistry kills most things",
+    "correct": "B"
+  },
+  {
+    "q": "Porn addiction rewires your brain permanently",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Research is... ongoing",
+    "D": "Asking for a friend",
+    "correct": "B"
+  },
+  {
+    "q": "You can die from eating too many poppy seeds",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Muffin paranoia unlocked",
+    "D": "Everything is toxic in excess",
+    "correct": "A"
+  },
+  {
+    "q": "MSG is bad for your health",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Asian cuisine conspiracy",
+    "D": "Racism disguised as health concern",
+    "correct": "B"
+  },
+  {
+    "q": "You burn calories when thinking hard",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Chess players are ripped",
+    "D": "My brain workout counts",
+    "correct": "A"
+  },
+  {
+    "q": "Breakfast is the most important meal of the day",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Cereal company marketing",
+    "D": "Coffee counts as breakfast",
+    "correct": "B"
+  },
+  {
+    "q": "You lose weight faster if you eat less and exercise more",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Metabolism has left the chat",
+    "D": "Math doesn't work that way",
+    "correct": "B"
+  },
+  {
+    "q": "Coconut oil pulling detoxifies your mouth",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Instagram wellness culture",
+    "D": "Oil goes in mouth now?",
+    "correct": "B"
+  },
+  {
+    "q": "You can get pregnant from swallowing during oral sex",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Sex education has failed",
+    "D": "That's not how anatomy works",
+    "correct": "B"
+  },
+  {
+    "q": "Antibiotics work against viral infections",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Doctors hate this one trick",
+    "D": "Resistance is futile",
+    "correct": "B"
+  },
+  {
+    "q": "You can overdose on water",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Hydration gone wrong",
+    "D": "Water intoxication is real",
+    "correct": "A"
+  },
+  {
+    "q": "Marijuana has no medical benefits",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "War on drugs propaganda",
+    "D": "Colorado disagrees",
+    "correct": "B"
+  },
+  {
+    "q": "You can get addicted to marijuana physically",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Psychologically though...",
+    "D": "Define 'addicted'",
+    "correct": "B"
+  },
+  {
+    "q": "Sugar makes children hyperactive",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Party planning myth",
+    "D": "Parents' convenient excuse",
+    "correct": "B"
+  },
+  {
+    "q": "You can catch HPV from sharing drinks",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "College party anxiety",
+    "D": "Sharing is not caring",
+    "correct": "B"
+  },
+  {
+    "q": "Vaccines cause autism",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Science has left the chat",
+    "D": "Karen's Facebook research",
+    "correct": "B"
+  },
+  {
+    "q": "You can get HIV from mosquito bites",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Summer camping fear",
+    "D": "Mosquitos aren't that evil",
+    "correct": "B"
+  },
+  {
+    "q": "Birth control pills make you gain weight",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Convenient excuse activated",
+    "D": "Hormones are complicated",
+    "correct": "B"
+  },
+  {
+    "q": "You can't get pregnant while breastfeeding",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Surprise baby incoming",
+    "D": "Evolution's cruel joke",
+    "correct": "B"
+  },
+  {
+    "q": "Men reach their sexual peak at 18",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Explains everything",
+    "D": "Downhill from here",
+    "correct": "A"
+  },
+  {
+    "q": "Women reach their sexual peak at 30",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Timing is everything",
+    "D": "Finally catching up",
+    "correct": "B"
+  },
+  {
+    "q": "You can die from lack of sleep",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "College students everywhere panic",
+    "D": "Already dead inside",
+    "correct": "A"
+  },
+  {
+    "q": "Stress can literally make your hair fall out",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Explains my receding hairline",
+    "D": "2020 hair loss makes sense",
+    "correct": "A"
+  },
+  {
+    "q": "You can get a UTI from holding your pee",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Road trip nightmare",
+    "D": "Bathroom breaks are essential",
+    "correct": "A"
+  },
+  {
+    "q": "Sitting on cold surfaces gives you hemorrhoids",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Grandma's wisdom questioned",
+    "D": "Stadium seats suddenly suspicious",
+    "correct": "B"
+  },
+  {
+    "q": "You can get arthritis from cold weather",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Joint pain is real though",
+    "D": "Barometric pressure is the culprit",
+    "correct": "B"
+  },
+  {
+    "q": "Chocolate gives you acne",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Teenage years were a lie",
+    "D": "Genetics say otherwise",
+    "correct": "B"
+  },
+  {
+    "q": "You can catch pink eye from farting on a pillow",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Gross but theoretically possible",
+    "D": "College dorm room science",
+    "correct": "A"
+  },
+  {
+    "q": "Drinking cranberry juice prevents UTIs",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Women's health myth",
+    "D": "Ocean Spray marketing",
+    "correct": "B"
+  },
+  {
+    "q": "You can train yourself to need less sleep",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Hustle culture lies",
+    "D": "Coffee is not a substitute",
+    "correct": "B"
+  },
+  {
+    "q": "Sperm can live inside you for up to 5 days",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Fertility window anxiety",
+    "D": "Timing is everything",
+    "correct": "A"
+  },
+  {
+    "q": "You can get gonorrhea in your throat",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Oral sex education lacking",
+    "D": "Throat culture just got awkward",
+    "correct": "A"
+  },
+  {
+    "q": "Alcohol is a depressant",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "But it makes me happy",
+    "D": "Explains Sunday scaries",
+    "correct": "A"
+  },
+  {
+    "q": "You can get herpes from sharing lipstick",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Makeup sharing anxiety",
+    "D": "Cold sores are sneaky",
+    "correct": "A"
+  },
+  {
+    "q": "Masturbation reduces prostate cancer risk",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Self-care just got medical",
+    "D": "Doctor's orders",
+    "correct": "A"
+  },
+  {
+    "q": "You can die from a broken penis",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "New fear unlocked",
+    "D": "Handle with care",
+    "correct": "B"
+  },
+  {
+    "q": "Women have a higher pain tolerance than men",
+    "A": "Fact",
+    "B": "Fiction",
+    "C": "Childbirth proves everything",
+    "D": "Men complain about hangnails",
+    "correct": "A"
   }
 ]

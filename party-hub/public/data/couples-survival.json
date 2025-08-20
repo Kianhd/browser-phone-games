@@ -1,42 +1,578 @@
 [
   {
-    "q": "We're lost in the woods. Who makes the fire?",
-    "A": "Me",
-    "B": "We freeze together",
-    "C": "Bear Grylls",
-    "D": "You",
-    "correct": "A"
+    "q": "If we had to survive on a deserted island, who would be the leader?",
+    "A": "Me - I'm more practical",
+    "B": "You - you're better under pressure",
+    "C": "We'd share leadership",
+    "D": "We'd both panic and die within hours",
+    "correct": "C"
   },
   {
-    "q": "We have one battery left. Who gets it?",
-    "A": "Split it somehow",
-    "B": "The phone",
-    "C": "Me",
-    "D": "You",
+    "q": "In a zombie apocalypse, what's our biggest relationship challenge?",
+    "A": "Deciding where to go",
+    "B": "Protecting each other",
+    "C": "Sharing limited resources",
+    "D": "You'd probably try to save everyone",
     "correct": "D"
   },
   {
-    "q": "Zombie apocalypse weapon of choice:",
-    "A": "Baseball bat",
-    "B": "Frying pan",
-    "C": "Kitchen knife",
-    "D": "Harsh language",
+    "q": "If we lost all our money, what would keep us together?",
+    "A": "Our love",
+    "B": "Shared goals",
+    "C": "We're a good team",
+    "D": "Split rent is still cheaper",
+    "correct": "C"
+  },
+  {
+    "q": "During a natural disaster, who would you trust to make quick decisions?",
+    "A": "Myself",
+    "B": "My partner",
+    "C": "We'd decide together",
+    "D": "Google if the wifi still works",
+    "correct": "B"
+  },
+  {
+    "q": "If we were stuck in an elevator for 24 hours, what would happen?",
+    "A": "We'd talk the whole time",
+    "B": "We'd drive each other crazy",
+    "C": "We'd find ways to stay calm",
+    "D": "You'd blame me for pressing the wrong button",
     "correct": "A"
   },
   {
-    "q": "Our shelter priority is:",
-    "A": "Find a cave",
-    "B": "Build in trees",
-    "C": "Find high ground",
-    "D": "Stay near water",
+    "q": "In a survival situation, what's my biggest weakness?",
+    "A": "I panic easily",
+    "B": "I'm not physically strong",
+    "C": "I make emotional decisions",
+    "D": "I'd worry more about my phone battery than food",
+    "correct": "A"
+  },
+  {
+    "q": "If we were lost in the wilderness, what would be our first argument about?",
+    "A": "Which direction to go",
+    "B": "Rationing food/water",
+    "C": "Whether to stay or keep moving",
+    "D": "Why you didn't pack better snacks",
+    "correct": "A"
+  },
+  {
+    "q": "During a crisis, what would I do that would annoy you most?",
+    "A": "Try to control everything",
+    "B": "Get too emotional",
+    "C": "Not take it seriously enough",
+    "D": "Insist on doing my skincare routine",
+    "correct": "B"
+  },
+  {
+    "q": "If we had to live off the grid for a year, what would I miss most?",
+    "A": "Social media",
+    "B": "Hot showers",
+    "C": "My family/friends",
+    "D": "Online shopping and next-day delivery",
+    "correct": "B"
+  },
+  {
+    "q": "In an emergency, who would be better at staying calm?",
+    "A": "Me",
+    "B": "You",
+    "C": "Neither of us",
+    "D": "Whoever has caffeine",
+    "correct": "B"
+  },
+  {
+    "q": "If we were trapped together for months, what would drive me crazy about you?",
+    "A": "Your habits",
+    "B": "Your jokes",
+    "C": "Your need for personal space",
+    "D": "You'd hog all the good hiding spots",
+    "correct": "A"
+  },
+  {
+    "q": "During tough times, what's my coping mechanism?",
+    "A": "Focus on solutions",
+    "B": "Lean on you for support",
+    "C": "Try to stay positive",
+    "D": "Pretend everything is fine while internally screaming",
+    "correct": "B"
+  },
+  {
+    "q": "If we had to ration food, who would be better at sticking to the plan?",
+    "A": "Me",
+    "B": "You",
+    "C": "We'd both cheat",
+    "D": "I'd hide snacks from you",
+    "correct": "B"
+  },
+  {
+    "q": "In a crisis situation, what would be our biggest strength as a couple?",
+    "A": "We communicate well",
+    "B": "We complement each other",
+    "C": "We trust each other",
+    "D": "We've survived your family dinners",
     "correct": "C"
   },
   {
-    "q": "Food runs out. What do we eat?",
-    "A": "Hunt rabbits",
-    "B": "Each other's cooking",
-    "C": "Forage for berries",
-    "D": "Fish in streams",
+    "q": "If we were shipwrecked, what skill would I contribute?",
+    "A": "Problem-solving",
+    "B": "Keeping morale up",
+    "C": "Physical tasks",
+    "D": "Complaining creatively",
+    "correct": "B"
+  },
+  {
+    "q": "During a power outage, what would we do to pass time?",
+    "A": "Talk and play games",
+    "B": "Sleep",
+    "C": "Read books",
+    "D": "Have the sex we've been too busy for",
+    "correct": "A"
+  },
+  {
+    "q": "If we lost our home, what would matter most to me?",
+    "A": "That we're together",
+    "B": "Rebuilding quickly",
+    "C": "Our memories and photos",
+    "D": "Whether Netflix still works on my phone",
+    "correct": "A"
+  },
+  {
+    "q": "In a survival scenario, who would be the first to give up comfort for necessity?",
+    "A": "Me",
+    "B": "You",
+    "C": "Neither - we're both spoiled",
+    "D": "Whoever runs out of coffee first",
+    "correct": "B"
+  },
+  {
+    "q": "If we were hiding from danger, what would give us away?",
+    "A": "My breathing",
+    "B": "Your movement",
+    "C": "Our argument about the plan",
+    "D": "Your stomach growling at the worst moment",
     "correct": "C"
+  },
+  {
+    "q": "During a long-term crisis, what would keep our relationship strong?",
+    "A": "Shared purpose",
+    "B": "Having each other's backs",
+    "C": "Finding humor in dark times",
+    "D": "Taking turns being the crazy one",
+    "correct": "B"
+  },
+  {
+    "q": "If we were refugees, what would I do to contribute to our survival?",
+    "A": "Find resources",
+    "B": "Connect with others",
+    "C": "Keep us organized",
+    "D": "Maintain our dignity by doing my hair",
+    "correct": "B"
+  },
+  {
+    "q": "In extreme cold, who would share their warmth first?",
+    "A": "Me",
+    "B": "You",
+    "C": "We'd huddle together immediately",
+    "D": "Whoever has more body fat",
+    "correct": "C"
+  },
+  {
+    "q": "If we were quarantined together for months, what would save our relationship?",
+    "A": "Separate spaces sometimes",
+    "B": "Shared activities",
+    "C": "Good communication",
+    "D": "Wine delivery",
+    "correct": "C"
+  },
+  {
+    "q": "During a financial crisis, what would I sacrifice first?",
+    "A": "My hobbies",
+    "B": "Eating out",
+    "C": "New clothes",
+    "D": "Your happiness... just kidding, my coffee",
+    "correct": "C"
+  },
+  {
+    "q": "If we had to flee our country, what would I insist on bringing?",
+    "A": "Important documents",
+    "B": "Photos and memories",
+    "C": "Practical supplies",
+    "D": "My entire skincare routine",
+    "correct": "B"
+  },
+  {
+    "q": "In a dangerous situation, who would you trust to watch your back?",
+    "A": "Me, always",
+    "B": "You have better instincts",
+    "C": "We'd watch each other's",
+    "D": "Whoever isn't distracted by social media",
+    "correct": "C"
+  },
+  {
+    "q": "If we were stranded without technology, what would happen to us?",
+    "A": "We'd grow closer",
+    "B": "We'd go crazy",
+    "C": "We'd adapt quickly",
+    "D": "I'd have withdrawal symptoms",
+    "correct": "A"
+  },
+  {
+    "q": "During a medical emergency, who would keep their head better?",
+    "A": "Me",
+    "B": "You",
+    "C": "We'd both panic",
+    "D": "Whoever googled symptoms first",
+    "correct": "B"
+  },
+  {
+    "q": "If we were camping and heard scary noises, what would happen?",
+    "A": "I'd investigate",
+    "B": "You'd protect us",
+    "C": "We'd hide together",
+    "D": "I'd send you to check it out",
+    "correct": "C"
+  },
+  {
+    "q": "In a survival situation, what would be my most irrational concern?",
+    "A": "How I look",
+    "B": "Missing important events",
+    "C": "What people think",
+    "D": "Whether my plants at home are dying",
+    "correct": "A"
+  },
+  {
+    "q": "If we were lost at sea, what would keep me going?",
+    "A": "Hope of rescue",
+    "B": "Protecting you",
+    "C": "Stubbornness",
+    "D": "The thought of never seeing the finale of my show",
+    "correct": "B"
+  },
+  {
+    "q": "During a crisis, what would I need most from you?",
+    "A": "Reassurance",
+    "B": "Physical comfort",
+    "C": "Practical help",
+    "D": "You to pretend I'm not completely losing it",
+    "correct": "A"
+  },
+  {
+    "q": "If we had to choose between saving our possessions or helping others, I would:",
+    "A": "Help others first",
+    "B": "Save our stuff first",
+    "C": "Try to do both",
+    "D": "Have a breakdown about the choice",
+    "correct": "A"
+  },
+  {
+    "q": "In a blackout, what would we do first?",
+    "A": "Find candles/flashlights",
+    "B": "Check on neighbors",
+    "C": "Secure the house",
+    "D": "Panic about our phone batteries",
+    "correct": "A"
+  },
+  {
+    "q": "If we were in witness protection, what would be hardest for me?",
+    "A": "New identity",
+    "B": "Leaving family behind",
+    "C": "Giving up my old life",
+    "D": "No social media presence",
+    "correct": "B"
+  },
+  {
+    "q": "During an earthquake, who would think faster?",
+    "A": "Me",
+    "B": "You",
+    "C": "We'd both freeze",
+    "D": "Whoever isn't in the bathroom",
+    "correct": "B"
+  },
+  {
+    "q": "If we were hiking and got lost, what would I do?",
+    "A": "Try to retrace our steps",
+    "B": "Look for landmarks",
+    "C": "Stay put and wait",
+    "D": "Blame you for not bringing a map",
+    "correct": "B"
+  },
+  {
+    "q": "In a long-term survival scenario, what would change about our relationship?",
+    "A": "We'd grow closer",
+    "B": "We'd become more independent",
+    "C": "We'd appreciate each other more",
+    "D": "I'd finally win all arguments",
+    "correct": "C"
+  },
+  {
+    "q": "If we were in a fire, what would I grab first?",
+    "A": "You",
+    "B": "Important documents",
+    "C": "Photo albums",
+    "D": "My phone charger",
+    "correct": "A"
+  },
+  {
+    "q": "During food scarcity, what would I share with you first?",
+    "A": "My favorite foods",
+    "B": "Whatever you needed",
+    "C": "The last of anything",
+    "D": "Everything except chocolate",
+    "correct": "C"
+  },
+  {
+    "q": "If we were in a bunker together, what would drive us both crazy?",
+    "A": "Confined space",
+    "B": "Each other's habits",
+    "C": "Lack of privacy",
+    "D": "No wifi for memes",
+    "correct": "B"
+  },
+  {
+    "q": "In a crisis, what would make me most proud of you?",
+    "A": "Your bravery",
+    "B": "Your kindness to others",
+    "C": "How you take care of me",
+    "D": "You finally learned to start the generator",
+    "correct": "B"
+  },
+  {
+    "q": "If we were refugees walking for days, what would keep me motivated?",
+    "A": "Reaching safety",
+    "B": "Being with you",
+    "C": "Hope for better days",
+    "D": "The promise of real food at the end",
+    "correct": "B"
+  },
+  {
+    "q": "During a pandemic lockdown, what saved our relationship?",
+    "A": "Taking breaks from each other",
+    "B": "Finding new things to do together",
+    "C": "Being patient with each other",
+    "D": "Wine and video calls with friends",
+    "correct": "C"
+  },
+  {
+    "q": "If we were snowed in for weeks, what would happen first?",
+    "A": "We'd get cabin fever",
+    "B": "We'd run out of food",
+    "C": "We'd create a routine",
+    "D": "I'd build a fort and hide from you",
+    "correct": "C"
+  },
+  {
+    "q": "In a war zone, what would be our escape plan?",
+    "A": "Head to family",
+    "B": "Go to the border",
+    "C": "Find other survivors",
+    "D": "Follow you because you're better with maps",
+    "correct": "D"
+  },
+  {
+    "q": "If we lost all our technology permanently, what would I miss most?",
+    "A": "Staying connected with people",
+    "B": "Entertainment options",
+    "C": "Convenience",
+    "D": "Watching you try to function without GPS",
+    "correct": "A"
+  },
+  {
+    "q": "During a major disaster, what role would I naturally take?",
+    "A": "The planner",
+    "B": "The caretaker",
+    "C": "The optimist",
+    "D": "The one having a breakdown",
+    "correct": "B"
+  },
+  {
+    "q": "If we had to start over with nothing, what would give me hope?",
+    "A": "Our love",
+    "B": "Our skills and knowledge",
+    "C": "Having each other",
+    "D": "At least we'd have matching poverty",
+    "correct": "C"
+  },
+  {
+    "q": "In extreme heat with little water, what would I do?",
+    "A": "Ration carefully",
+    "B": "Give you more",
+    "C": "Find shade",
+    "D": "Complain about my hair",
+    "correct": "B"
+  },
+  {
+    "q": "If we were trapped in our car during a blizzard, what would we do?",
+    "A": "Stay warm together",
+    "B": "Take turns staying awake",
+    "C": "Tell stories",
+    "D": "Fight about who forgot the emergency kit",
+    "correct": "A"
+  },
+  {
+    "q": "During a home invasion, what would be my priority?",
+    "A": "Protecting you",
+    "B": "Calling for help",
+    "C": "Getting to safety",
+    "D": "Finding something to use as a weapon",
+    "correct": "A"
+  },
+  {
+    "q": "If we were separated during an emergency, what would I do first?",
+    "A": "Try to find you",
+    "B": "Get to safety",
+    "C": "Call/text you",
+    "D": "Post on social media asking if anyone's seen you",
+    "correct": "C"
+  },
+  {
+    "q": "In a long-term survival situation, what would I learn to do?",
+    "A": "Cook from scratch",
+    "B": "Basic medical care",
+    "C": "Repair things",
+    "D": "Finally appreciate your cooking",
+    "correct": "A"
+  },
+  {
+    "q": "If we were hiding in a safe room, what would calm me down?",
+    "A": "Holding your hand",
+    "B": "Having a plan",
+    "C": "Knowing help is coming",
+    "D": "You making jokes to distract me",
+    "correct": "A"
+  },
+  {
+    "q": "During a crisis, what would make me most grateful for our relationship?",
+    "A": "Not facing it alone",
+    "B": "Having someone who knows me",
+    "C": "Your support and love",
+    "D": "Someone to split the anxiety with",
+    "correct": "C"
+  },
+  {
+    "q": "If we were in a collapsing building, what would I yell to you?",
+    "A": "I love you",
+    "B": "This way!",
+    "C": "Stay close!",
+    "D": "I told you this place looked sketchy!",
+    "correct": "A"
+  },
+  {
+    "q": "In a survival scenario, what would prove our relationship is strong?",
+    "A": "We'd never give up on each other",
+    "B": "We'd share everything equally",
+    "C": "We'd make decisions together",
+    "D": "We'd still laugh together",
+    "correct": "A"
+  },
+  {
+    "q": "If we were stranded on a mountain, what would I use for motivation?",
+    "A": "Getting home",
+    "B": "Keeping you safe",
+    "C": "Proving we can survive",
+    "D": "The story we'd tell afterwards",
+    "correct": "B"
+  },
+  {
+    "q": "During rationing, what would I secretly save for you?",
+    "A": "The best food",
+    "B": "Extra water",
+    "C": "Something sweet",
+    "D": "The last battery for your device",
+    "correct": "C"
+  },
+  {
+    "q": "If we were in a flooding situation, what would I prioritize?",
+    "A": "Getting to higher ground",
+    "B": "Staying together",
+    "C": "Saving important items",
+    "D": "Making sure you can swim better than me",
+    "correct": "B"
+  },
+  {
+    "q": "In a post-apocalyptic world, what would our relationship become?",
+    "A": "Stronger than ever",
+    "B": "More dependent on each other",
+    "C": "Our anchor to humanity",
+    "D": "A really intense episode of Survivor",
+    "correct": "C"
+  },
+  {
+    "q": "If we were lost in a desert, what would keep me walking?",
+    "A": "Determination",
+    "B": "Hope",
+    "C": "You",
+    "D": "Spite towards the situation",
+    "correct": "C"
+  },
+  {
+    "q": "During a terrorist attack, what would I do to protect you?",
+    "A": "Shield you with my body",
+    "B": "Get you out of there",
+    "C": "Keep you calm",
+    "D": "Pretend I know what I'm doing",
+    "correct": "A"
+  },
+  {
+    "q": "If we were the last two people on Earth, what would change between us?",
+    "A": "Nothing - you're still stuck with me",
+    "B": "We'd appreciate each other more",
+    "C": "The pressure would be intense",
+    "D": "Finally, no more in-laws",
+    "correct": "B"
+  },
+  {
+    "q": "In a survival situation, what would I regret not telling you before?",
+    "A": "How much I love you",
+    "B": "How proud I am of you",
+    "C": "My deepest secrets",
+    "D": "Where I hid the good chocolate",
+    "correct": "A"
+  },
+  {
+    "q": "If we were evacuating with only 10 minutes, what would I make sure we had?",
+    "A": "Each other",
+    "B": "Important documents",
+    "C": "Basic supplies",
+    "D": "Phone chargers and snacks",
+    "correct": "A"
+  },
+  {
+    "q": "During a long crisis, what would I do to keep our spirits up?",
+    "A": "Tell jokes and stories",
+    "B": "Plan for the future",
+    "C": "Remind you of good times",
+    "D": "Do interpretive dance",
+    "correct": "C"
+  },
+  {
+    "q": "If we were in a lifeboat, what would be my biggest fear?",
+    "A": "Running out of supplies",
+    "B": "Not being rescued",
+    "C": "Losing you",
+    "D": "My hair situation",
+    "correct": "C"
+  },
+  {
+    "q": "In our darkest survival moment, what would give me strength?",
+    "A": "Your faith in us",
+    "B": "Memories of home",
+    "C": "Knowing we're together",
+    "D": "The thought of telling this story later",
+    "correct": "C"
+  },
+  {
+    "q": "If we survived something terrible together, how would it change us?",
+    "A": "We'd be unbreakable",
+    "B": "We'd never take things for granted",
+    "C": "We'd be even closer",
+    "D": "We'd have the ultimate 'remember when' story",
+    "correct": "C"
+  },
+  {
+    "q": "In a survival scenario, what would I want you to remember about me?",
+    "A": "How much I loved you",
+    "B": "How I never gave up on us",
+    "C": "How I tried to keep you safe",
+    "D": "I was right about packing extra snacks",
+    "correct": "A"
   }
 ]

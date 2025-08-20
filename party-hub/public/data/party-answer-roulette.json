@@ -1,42 +1,618 @@
 [
   {
-    "q": "Pick the real Nobel Prize category:",
-    "A": "Philosophy",
-    "B": "Engineering",
-    "C": "Peace",
-    "D": "Mathematics",
+    "q": "Pick the most common reason people break up:",
+    "A": "Cheating",
+    "B": "Growing apart",
+    "C": "Money problems",
+    "D": "They found someone hotter on Instagram",
+    "correct": "B"
+  },
+  {
+    "q": "Choose the real dating red flag:",
+    "A": "They never put their phone down",
+    "B": "They talk about their ex constantly", 
+    "C": "They're rude to service workers",
+    "D": "They think pineapple belongs on pizza",
     "correct": "C"
   },
   {
-    "q": "Hardest natural substance:",
-    "A": "Quartz",
-    "B": "Graphite",
-    "C": "Obsidian",
-    "D": "Diamond",
+    "q": "Select the most effective hangover cure:",
+    "A": "Greasy food and water",
+    "B": "Hair of the dog",
+    "C": "Sleep and hydration",
+    "D": "Crying in the shower",
+    "correct": "C"
+  },
+  {
+    "q": "Pick the worst drunk decision:",
+    "A": "Texting your ex",
+    "B": "Getting a tattoo",
+    "C": "Quitting your job",
+    "D": "All of the above simultaneously",
+    "correct": "A"
+  },
+  {
+    "q": "Choose the biggest lie people tell on dating apps:",
+    "A": "Their age",
+    "B": "Their height",
+    "C": "Their job",
+    "D": "That they're looking for something serious",
+    "correct": "B"
+  },
+  {
+    "q": "Select what kills the mood fastest during sex:",
+    "A": "Phone notification",
+    "B": "Roommate walking in",
+    "C": "Talking about your ex",
+    "D": "Netflix asking 'Are you still watching?'",
+    "correct": "C"
+  },
+  {
+    "q": "Pick the most awkward first date location:",
+    "A": "Your ex's favorite restaurant",
+    "B": "A funeral home",
+    "C": "Your parents' house",
+    "D": "Couples therapy",
+    "correct": "C"
+  },
+  {
+    "q": "Choose the biggest turn-off in bed:",
+    "A": "Bad breath",
+    "B": "Dirty sheets",
+    "C": "Selfishness",
+    "D": "Calling out the wrong name",
     "correct": "D"
   },
   {
-    "q": "Human body's largest organ:",
-    "A": "Brain",
-    "B": "Lungs",
-    "C": "Skin",
-    "D": "Liver",
+    "q": "Select the worst thing to say after sex:",
+    "A": "Was that it?",
+    "B": "My ex did it better",
+    "C": "Thanks, I guess",
+    "D": "Can you Venmo me for the Uber?",
+    "correct": "B"
+  },
+  {
+    "q": "Pick the most toxic social media behavior:",
+    "A": "Posting thirst traps for your ex",
+    "B": "Stalking your ex's new partner",
+    "C": "Posting vague quotes about fake friends",
+    "D": "Creating a finsta just for drama",
+    "correct": "B"
+  },
+  {
+    "q": "Choose the clearest sign someone's not over their ex:",
+    "A": "They still have photos up",
+    "B": "They compare you to them constantly",
+    "C": "They drunk call them regularly",
+    "D": "They named their pet after them",
     "correct": "C"
   },
   {
-    "q": "Planet with most moons (as of 2025):",
-    "A": "Jupiter",
-    "B": "Neptune",
-    "C": "Saturn",
-    "D": "Uranus",
+    "q": "Select the worst roommate habit:",
+    "A": "Never doing dishes",
+    "B": "Eating your food",
+    "C": "Loud sex at all hours",
+    "D": "Hosting their ex for 'closure talks'",
     "correct": "C"
   },
   {
-    "q": "Currency of Japan:",
-    "A": "Ringgit",
-    "B": "Yuan",
-    "C": "Yen",
-    "D": "Won",
+    "q": "Pick the most obvious fake orgasm sign:",
+    "A": "Too loud too fast",
+    "B": "Immediately checking their phone after",
+    "C": "Asking if you're done yet",
+    "D": "Yelling 'Yes! Yes! YES!' like Meg Ryan",
+    "correct": "D"
+  },
+  {
+    "q": "Choose what makes someone instantly unattractive:",
+    "A": "Bad hygiene",
+    "B": "Being rude to strangers",
+    "C": "Constantly talking about money",
+    "D": "Using 'your/you're' incorrectly",
+    "correct": "B"
+  },
+  {
+    "q": "Select the worst thing to find on someone's phone:",
+    "A": "Dating apps",
+    "B": "Flirty messages",
+    "C": "Photos of their ex",
+    "D": "A folder labeled 'Future Baby Names' after one date",
+    "correct": "D"
+  },
+  {
+    "q": "Pick the most embarrassing autocorrect fail:",
+    "A": "Sending 'ducking' instead of the f-word",
+    "B": "Calling your boss 'daddy'",
+    "C": "Texting your mom about 'getting laid' (off)",
+    "D": "Sending nudes to the family group chat",
+    "correct": "D"
+  },
+  {
+    "q": "Choose the worst thing to overshare on a first date:",
+    "A": "Your therapy sessions",
+    "B": "Your debt amount",
+    "C": "Your ex's sexual performance",
+    "D": "Your 5-year relationship plan",
     "correct": "C"
+  },
+  {
+    "q": "Select the biggest party foul:",
+    "A": "Double dipping",
+    "B": "Puking on the host's bed",
+    "C": "Hooking up with your friend's ex",
+    "D": "Bringing up politics",
+    "correct": "C"
+  },
+  {
+    "q": "Pick the worst wedding guest behavior:",
+    "A": "Wearing white",
+    "B": "Getting too drunk",
+    "C": "Proposing during the reception",
+    "D": "Objecting during the ceremony",
+    "correct": "D"
+  },
+  {
+    "q": "Choose the most annoying gym habit:",
+    "A": "Not wiping down equipment",
+    "B": "Hogging machines while texting",
+    "C": "Grunting excessively loud",
+    "D": "Taking gym selfies mid-workout",
+    "correct": "A"
+  },
+  {
+    "q": "Select what screams 'I'm not ready for a relationship':",
+    "A": "Still living with parents at 35",
+    "B": "Having no idea how to do laundry",
+    "C": "Crying about your ex on every date",
+    "D": "Asking to split a $12 dinner check",
+    "correct": "C"
+  },
+  {
+    "q": "Pick the worst response to 'I love you':",
+    "A": "Thank you",
+    "B": "See you in chemistry",
+    "C": "I love... spending time with you too",
+    "D": "Read at 2:47 AM",
+    "correct": "D"
+  },
+  {
+    "q": "Choose the most cringe dating profile opener:",
+    "A": "Hey beautiful",
+    "B": "What's good ma",
+    "C": "Send nudes",
+    "D": "I'm not like other guys",
+    "correct": "C"
+  },
+  {
+    "q": "Select the worst excuse for being late:",
+    "A": "Traffic was bad",
+    "B": "My alarm didn't go off",
+    "C": "I was helping an old lady",
+    "D": "I was deciding between two outfits for 3 hours",
+    "correct": "D"
+  },
+  {
+    "q": "Pick the most obvious catfish sign:",
+    "A": "Only has 3 photos",
+    "B": "All photos are professional headshots",
+    "C": "Refuses to video call",
+    "D": "Claims to be a 'model/entrepreneur'",
+    "correct": "C"
+  },
+  {
+    "q": "Choose the worst thing to do during a fight:",
+    "A": "Bring up past mistakes",
+    "B": "Give the silent treatment",
+    "C": "Threaten to break up",
+    "D": "Post cryptic social media quotes",
+    "correct": "A"
+  },
+  {
+    "q": "Select what ruins Netflix and chill:",
+    "A": "Picking a 3-hour movie",
+    "B": "Actually wanting to watch Netflix",
+    "C": "Your mom calling during",
+    "D": "Falling asleep 10 minutes in",
+    "correct": "B"
+  },
+  {
+    "q": "Pick the worst friend betrayal:",
+    "A": "Dating your ex",
+    "B": "Sharing your secrets",
+    "C": "Not inviting you to their wedding",
+    "D": "Liking your crush's photos but not yours",
+    "correct": "A"
+  },
+  {
+    "q": "Choose the most awkward family dinner topic:",
+    "A": "Your dating life",
+    "B": "Your career failures",
+    "C": "Your sex life",
+    "D": "When you're having kids",
+    "correct": "C"
+  },
+  {
+    "q": "Select the worst thing to say to a pregnant woman:",
+    "A": "You look tired",
+    "B": "Are you sure it's not twins?",
+    "C": "Was it planned?",
+    "D": "You're glowing... with sweat",
+    "correct": "C"
+  },
+  {
+    "q": "Pick the most obvious 'they're just not that into you' sign:",
+    "A": "Takes hours to text back",
+    "B": "Cancels dates frequently",
+    "C": "Never initiates contact",
+    "D": "Introduces you as 'just a friend'",
+    "correct": "D"
+  },
+  {
+    "q": "Choose the worst thing to forget on a date:",
+    "A": "Your wallet",
+    "B": "Your phone",
+    "C": "Their name",
+    "D": "To shower",
+    "correct": "C"
+  },
+  {
+    "q": "Select the biggest social media overshare:",
+    "A": "Bathroom selfies",
+    "B": "Couple fight details",
+    "C": "Medical procedures",
+    "D": "Bank account balance",
+    "correct": "B"
+  },
+  {
+    "q": "Pick the worst thing to say during sex:",
+    "A": "Are we done yet?",
+    "B": "My ex loved when I did this",
+    "C": "Hold on, let me check this text",
+    "D": "This is going on my story",
+    "correct": "D"
+  },
+  {
+    "q": "Choose what makes someone immediately undateable:",
+    "A": "Living with their ex",
+    "B": "Having 6 cats",
+    "C": "Being rude to servers",
+    "D": "Still using Internet Explorer",
+    "correct": "C"
+  },
+  {
+    "q": "Select the worst drunk text to send:",
+    "A": "To your ex professing love",
+    "B": "To your boss calling them names",
+    "C": "To your mom about your sex life",
+    "D": "To the group chat about your bowel movements",
+    "correct": "B"
+  },
+  {
+    "q": "Pick the most obvious sign someone's cheating:",
+    "A": "Guarding their phone",
+    "B": "Working late constantly",
+    "C": "New underwear",
+    "D": "Suddenly caring about the gym",
+    "correct": "A"
+  },
+  {
+    "q": "Choose the worst breakup line:",
+    "A": "It's not you, it's me",
+    "B": "I need space to find myself",
+    "C": "We can still be friends",
+    "D": "I'm just not ready for commitment (while dating someone else)",
+    "correct": "D"
+  },
+  {
+    "q": "Select what screams 'toxic relationship':",
+    "A": "Checking each other's phones",
+    "B": "Having no friends of the opposite sex",
+    "C": "Fighting daily",
+    "D": "Posting couple photos to make exes jealous",
+    "correct": "C"
+  },
+  {
+    "q": "Pick the worst thing to do on social media:",
+    "A": "Post gym selfies daily",
+    "B": "Share every meal",
+    "C": "Tag your ex in couple memes",
+    "D": "Post inspirational quotes hourly",
+    "correct": "C"
+  },
+  {
+    "q": "Choose the biggest dating app turn-off:",
+    "A": "Group photos only",
+    "B": "Shirtless mirror selfies",
+    "C": "Photos with their ex cropped out",
+    "D": "Bio saying 'Just ask'",
+    "correct": "C"
+  },
+  {
+    "q": "Select the most pathetic rebound behavior:",
+    "A": "Dating immediately after breakup",
+    "B": "Dating your ex's best friend",
+    "C": "Making your rebound dress like your ex",
+    "D": "Bringing your rebound to your ex's birthday party",
+    "correct": "D"
+  },
+  {
+    "q": "Pick the worst thing to say to someone crying:",
+    "A": "Don't cry",
+    "B": "It could be worse",
+    "C": "You're overreacting",
+    "D": "Is this about your weight?",
+    "correct": "C"
+  },
+  {
+    "q": "Choose what makes someone a terrible friend:",
+    "A": "Always canceling plans",
+    "B": "Only calling when they need something",
+    "C": "Never paying you back",
+    "D": "Sleeping with your partner",
+    "correct": "D"
+  },
+  {
+    "q": "Select the most awkward workplace situation:",
+    "A": "Running into your one-night stand",
+    "B": "Your boss finding your OnlyFans",
+    "C": "Accidentally sexting the company chat",
+    "D": "Walking in on coworkers hooking up",
+    "correct": "C"
+  },
+  {
+    "q": "Pick the worst excuse for ghosting someone:",
+    "A": "I was busy",
+    "B": "My phone broke",
+    "C": "I was in a coma",
+    "D": "I forgot you existed",
+    "correct": "D"
+  },
+  {
+    "q": "Choose the most obvious gold digger behavior:",
+    "A": "Always suggesting expensive restaurants",
+    "B": "Asking about your salary on first date",
+    "C": "Only dating guys with luxury cars",
+    "D": "Having a PowerPoint about your net worth",
+    "correct": "D"
+  },
+  {
+    "q": "Select what ruins a good party:",
+    "A": "Running out of alcohol",
+    "B": "Neighbors complaining",
+    "C": "Someone starting drama",
+    "D": "The cops showing up",
+    "correct": "D"
+  },
+  {
+    "q": "Pick the worst thing to do at a wedding:",
+    "A": "Get blackout drunk",
+    "B": "Hit on the bride/groom",
+    "C": "Start a fight",
+    "D": "Live tweet the ceremony",
+    "correct": "B"
+  },
+  {
+    "q": "Choose the biggest overshare on a first date:",
+    "A": "Your therapy sessions",
+    "B": "Your financial problems",
+    "C": "Your sexual history",
+    "D": "Your 10-year plan including their role",
+    "correct": "D"
+  },
+  {
+    "q": "Select the most toxic ex behavior:",
+    "A": "Stalking your social media",
+    "B": "Trying to turn friends against you",
+    "C": "Showing up uninvited places",
+    "D": "Creating fake accounts to spy on you",
+    "correct": "B"
+  },
+  {
+    "q": "Pick the worst reason to stay in a relationship:",
+    "A": "Fear of being alone",
+    "B": "They might change",
+    "C": "It's comfortable",
+    "D": "They have good Wi-Fi",
+    "correct": "D"
+  },
+  {
+    "q": "Choose what kills romantic mood fastest:",
+    "A": "Bad breath",
+    "B": "Your mom calling",
+    "C": "Talking about your ex",
+    "D": "Asking 'Are you close?' every 30 seconds",
+    "correct": "D"
+  },
+  {
+    "q": "Select the most cringe pickup line:",
+    "A": "Are you WiFi? Because I'm feeling a connection",
+    "B": "Did it hurt when you fell from heaven?",
+    "C": "Are you a parking ticket? You've got fine written all over you",
+    "D": "I'm not a photographer but I can picture us together",
+    "correct": "A"
+  },
+  {
+    "q": "Pick the worst thing to do during an argument:",
+    "A": "Walk away",
+    "B": "Bring up their insecurities",
+    "C": "Give silent treatment",
+    "D": "Record it for TikTok",
+    "correct": "D"
+  },
+  {
+    "q": "Choose the biggest red flag on dating apps:",
+    "A": "No bio",
+    "B": "Only group photos",
+    "C": "Shirtless pics",
+    "D": "Listing requirements like a job posting",
+    "correct": "D"
+  },
+  {
+    "q": "Select what screams 'I'm not over my ex':",
+    "A": "Still wearing their hoodie",
+    "B": "Comparing everyone to them",
+    "C": "Having their photo as phone wallpaper",
+    "D": "Accidentally calling new dates by their name",
+    "correct": "C"
+  },
+  {
+    "q": "Pick the most awkward thing to happen during sex:",
+    "A": "Queefing",
+    "B": "Your roommate walking in",
+    "C": "Calling out wrong name",
+    "D": "Getting a Charlie horse",
+    "correct": "C"
+  },
+  {
+    "q": "Choose the worst advice to give a friend:",
+    "A": "Just get over it",
+    "B": "You should text your ex",
+    "C": "Have you tried not being sad?",
+    "D": "Maybe if you lost some weight...",
+    "correct": "D"
+  },
+  {
+    "q": "Select the most obvious sign someone's lying:",
+    "A": "Won't make eye contact",
+    "B": "Story keeps changing",
+    "C": "Being overly defensive",
+    "D": "Their pants are literally on fire",
+    "correct": "D"
+  },
+  {
+    "q": "Pick the worst thing to say when someone's parents die:",
+    "A": "They're in a better place",
+    "B": "At least they're not suffering",
+    "C": "Everything happens for a reason",
+    "D": "Can I have their Netflix password?",
+    "correct": "D"
+  },
+  {
+    "q": "Choose what makes someone terrible in bed:",
+    "A": "Being selfish",
+    "B": "No foreplay",
+    "C": "Bad hygiene",
+    "D": "Asking for Yelp review after",
+    "correct": "D"
+  },
+  {
+    "q": "Select the biggest social faux pas:",
+    "A": "Forgetting someone's name",
+    "B": "Wearing same outfit as someone",
+    "C": "Double texting",
+    "D": "Showing up to baby shower with divorce papers",
+    "correct": "D"
+  },
+  {
+    "q": "Pick the worst thing to find in partner's search history:",
+    "A": "Their ex's name",
+    "B": "Expensive engagement rings",
+    "C": "How to fake your own death",
+    "D": "Symptoms of various STDs",
+    "correct": "C"
+  },
+  {
+    "q": "Choose the most pathetic way to get attention:",
+    "A": "Posting thirst traps",
+    "B": "Fake emergencies",
+    "C": "Making up illnesses",
+    "D": "Creating multiple personalities for drama",
+    "correct": "D"
+  },
+  {
+    "q": "Select what ruins a friendship fastest:",
+    "A": "Borrowing money and not paying back",
+    "B": "Dating their ex",
+    "C": "Spreading their secrets",
+    "D": "Liking all their mom's Facebook posts",
+    "correct": "B"
+  },
+  {
+    "q": "Pick the worst drunk decision:",
+    "A": "Drunk dialing your ex",
+    "B": "Getting matching tattoos with strangers",
+    "C": "Giving relationship advice to couples",
+    "D": "Starting a business selling your tears",
+    "correct": "D"
+  },
+  {
+    "q": "Choose the most obvious catfish sign:",
+    "A": "Too attractive for you",
+    "B": "Photos look professional",
+    "C": "Won't video chat",
+    "D": "Claims to be Nigerian prince seeking love",
+    "correct": "D"
+  },
+  {
+    "q": "Select what makes someone a bad roommate:",
+    "A": "Never cleaning",
+    "B": "Eating your food",
+    "C": "Loud sex",
+    "D": "Using your toothbrush without asking",
+    "correct": "D"
+  },
+  {
+    "q": "Pick the worst thing to do at a funeral:",
+    "A": "Taking selfies with the casket",
+    "B": "Hitting on the widow",
+    "C": "Asking about inheritance",
+    "D": "Starting a conga line",
+    "correct": "A"
+  },
+  {
+    "q": "Choose the biggest turn-off on a date:",
+    "A": "Bad breath",
+    "B": "Being rude to servers",
+    "C": "Only talking about themselves",
+    "D": "Bringing their mom along",
+    "correct": "D"
+  },
+  {
+    "q": "Select the most cringe social media behavior:",
+    "A": "Posting gym selfies daily",
+    "B": "Writing novels as captions",
+    "C": "Tagging location as 'your heart'",
+    "D": "Commenting 'first' on everything",
+    "correct": "C"
+  },
+  {
+    "q": "Pick the worst excuse for cheating:",
+    "A": "We were on a break",
+    "B": "It just happened",
+    "C": "You weren't giving me attention",
+    "D": "I was sleepwalking",
+    "correct": "D"
+  },
+  {
+    "q": "Choose what screams 'desperate':",
+    "A": "Triple texting with no response",
+    "B": "Showing up uninvited",
+    "C": "Making fake accounts to stalk someone",
+    "D": "Hiring a mariachi band for second date",
+    "correct": "D"
+  },
+  {
+    "q": "Select the most toxic relationship behavior:",
+    "A": "Going through their phone",
+    "B": "Isolating them from friends",
+    "C": "Constant jealousy",
+    "D": "Making them wear a GPS tracker",
+    "correct": "D"
+  },
+  {
+    "q": "Pick the worst thing to say after someone opens up:",
+    "A": "That's rough",
+    "B": "At least it's not cancer",
+    "C": "Have you tried yoga?",
+    "D": "Cool story, want to see my new shoes?",
+    "correct": "D"
+  },
+  {
+    "q": "Choose the biggest overshare at work:",
+    "A": "Your weekend hookup details",
+    "B": "Your financial problems",
+    "C": "Your medical issues",
+    "D": "Your detailed bathroom schedule",
+    "correct": "A"
   }
 ]
