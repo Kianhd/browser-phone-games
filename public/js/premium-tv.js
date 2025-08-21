@@ -741,61 +741,124 @@ function resetRoomInterface() {
 }
 
 function generateQR(code) {
-  let url = `${location.origin}/controller.html?r=${code}`;
+  console.log('📱 Starting QR generation for code:', code);
   
-  // Add WebRTC connection code if available for direct P2P connection
-  if (hybridConnection && connectionInitialized) {
-    const connectionInfo = hybridConnection.getConnectionInfo();
-    if (connectionInfo.type === 'webrtc') {
-      // Generate enhanced QR with WebRTC capability
-      url = hybridConnection.generateEnhancedQR(code, 'webrtc-enabled');
+  // Ensure DOM elements exist
+  const qrImgElement = document.getElementById('qrImg');
+  const qrPlaceholder = document.getElementById('qrPlaceholder');
+  
+  if (!qrImgElement) {
+    console.error('❌ QR image element not found in DOM');
+    return;
+  }
+  
+  if (!qrPlaceholder) {
+    console.error('❌ QR placeholder element not found in DOM');
+    return;
+  }
+  
+  // Start with basic URL - avoid hybrid connection issues for now
+  let url = `${location.origin}/controller.html?r=${code}`;
+  console.log('🌐 Base controller URL:', url);
+  
+  // Try enhanced URL only if hybrid connection is working properly
+  try {
+    if (hybridConnection && connectionInitialized && typeof hybridConnection.generateEnhancedQR === 'function') {
+      const connectionInfo = hybridConnection.getConnectionInfo();
+      if (connectionInfo && connectionInfo.type === 'webrtc') {
+        const enhancedUrl = hybridConnection.generateEnhancedQR(code, 'webrtc-enabled');
+        if (enhancedUrl && enhancedUrl !== url) {
+          url = enhancedUrl;
+          console.log('🚀 Using enhanced WebRTC URL:', url);
+        }
+      }
     }
+  } catch (e) {
+    console.warn('⚠️ Enhanced QR generation failed, using basic URL:', e);
   }
   
   // Store the URL for fallback
   const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=0a0a0f`;
   
-  console.log('📱 Generating QR Code for URL:', url);
+  console.log('📱 Final QR URL:', url);
   console.log('📊 QR API URL:', qrApiUrl);
   
+  // Reset the QR image state
+  qrImgElement.classList.add('hidden');
+  qrPlaceholder.style.display = 'flex';
+  
+  // Remove any existing event handlers to prevent conflicts
+  qrImgElement.onload = null;
+  qrImgElement.onerror = null;
+  
   // Add error handling for QR image loading
-  qrImg.onerror = function() {
+  qrImgElement.onerror = function() {
     console.error('❌ Failed to load QR code from primary API');
+    console.error('❌ Failed URL was:', this.src);
     
     // Try alternative QR code API as fallback
     const fallbackQrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(url)}&size=240&light=ffffff&dark=0a0a0f`;
     console.log('🔄 Attempting fallback QR API:', fallbackQrUrl);
     
-    // Try the fallback
-    qrImg.src = fallbackQrUrl;
-    
-    // If fallback also fails, show error message
-    qrImg.onerror = function() {
+    // Reset error handler to avoid infinite loop
+    this.onerror = function() {
       console.error('❌ All QR code APIs failed');
       // Keep the placeholder visible with error message
-      document.getElementById('qrPlaceholder').style.display = 'flex';
-      const qrText = document.querySelector('.qr-text');
+      qrPlaceholder.style.display = 'flex';
+      const qrText = qrPlaceholder.querySelector('.qr-text');
       if (qrText) {
         qrText.textContent = 'QR generation failed - Use room code above';
         qrText.style.color = '#ff6b6b';
       }
-      qrImg.classList.add('hidden');
+      this.classList.add('hidden');
     };
+    
+    // Try the fallback
+    this.src = fallbackQrUrl;
   };
   
   // Add success handler
-  qrImg.onload = function() {
+  qrImgElement.onload = function() {
     console.log('✅ QR code loaded successfully');
+    console.log('🖼️ Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+    console.log('🔗 Loaded from URL:', this.src);
+    
     // Show QR code and hide placeholder
-    qrImg.classList.remove('hidden');
-    document.getElementById('qrPlaceholder').style.display = 'none';
+    this.classList.remove('hidden');
+    qrPlaceholder.style.display = 'none';
+    
+    // Double-check visibility after a brief delay
+    setTimeout(() => {
+      const isVisible = !this.classList.contains('hidden') && 
+                       this.style.display !== 'none' &&
+                       this.offsetWidth > 0 && 
+                       this.offsetHeight > 0;
+      console.log('🔍 QR code visibility check:', isVisible);
+      console.log('📏 QR element dimensions:', this.offsetWidth, 'x', this.offsetHeight);
+      console.log('📋 QR element classes:', this.className);
+      console.log('🎨 QR element computed style:', window.getComputedStyle(this).display);
+      
+      if (!isVisible) {
+        console.error('❌ QR code loaded but not visible - forcing display');
+        this.style.display = 'block';
+        this.style.visibility = 'visible';
+        this.classList.remove('hidden');
+      }
+    }, 200);
   };
   
   // Set the QR code source
-  qrImg.src = qrApiUrl;
+  console.log('🚀 Setting QR image source...');
+  qrImgElement.src = qrApiUrl;
   
   console.log('📱 QR Code generation initiated for room:', code);
 }
+
+// Debug function to test QR generation manually
+window.testQR = function(roomCode = 'TEST123') {
+  console.log('🧪 Manual QR test initiated');
+  generateQR(roomCode);
+};
 
 // Display available connection methods to the user
 function displayConnectionMethods(methods) {
