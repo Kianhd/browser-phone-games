@@ -1,6 +1,24 @@
 // BeanPong TV Display with Power-ups
 const socket = io();
 
+// Socket connection monitoring
+socket.on('connect', () => {
+  console.log('🔌 Socket connected successfully');
+  roomCodeEl.style.color = ''; // Reset any error color
+});
+
+socket.on('disconnect', () => {
+  console.log('🔌 Socket disconnected');
+  roomCodeEl.textContent = 'DISCONNECTED';
+  roomCodeEl.style.color = '#ff6b6b';
+});
+
+socket.on('connect_error', (error) => {
+  console.error('🔌 Socket connection error:', error);
+  roomCodeEl.textContent = 'CONN ERROR';
+  roomCodeEl.style.color = '#ff6b6b';
+});
+
 // Initialize Hybrid Connection Manager for ultra-low latency
 let hybridConnection = null;
 let connectionInitialized = false;
@@ -551,13 +569,34 @@ createRoomBtn.addEventListener('click', async () => {
   }
   
   socket.emit('createRoom', async (res) => {
-    currentRoom = res.room;
-    roomCodeEl.textContent = res.room;
+    console.log('🏠 Room creation response:', res);
     
-    // Initialize hybrid connection for ultra-low latency
-    await initializeWebRTCHost();
-    
-    generateQR(res.room);
+    if (res && res.room) {
+      currentRoom = res.room;
+      roomCodeEl.textContent = res.room;
+      console.log('✅ Room code set:', res.room);
+      
+      // Initialize hybrid connection for ultra-low latency
+      try {
+        await initializeWebRTCHost();
+      } catch (e) {
+        console.warn('WebRTC initialization failed:', e);
+      }
+      
+      generateQR(res.room);
+    } else {
+      console.error('❌ Invalid room creation response:', res);
+      roomCodeEl.textContent = 'ERROR';
+      roomCodeEl.style.color = '#ff6b6b';
+      
+      // Show error in QR placeholder
+      document.getElementById('qrPlaceholder').style.display = 'flex';
+      const qrText = document.querySelector('.qr-text');
+      if (qrText) {
+        qrText.textContent = 'Room creation failed - Try again';
+        qrText.style.color = '#ff6b6b';
+      }
+    }
     
     // Change button text after first room creation
     createRoomBtn.textContent = 'CREATE NEW ROOM';
@@ -713,13 +752,49 @@ function generateQR(code) {
     }
   }
   
-  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=0a0a0f`;
+  // Store the URL for fallback
+  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=0a0a0f`;
   
-  // Show QR code and hide placeholder
-  qrImg.classList.remove('hidden');
-  document.getElementById('qrPlaceholder').style.display = 'none';
+  console.log('📱 Generating QR Code for URL:', url);
+  console.log('📊 QR API URL:', qrApiUrl);
   
-  console.log('📱 QR Code generated:', url);
+  // Add error handling for QR image loading
+  qrImg.onerror = function() {
+    console.error('❌ Failed to load QR code from primary API');
+    
+    // Try alternative QR code API as fallback
+    const fallbackQrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(url)}&size=240&light=ffffff&dark=0a0a0f`;
+    console.log('🔄 Attempting fallback QR API:', fallbackQrUrl);
+    
+    // Try the fallback
+    qrImg.src = fallbackQrUrl;
+    
+    // If fallback also fails, show error message
+    qrImg.onerror = function() {
+      console.error('❌ All QR code APIs failed');
+      // Keep the placeholder visible with error message
+      document.getElementById('qrPlaceholder').style.display = 'flex';
+      const qrText = document.querySelector('.qr-text');
+      if (qrText) {
+        qrText.textContent = 'QR generation failed - Use room code above';
+        qrText.style.color = '#ff6b6b';
+      }
+      qrImg.classList.add('hidden');
+    };
+  };
+  
+  // Add success handler
+  qrImg.onload = function() {
+    console.log('✅ QR code loaded successfully');
+    // Show QR code and hide placeholder
+    qrImg.classList.remove('hidden');
+    document.getElementById('qrPlaceholder').style.display = 'none';
+  };
+  
+  // Set the QR code source
+  qrImg.src = qrApiUrl;
+  
+  console.log('📱 QR Code generation initiated for room:', code);
 }
 
 // Display available connection methods to the user
