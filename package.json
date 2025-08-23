@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
+    "qrcode": "^1.5.4",
     "socket.io": "^4.7.2"
   },
   "devDependencies": {
@@ -18,7 +19,15 @@
   "engines": {
     "node": ">=18"
   },
-  "keywords": ["trivia", "game-night", "party-games", "multiplayer", "realtime", "socketio", "couples-games"],
+  "keywords": [
+    "trivia",
+    "game-night",
+    "party-games",
+    "multiplayer",
+    "realtime",
+    "socketio",
+    "couples-games"
+  ],
   "author": "Claude Code",
   "license": "MIT"
 }

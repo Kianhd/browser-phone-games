@@ -558,6 +558,32 @@ createRoomBtn.addEventListener('click', async () => {
   await initAudio();
   playSound(528, 0.15, 0.06, 'triangle'); // Room creation sound
   
+  // Check socket connection first
+  if (!socket.connected) {
+    console.error('❌ Socket not connected');
+    roomCodeEl.textContent = 'NO CONNECTION';
+    roomCodeEl.style.color = '#ff6b6b';
+    
+    // Try to reconnect
+    console.log('🔄 Attempting to reconnect...');
+    socket.connect();
+    
+    // Generate offline room code
+    const offlineCode = 'OFF' + Math.random().toString(36).substr(2, 4).toUpperCase();
+    setTimeout(() => {
+      if (!socket.connected) {
+        console.log('🔄 Using offline mode with code:', offlineCode);
+        currentRoom = offlineCode;
+        roomCodeEl.textContent = offlineCode;
+        roomCodeEl.style.color = '#ffa500';
+        generateQR(offlineCode);
+      }
+    }, 2000);
+    return;
+  }
+  
+  console.log('🔌 Socket connected, proceeding with room creation...');
+  
   // If this is creating a new room (not the first room)
   if (createRoomBtn.textContent === 'CREATE NEW ROOM') {
     // Reset the interface first
@@ -568,13 +594,36 @@ createRoomBtn.addEventListener('click', async () => {
     currentRoom = null;
   }
   
+  // Add timeout for room creation
+  const roomCreationTimeout = setTimeout(() => {
+    console.error('❌ Room creation timed out');
+    roomCodeEl.textContent = 'TIMEOUT';
+    roomCodeEl.style.color = '#ff6b6b';
+  }, 10000);
+
   socket.emit('createRoom', async (res) => {
+    clearTimeout(roomCreationTimeout);
     console.log('🏠 Room creation response:', res);
+    console.log('🔍 Response type:', typeof res);
+    console.log('🔍 Response keys:', res ? Object.keys(res) : 'null/undefined');
     
+    // Handle different response formats
+    let roomCode = null;
     if (res && res.room) {
-      currentRoom = res.room;
-      roomCodeEl.textContent = res.room;
-      console.log('✅ Room code set:', res.room);
+      roomCode = res.room;
+    } else if (res && typeof res === 'string') {
+      roomCode = res; // Sometimes the response is just the room code string
+    } else if (res && res.roomId) {
+      roomCode = res.roomId;
+    } else if (res && res.code) {
+      roomCode = res.code;
+    }
+    
+    if (roomCode) {
+      console.log('✅ Room code extracted:', roomCode);
+      currentRoom = roomCode;
+      roomCodeEl.textContent = roomCode;
+      roomCodeEl.style.color = ''; // Reset error color
       
       // Initialize hybrid connection for ultra-low latency
       try {
@@ -583,18 +632,49 @@ createRoomBtn.addEventListener('click', async () => {
         console.warn('WebRTC initialization failed:', e);
       }
       
-      generateQR(res.room);
-    } else {
-      console.error('❌ Invalid room creation response:', res);
-      roomCodeEl.textContent = 'ERROR';
-      roomCodeEl.style.color = '#ff6b6b';
+      generateQR(roomCode);
       
-      // Show error in QR placeholder
-      document.getElementById('qrPlaceholder').style.display = 'flex';
-      const qrText = document.querySelector('.qr-text');
-      if (qrText) {
-        qrText.textContent = 'Room creation failed - Try again';
-        qrText.style.color = '#ff6b6b';
+      // Add backup QR after delay if primary fails
+      setTimeout(() => {
+        const qrImg = document.getElementById('qrImg');
+        const qrPlaceholder = document.getElementById('qrPlaceholder');
+        
+        // Check if QR is visible
+        const isQrVisible = qrImg && !qrImg.classList.contains('hidden') && 
+                           qrImg.offsetWidth > 0 && qrImg.offsetHeight > 0;
+        const isPlaceholderVisible = qrPlaceholder && qrPlaceholder.style.display !== 'none';
+        
+        console.log('🔍 QR Status Check:', {
+          qrVisible: isQrVisible,
+          placeholderVisible: isPlaceholderVisible
+        });
+        
+        if (!isQrVisible && isPlaceholderVisible) {
+          console.log('🆘 Primary QR failed, creating backup...');
+          createBackupQR(roomCode);
+        }
+      }, 3000);
+    } else {
+      console.error('❌ Could not extract room code from response:', res);
+      
+      // Generate fallback room code
+      const fallbackCode = 'R' + Math.random().toString(36).substr(2, 5).toUpperCase();
+      console.log('🔄 Using fallback room code:', fallbackCode);
+      
+      currentRoom = fallbackCode;
+      roomCodeEl.textContent = fallbackCode;
+      roomCodeEl.style.color = '#ffa500'; // Orange for fallback
+      
+      generateQR(fallbackCode);
+      
+      // Show warning
+      const qrPlaceholder = document.getElementById('qrPlaceholder');
+      if (qrPlaceholder) {
+        const qrText = qrPlaceholder.querySelector('.qr-text');
+        if (qrText) {
+          qrText.textContent = 'Using offline mode - Share room code manually';
+          qrText.style.color = '#ffa500';
+        }
       }
     }
     
@@ -740,125 +820,350 @@ function resetRoomInterface() {
   roomCodeEl.textContent = '------';
 }
 
-function generateQR(code) {
-  console.log('📱 Starting QR generation for code:', code);
+// New robust QR generation using QR Utils
+async function generateQR(roomId) {
+  console.log('🚀 === NEW ROBUST QR GENERATION ===');
+  console.log('Room ID:', roomId);
   
-  // Ensure DOM elements exist
-  const qrImgElement = document.getElementById('qrImg');
-  const qrPlaceholder = document.getElementById('qrPlaceholder');
-  
-  if (!qrImgElement) {
-    console.error('❌ QR image element not found in DOM');
+  if (!roomId) {
+    console.error('❌ No room ID provided');
     return;
   }
   
-  if (!qrPlaceholder) {
-    console.error('❌ QR placeholder element not found in DOM');
-    return;
-  }
-  
-  // Start with basic URL - avoid hybrid connection issues for now
-  let url = `${location.origin}/controller.html?r=${code}`;
-  console.log('🌐 Base controller URL:', url);
-  
-  // Try enhanced URL only if hybrid connection is working properly
   try {
-    if (hybridConnection && connectionInitialized && typeof hybridConnection.generateEnhancedQR === 'function') {
-      const connectionInfo = hybridConnection.getConnectionInfo();
-      if (connectionInfo && connectionInfo.type === 'webrtc') {
-        const enhancedUrl = hybridConnection.generateEnhancedQR(code, 'webrtc-enabled');
-        if (enhancedUrl && enhancedUrl !== url) {
-          url = enhancedUrl;
-          console.log('🚀 Using enhanced WebRTC URL:', url);
-        }
-      }
+    // Use the new QR utils for robust generation
+    if (window.QRUtils) {
+      const result = await window.QRUtils.createRoomQR(roomId);
+      console.log('🎉 QR generation completed:', result);
+    } else {
+      console.error('❌ QR Utils not loaded, falling back to old method');
+      fallbackQRGeneration(roomId);
     }
-  } catch (e) {
-    console.warn('⚠️ Enhanced QR generation failed, using basic URL:', e);
+  } catch (error) {
+    console.error('💥 Robust QR generation failed:', error);
+    // Still ensure room code is visible
+    const roomCodeEl = document.getElementById('roomCode');
+    if (roomCodeEl) {
+      roomCodeEl.textContent = roomId;
+      roomCodeEl.style.color = '#ffa500'; // Orange for error
+    }
   }
-  
-  // Store the URL for fallback
-  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=0a0a0f`;
-  
-  console.log('📱 Final QR URL:', url);
-  console.log('📊 QR API URL:', qrApiUrl);
-  
-  // Reset the QR image state
-  qrImgElement.classList.add('hidden');
-  qrPlaceholder.style.display = 'flex';
-  
-  // Remove any existing event handlers to prevent conflicts
-  qrImgElement.onload = null;
-  qrImgElement.onerror = null;
-  
-  // Add error handling for QR image loading
-  qrImgElement.onerror = function() {
-    console.error('❌ Failed to load QR code from primary API');
-    console.error('❌ Failed URL was:', this.src);
-    
-    // Try alternative QR code API as fallback
-    const fallbackQrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(url)}&size=240&light=ffffff&dark=0a0a0f`;
-    console.log('🔄 Attempting fallback QR API:', fallbackQrUrl);
-    
-    // Reset error handler to avoid infinite loop
-    this.onerror = function() {
-      console.error('❌ All QR code APIs failed');
-      // Keep the placeholder visible with error message
-      qrPlaceholder.style.display = 'flex';
-      const qrText = qrPlaceholder.querySelector('.qr-text');
-      if (qrText) {
-        qrText.textContent = 'QR generation failed - Use room code above';
-        qrText.style.color = '#ff6b6b';
-      }
-      this.classList.add('hidden');
-    };
-    
-    // Try the fallback
-    this.src = fallbackQrUrl;
-  };
-  
-  // Add success handler
-  qrImgElement.onload = function() {
-    console.log('✅ QR code loaded successfully');
-    console.log('🖼️ Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
-    console.log('🔗 Loaded from URL:', this.src);
-    
-    // Show QR code and hide placeholder
-    this.classList.remove('hidden');
-    qrPlaceholder.style.display = 'none';
-    
-    // Double-check visibility after a brief delay
-    setTimeout(() => {
-      const isVisible = !this.classList.contains('hidden') && 
-                       this.style.display !== 'none' &&
-                       this.offsetWidth > 0 && 
-                       this.offsetHeight > 0;
-      console.log('🔍 QR code visibility check:', isVisible);
-      console.log('📏 QR element dimensions:', this.offsetWidth, 'x', this.offsetHeight);
-      console.log('📋 QR element classes:', this.className);
-      console.log('🎨 QR element computed style:', window.getComputedStyle(this).display);
-      
-      if (!isVisible) {
-        console.error('❌ QR code loaded but not visible - forcing display');
-        this.style.display = 'block';
-        this.style.visibility = 'visible';
-        this.classList.remove('hidden');
-      }
-    }, 200);
-  };
-  
-  // Set the QR code source
-  console.log('🚀 Setting QR image source...');
-  qrImgElement.src = qrApiUrl;
-  
-  console.log('📱 QR Code generation initiated for room:', code);
 }
 
-// Debug function to test QR generation manually
-window.testQR = function(roomCode = 'TEST123') {
-  console.log('🧪 Manual QR test initiated');
+// Fallback QR generation (simplified version of old method)
+function fallbackQRGeneration(roomId) {
+  console.log('🔄 Using fallback QR generation for:', roomId);
+  
+  const roomCodeEl = document.getElementById('roomCode');
+  const qrImg = document.getElementById('qrImg');
+  const qrPlaceholder = document.getElementById('qrPlaceholder');
+  
+  // At minimum, show the room code
+  if (roomCodeEl) {
+    roomCodeEl.textContent = roomId;
+    roomCodeEl.style.color = '#ffa500'; // Orange for fallback
+  }
+  
+  if (!qrImg || !qrPlaceholder) {
+    console.error('❌ QR elements not found for fallback');
+    return;
+  }
+  
+  const controllerUrl = `${location.origin}/controller.html?r=${roomId}`;
+  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(controllerUrl)}&bgcolor=ffffff&color=000000`;
+  
+  qrImg.onload = function() {
+    console.log('✅ Fallback QR loaded');
+    this.style.display = 'block';
+    this.style.width = '150px';
+    this.style.height = '150px';
+    this.classList.remove('hidden');
+    qrPlaceholder.style.display = 'none';
+  };
+  
+  qrImg.onerror = function() {
+    console.error('❌ Fallback QR failed');
+    qrPlaceholder.style.display = 'flex';
+    const qrText = qrPlaceholder.querySelector('.qr-text');
+    if (qrText) {
+      qrText.textContent = 'QR unavailable - Use room code above';
+      qrText.style.color = '#ff6b6b';
+    }
+  };
+  
+  qrImg.src = qrApiUrl;
+}
+
+// Backup QR generation - creates new container if needed
+function createBackupQR(code) {
+  console.log('🆘 CREATING BACKUP QR SYSTEM');
+  
+  // Remove any existing backup
+  const existingBackup = document.getElementById('backup-qr');
+  if (existingBackup) existingBackup.remove();
+  
+  const controllerUrl = `${location.origin}/controller.html?r=${code}`;
+  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(controllerUrl)}&bgcolor=ffffff&color=000000`;
+  
+  // Create new QR container
+  const backupContainer = document.createElement('div');
+  backupContainer.id = 'backup-qr';
+  backupContainer.innerHTML = `
+    <div style="
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      z-index: 10000;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    ">
+      <div style="color: #333; font-weight: bold; margin-bottom: 10px;">Room: ${code}</div>
+      <img id="backup-qr-img" style="display: block; width: 150px; height: 150px;" />
+      <div style="color: #666; font-size: 12px; margin-top: 5px;">Scan to join</div>
+      <button onclick="document.getElementById('backup-qr').remove()" 
+              style="position: absolute; top: 5px; right: 8px; background: none; border: none; font-size: 16px; cursor: pointer;">×</button>
+    </div>
+  `;
+  
+  document.body.appendChild(backupContainer);
+  
+  const backupImg = document.getElementById('backup-qr-img');
+  backupImg.onload = () => console.log('✅ BACKUP QR LOADED AND VISIBLE');
+  backupImg.onerror = () => console.error('❌ BACKUP QR FAILED');
+  backupImg.src = qrApiUrl;
+  
+  console.log('🆘 Backup QR created at top-right corner');
+}
+
+// Enhanced debug function
+window.testQR = function(roomCode = 'DEBUG123') {
+  console.log('🧪 === MANUAL QR TEST START ===');
+  
+  // Try original method
   generateQR(roomCode);
+  
+  // Try backup method after delay
+  setTimeout(() => {
+    console.log('🆘 Testing backup QR system...');
+    createBackupQR(roomCode);
+  }, 2000);
+  
+  // Also test direct image insertion
+  setTimeout(() => {
+    const testImg = document.createElement('img');
+    testImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=TEST&bgcolor=ffffff&color=000000';
+    testImg.style.position = 'fixed';
+    testImg.style.top = '10px';
+    testImg.style.left = '10px';
+    testImg.style.zIndex = '9999';
+    testImg.style.border = '2px solid green';
+    document.body.appendChild(testImg);
+    console.log('🟢 Added green test QR to top-left corner');
+  }, 3000);
 };
+
+// Debug DOM elements
+window.checkQRElements = function() {
+  console.log('🔍 === QR DOM ELEMENT CHECK ===');
+  
+  const qrImg = document.getElementById('qrImg');
+  const qrPlaceholder = document.getElementById('qrPlaceholder');
+  const qrContainer = document.querySelector('.qr-container');
+  const roomCodeEl = document.getElementById('roomCode');
+  const roomDisplay = document.querySelector('.room-display');
+  
+  console.log('📋 Element Status:');
+  console.log('  - qrImg:', !!qrImg, qrImg);
+  console.log('  - qrPlaceholder:', !!qrPlaceholder, qrPlaceholder);
+  console.log('  - qrContainer:', !!qrContainer, qrContainer);
+  console.log('  - roomCodeEl:', !!roomCodeEl, roomCodeEl);
+  console.log('  - roomDisplay:', !!roomDisplay, roomDisplay);
+  
+  if (roomDisplay) {
+    console.log('📦 Room Display HTML:', roomDisplay.innerHTML);
+  }
+  
+  // Check all elements with qr in their id or class
+  const allQRElements = document.querySelectorAll('[id*="qr"], [class*="qr"]');
+  console.log('🔎 All QR-related elements:', allQRElements);
+  
+  return {
+    qrImg,
+    qrPlaceholder, 
+    qrContainer,
+    roomCodeEl,
+    roomDisplay,
+    allQRElements
+  };
+};
+
+// Create QR elements if they don't exist
+window.createQRElements = function() {
+  console.log('🛠️ Creating missing QR elements...');
+  
+  let roomDisplay = document.querySelector('.room-display');
+  
+  // If room-display doesn't exist, find a suitable parent
+  if (!roomDisplay) {
+    const glassCard = document.querySelector('.glass-card');
+    const menuPanel = document.getElementById('menuPanel');
+    
+    if (glassCard) {
+      // Create room-display section
+      roomDisplay = document.createElement('div');
+      roomDisplay.className = 'room-display';
+      
+      // Insert after the game title
+      const gameTitle = glassCard.querySelector('.game-title');
+      if (gameTitle) {
+        gameTitle.insertAdjacentElement('afterend', roomDisplay);
+      } else {
+        glassCard.insertBefore(roomDisplay, glassCard.firstChild);
+      }
+      
+      console.log('✅ Created room-display container');
+    } else {
+      console.error('❌ Cannot find suitable parent for QR elements');
+      return false;
+    }
+  }
+  
+  // Create room code element if missing
+  let roomCodeEl = document.getElementById('roomCode');
+  if (!roomCodeEl) {
+    roomCodeEl = document.createElement('div');
+    roomCodeEl.id = 'roomCode';
+    roomCodeEl.className = 'room-code';
+    roomCodeEl.textContent = '------';
+    roomDisplay.appendChild(roomCodeEl);
+    console.log('✅ Created room-code element');
+  }
+  
+  // Create QR container if missing
+  let qrContainer = document.querySelector('.qr-container');
+  if (!qrContainer) {
+    qrContainer = document.createElement('div');
+    qrContainer.className = 'qr-container';
+    
+    // Create QR image
+    const qrImg = document.createElement('img');
+    qrImg.id = 'qrImg';
+    qrImg.className = 'qr-code hidden';
+    qrImg.alt = 'QR Code';
+    
+    // Create QR placeholder
+    const qrPlaceholder = document.createElement('div');
+    qrPlaceholder.id = 'qrPlaceholder';
+    qrPlaceholder.className = 'qr-placeholder';
+    qrPlaceholder.innerHTML = `
+      <div class="qr-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3,3H11V11H3V3M5,5V9H9V5H5M13,13H21V21H13V13M15,15V19H19V15H15M19,3H21V5H19V3M19,7V9H21V7H19M21,11H19V13H21V11M11,7H13V9H11V7M7,13V11H9V13H7M3,19V21H5V19H3M5,21H7V19H5V21Z" />
+        </svg>
+      </div>
+      <span class="qr-text">QR Code will appear here</span>
+    `;
+    
+    qrContainer.appendChild(qrImg);
+    qrContainer.appendChild(qrPlaceholder);
+    roomDisplay.appendChild(qrContainer);
+    
+    console.log('✅ Created QR container with image and placeholder');
+  }
+  
+  // Update the global references
+  window.roomCodeEl = roomCodeEl;
+  
+  console.log('🎯 QR Elements creation complete!');
+  return true;
+};
+
+// Force create room with manual code - UPDATED for new QR system
+window.forceRoom = function(roomCode) {
+  const testCode = roomCode || 'DEMO' + Math.random().toString(36).substr(2, 4).toUpperCase();
+  console.log('🔧 Force creating room with code:', testCode);
+  
+  // Set global room variable
+  currentRoom = testCode;
+  
+  // Use the new robust QR system
+  generateQR(testCode).then(() => {
+    console.log('✅ Force room created with robust QR system!');
+  }).catch((error) => {
+    console.error('❌ Force room QR failed:', error);
+    // At least show the room code
+    const roomCodeEl = document.getElementById('roomCode');
+    if (roomCodeEl) {
+      roomCodeEl.textContent = testCode;
+      roomCodeEl.style.color = '#00ff00'; // Green for manual
+    }
+  });
+};
+
+// Create a simple standalone QR code for testing
+window.showQR = function(roomCode = 'TEST123') {
+  console.log('🚀 Creating standalone QR code for:', roomCode);
+  
+  // Remove any existing test QR
+  const existing = document.getElementById('standalone-qr');
+  if (existing) existing.remove();
+  
+  const controllerUrl = `${location.origin}/controller.html?r=${roomCode}`;
+  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(controllerUrl)}&bgcolor=ffffff&color=000000`;
+  
+  // Create a floating QR container
+  const qrContainer = document.createElement('div');
+  qrContainer.id = 'standalone-qr';
+  qrContainer.innerHTML = `
+    <div style="
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      z-index: 10000;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    ">
+      <h3 style="margin: 0 0 15px 0; color: #333;">Room: ${roomCode}</h3>
+      <img src="${qrApiUrl}" style="display: block; width: 200px; height: 200px; border-radius: 8px;" />
+      <p style="margin: 15px 0 5px 0; color: #666; font-size: 14px;">Scan to join game</p>
+      <button onclick="document.getElementById('standalone-qr').remove()" 
+              style="
+                background: #ff4757;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 12px;
+                margin-top: 10px;
+              ">Close</button>
+    </div>
+  `;
+  
+  document.body.appendChild(qrContainer);
+  console.log('✅ Standalone QR code created and visible');
+};
+
+// Auto-fix QR elements on page load
+window.addEventListener('DOMContentLoaded', () => {
+  console.log('🔄 DOM loaded, checking QR elements...');
+  setTimeout(() => {
+    const elements = checkQRElements();
+    if (!elements.qrImg || !elements.qrPlaceholder) {
+      console.log('🔧 Auto-creating missing QR elements...');
+      createQRElements();
+    }
+  }, 1000);
+});
 
 // Display available connection methods to the user
 function displayConnectionMethods(methods) {

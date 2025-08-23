@@ -20,7 +20,11 @@
         <div class="room-display">
           <div class="room-code" id="roomCode">------</div>
           <div class="qr-container">
+            <!-- Primary QR method: Canvas -->
+            <canvas id="qrCanvas" style="display: none;"></canvas>
+            <!-- Fallback QR method: Image -->
             <img id="qrImg" class="qr-code hidden" alt="QR Code" />
+            <!-- Placeholder while loading -->
             <div class="qr-placeholder" id="qrPlaceholder">
               <div class="qr-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
@@ -120,6 +124,7 @@
   <audio id="audioContext" preload="none"></audio>
 
   <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/qr-utils.js"></script>
   <script src="/js/premium-tv.js"></script>
 </body>
 </html>
