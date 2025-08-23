@@ -2,12 +2,83 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
+const QRCode = require('qrcode');
 const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server, { cors: { origin: "*" }, pingInterval: 10000, pingTimeout: 5000 });
 const PORT = process.env.PORT || 3001; // Keep 3001 to avoid conflict with main server
 
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('trust proxy', true); // important on Render/behind proxies
+
+// ---- QR Code Generation Helper Functions ----
+function absoluteOrigin(req) {
+  // Respect Render/Proxy headers for HTTPS/WSS safety
+  const proto = req.get('x-forwarded-proto') || req.protocol || 'https';
+  const host = req.get('x-forwarded-host') || req.get('host');
+  return `${proto}://${host}`;
+}
+
+function makeJoinUrl(req, roomId) {
+  return `${absoluteOrigin(req)}/controller?room=${encodeURIComponent(roomId)}`;
+}
+
+// ---- QR Code Endpoints ----
+
+// PNG endpoint: plug straight into <img src>
+app.get('/api/qr/png', async (req, res) => {
+  try {
+    const roomId = String(req.query.roomId || '');
+    if (!roomId) return res.status(400).send('roomId required');
+    const size = Math.min(1024, Math.max(128, parseInt(req.query.sz) || 512));
+    const ec = (req.query.ec || 'M'); // L, M, Q, H
+
+    const url = makeJoinUrl(req, roomId);
+    const png = await QRCode.toBuffer(url, {
+      errorCorrectionLevel: ec,
+      margin: 1,
+      width: size,
+      color: { dark: '#111111', light: '#ffffff' }
+    });
+
+    res.set('Cache-Control', 'no-store');
+    res.type('png').send(png);
+  } catch (e) {
+    console.error('QR PNG error', e);
+    res.status(500).send('QR_PNG_FAILED');
+  }
+});
+
+// SVG endpoint: crisp vector, tiny payload
+app.get('/api/qr/svg', async (req, res) => {
+  try {
+    const roomId = String(req.query.roomId || '');
+    if (!roomId) return res.status(400).send('roomId required');
+    const ec = (req.query.ec || 'M');
+
+    const url = makeJoinUrl(req, roomId);
+    const svg = await QRCode.toString(url, {
+      type: 'svg',
+      errorCorrectionLevel: ec,
+      margin: 1,
+      color: { dark: '#111111', light: '#ffffff' }
+    });
+
+    res.set('Cache-Control', 'no-store');
+    res.type('image/svg+xml').send(svg);
+  } catch (e) {
+    console.error('QR SVG error', e);
+    res.status(500).send('QR_SVG_FAILED');
+  }
+});
+
+// Create room endpoint (for external room creation)
+app.post('/api/rooms', (req, res) => {
+  const roomId = hub.id; // Use existing hub room ID
+  const joinUrl = makeJoinUrl(req, roomId);
+  return res.json({ roomId, joinUrl });
+});
 
 // Serve controller.html at both /controller.html and /controller
 app.get('/controller', (req, res) => {

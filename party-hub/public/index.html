@@ -38,7 +38,7 @@
             <div class="stat-divider"></div>
             <div class="stat-item">
               <span class="stat-number" id="gamesPlayed">∞</span>
-              <span class="stat-label">Epic Moments</span>
+              <span class="stat-label">Games Played</span>
             </div>
           </div>
         </div>
@@ -48,34 +48,23 @@
       <div class="command-center">
         <div class="hologram-frame">
           <div class="connection-matrix">
-            <div class="room-beacon">
-              <div class="beacon-header">
-                <span class="beacon-title">Mission Code</span>
-                <div class="beacon-status active">
-                  <span class="status-dot"></span>
-                  <span class="status-text">ACTIVE</span>
+            <!-- Simple QR Code Display -->
+            <div class="simple-qr-card">
+              <div class="qr-header">
+                <h3>Room Code: <span id="roomCodeText">———</span></h3>
+                <button id="copyCodeBtn">Copy</button>
+              </div>
+              <div class="qr-display">
+                <img id="qrImage" alt="QR Code" style="width: 200px; height: 200px; border: 2px solid #6EFF9D;"/>
+                <div id="qrErrorState" style="display: none; color: red;">
+                  QR Failed - <button id="retryQR">Retry</button>
                 </div>
               </div>
-              <div class="room-code-display" id="code">
-                <span class="code-text">———</span>
-                <div class="code-scanner"></div>
+              <div class="qr-footer">
+                <p id="connectionStatus">Connecting...</p>
+                <button id="refreshQR">Refresh QR</button>
+                <button id="refreshSession">New Session</button>
               </div>
-            </div>
-            
-            <div class="quantum-portal">
-              <div class="portal-frame">
-                <img id="qr" class="portal-gateway" alt="QR Gateway"/>
-                <div class="portal-rings">
-                  <div class="ring ring-1"></div>
-                  <div class="ring ring-2"></div>
-                  <div class="ring ring-3"></div>
-                </div>
-              </div>
-              <p class="portal-instruction">Scan to Enter the Arena</p>
-              <button id="refreshHub" class="quantum-refresh" title="Reset Reality & Refresh Hub">
-                <span class="refresh-symbol">⚡</span>
-                <span class="refresh-label">Reset Reality</span>
-              </button>
             </div>
           </div>
         </div>
@@ -127,25 +116,22 @@
           </div>
         </div>
 
-        <!-- Epic Game Gateway -->
+        <!-- Epic Game Gateways -->
         <div class="gateway-chamber">
+          <!-- The Last Braincell Gateway -->
           <button class="epic-gateway" data-action="show-braincell">
             <div class="gateway-aura"></div>
             <div class="gateway-content">
               <div class="gateway-symbol">
                 <span class="symbol-core">🧠</span>
-                <div class="symbol-rings">
-                  <div class="symbol-ring ring-1"></div>
-                  <div class="symbol-ring ring-2"></div>
-                </div>
               </div>
               <div class="gateway-info">
                 <h3 class="gateway-title">The Last Braincell</h3>
-                <p class="gateway-desc">Enter the ultimate knowledge arena where minds clash and legends rise</p>
+                <p class="gateway-desc">Party games where minds clash and legends rise</p>
                 <div class="gateway-specs">
-                  <span class="spec-item">🏆 Multiple Arenas</span>
+                  <span class="spec-item">🎉 7 Party Modes</span>
                   <span class="spec-item">⚡ Real-time Battle</span>
-                  <span class="spec-item">🎯 Skill-based Scoring</span>
+                  <span class="spec-item">🏆 Skill-based</span>
                 </div>
               </div>
               <div class="gateway-access">
@@ -156,15 +142,29 @@
             <div class="gateway-energy"></div>
           </button>
           
-          <!-- Manual Arena Entry Button -->
-          <div class="manual-entry-controls">
-            <button id="manualEnterArena" class="arena-entry-btn" data-action="manual-enter-arena">
-              <div class="entry-pulse"></div>
-              <span class="entry-icon">⚔️</span>
-              <span class="entry-text">Enter Battle Arena</span>
-              <span class="entry-hint">Browse All Game Modes</span>
-            </button>
-          </div>
+          <!-- Love's Proving Ground Gateway -->
+          <button class="epic-gateway" data-action="show-couples">
+            <div class="gateway-aura romantic"></div>
+            <div class="gateway-content">
+              <div class="gateway-symbol">
+                <span class="symbol-core">💘</span>
+              </div>
+              <div class="gateway-info">
+                <h3 class="gateway-title">Love's Proving Ground</h3>
+                <p class="gateway-desc">Where hearts unite and bonds are tested</p>
+                <div class="gateway-specs">
+                  <span class="spec-item">💕 5 Bond Trials</span>
+                  <span class="spec-item">🤝 Teamwork</span>
+                  <span class="spec-item">💑 Couples Only</span>
+                </div>
+              </div>
+              <div class="gateway-access">
+                <span class="access-requirement">2 Soulmates</span>
+                <span class="access-arrow">▶</span>
+              </div>
+            </div>
+            <div class="gateway-energy romantic"></div>
+          </button>
         </div>
 
         <!-- Future Arenas -->
@@ -220,15 +220,15 @@
         </div>
 
         <div class="battlegrounds">
-          <!-- Party Battleground -->
+          <!-- The Last Braincell Games -->
           <div class="battleground-sector">
             <div class="sector-header">
               <div class="sector-emblem">
-                <span class="emblem-icon">🎉</span>
+                <span class="emblem-icon">🧠</span>
                 <div class="emblem-energy"></div>
               </div>
               <div class="sector-info">
-                <h3 class="sector-title">Party Legends Arena</h3>
+                <h3 class="sector-title">The Last Braincell</h3>
                 <p class="sector-desc">Where friends become legends through epic knowledge battles</p>
               </div>
               <div class="sector-meta">

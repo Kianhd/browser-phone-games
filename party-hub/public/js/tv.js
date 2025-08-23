@@ -1,11 +1,54 @@
 const socket = io();
-socket.emit('registerTV');
 
-// DOM Elements
-const codeEl = document.getElementById('code');
-const qrEl = document.getElementById('qr');
+// Initialize and register TV when ready
+function initializeTV() {
+  console.log('🔌 Initializing TV connection...');
+  initializePremiumElements();
+  socket.emit('registerTV');
+}
+
+// Ensure DOM is ready before registering TV
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔌 DOM ready, initializing TV...');
+    initializeTV();
+  });
+} else {
+  console.log('🔌 DOM already ready, initializing TV immediately...');
+  initializeTV();
+}
+
+// DOM Elements - Legacy and New Premium Card
+const codeEl = document.getElementById('code'); // Legacy support
 const plist = document.getElementById('plist');
 const playerCount = document.getElementById('playerCount');
+
+// Premium Mission Card Elements - with safety checks
+let roomCodeText, connectionStatus, qrImage, qrErrorState;
+let copyCodeBtn, refreshQRBtn, retryQRBtn, refreshSessionBtn;
+
+// Initialize elements when DOM is ready
+function initializePremiumElements() {
+  roomCodeText = document.getElementById('roomCodeText');
+  connectionStatus = document.getElementById('connectionStatus');
+  qrImage = document.getElementById('qrImage');
+  qrErrorState = document.getElementById('qrErrorState');
+  copyCodeBtn = document.getElementById('copyCodeBtn');
+  refreshQRBtn = document.getElementById('refreshQR');
+  retryQRBtn = document.getElementById('retryQR');
+  refreshSessionBtn = document.getElementById('refreshSession');
+  
+  console.log('🔍 Premium elements initialized:', {
+    roomCodeText: !!roomCodeText,
+    connectionStatus: !!connectionStatus,
+    qrImage: !!qrImage,
+    qrErrorState: !!qrErrorState,
+    copyCodeBtn: !!copyCodeBtn,
+    refreshQRBtn: !!refreshQRBtn,
+    retryQRBtn: !!retryQRBtn,
+    refreshSessionBtn: !!refreshSessionBtn
+  });
+}
 
 // UI Views
 const gameSelection = document.getElementById('gameSelection');
@@ -67,24 +110,187 @@ const gameInfo = {
   'couples.secret-sync': { title: 'Secret Sync', desc: 'Think alike to score big points' }
 };
 
-// QR Code generation
+// =====================================
+// FORTUNE 500 GRADE QR CODE SYSTEM
+// =====================================
+
+class PremiumQRManager {
+  constructor() {
+    this.retryCount = 0;
+    this.maxRetries = 3;
+    this.retryDelay = 1000;
+    this.currentCode = null;
+    this.fallbackServices = [
+      { name: 'QRServer', url: 'https://api.qrserver.com/v1/create-qr-code/?size=115x115&format=png&margin=8&data=' },
+      { name: 'Google Charts', url: 'https://chart.googleapis.com/chart?chs=115x115&cht=qr&chl=' }
+    ];
+  }
+
+  async generateQR(roomCode) {
+    console.log(`🎯 PremiumQRManager: generateQR called with roomCode: "${roomCode}"`);
+    
+    if (!roomCode) {
+      console.error('❌ PremiumQRManager: No room code provided');
+      this.showErrorState('No room code available');
+      return;
+    }
+
+    // Elements should be initialized by now, but double-check
+    if (!qrImage || !qrErrorState) {
+      console.error('❌ Critical: QR elements not found after initialization!', {
+        qrImage: !!qrImage,
+        qrErrorState: !!qrErrorState
+      });
+      return;
+    }
+
+    console.log(`🚀 Starting immediate QR generation for room code "${roomCode}"`);
+
+    this.currentCode = roomCode;
+    this.retryCount = 0;
+    this.hideErrorState();
+    
+    try {
+      await this.attemptQRGeneration(roomCode);
+      console.log('✅ QR generation completed successfully');
+    } catch (error) {
+      console.error('❌ PremiumQRManager: QR generation failed:', error);
+      this.showErrorState('QR generation failed');
+    }
+  }
+
+  async attemptQRGeneration(roomCode) {
+    const timestamp = Date.now();
+    const primaryURL = `/api/qr/png?roomId=${encodeURIComponent(roomCode)}&sz=115&v=${timestamp}`;
+    
+    console.log(`📡 Attempting server-side QR: ${primaryURL}`);
+    
+    try {
+      const success = await this.loadQRImage(primaryURL, 'Server');
+      if (success) {
+        this.updateConnectionStatus('QR Ready', 'success');
+        return;
+      }
+    } catch (error) {
+      console.warn('Server QR failed, trying fallbacks:', error);
+    }
+
+    // Try fallback services
+    await this.tryFallbackServices(roomCode);
+  }
+
+  async tryFallbackServices(roomCode) {
+    const controllerURL = `${location.origin}/controller?room=${roomCode}`;
+    
+    for (const service of this.fallbackServices) {
+      if (this.retryCount >= this.maxRetries) break;
+      
+      this.retryCount++;
+      const fallbackURL = service.url + encodeURIComponent(controllerURL);
+      
+      console.log(`🔄 Trying ${service.name} (attempt ${this.retryCount}):`, fallbackURL);
+      
+      try {
+        const success = await this.loadQRImage(fallbackURL, service.name);
+        if (success) {
+          this.updateConnectionStatus(`QR Ready (${service.name})`, 'success');
+          return;
+        }
+      } catch (error) {
+        console.warn(`${service.name} failed:`, error);
+        await this.delay(this.retryDelay);
+      }
+    }
+
+    // All attempts failed
+    this.showErrorState('All QR services failed');
+    this.updateConnectionStatus('QR Failed', 'error');
+  }
+
+  loadQRImage(url, source) {
+    return new Promise((resolve, reject) => {
+      console.log(`🔍 loadQRImage called - Source: ${source}, URL: ${url}`);
+      
+      if (!qrImage) {
+        console.error('❌ QR image element not found!');
+        reject(new Error('QR image element not found'));
+        return;
+      }
+
+      console.log('📷 QR image element found, creating new Image...');
+      const img = new Image();
+      
+      // Remove crossOrigin for local requests
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        console.log('🏠 Local URL detected, skipping crossOrigin');
+      } else {
+        img.crossOrigin = 'anonymous';
+        console.log('🌐 External URL detected, setting crossOrigin');
+      }
+      
+      const timeout = setTimeout(() => {
+        console.error(`⏱️ ${source} QR load timeout after 8 seconds`);
+        reject(new Error(`${source} QR load timeout`));
+      }, 8000);
+
+      img.onload = () => {
+        console.log(`🎉 ${source} Image onload fired - Size: ${img.width}x${img.height}`);
+        clearTimeout(timeout);
+        qrImage.src = url;
+        console.log(`✅ ${source} QR loaded successfully and set to qrImage`);
+        resolve(true);
+      };
+
+      img.onerror = (event) => {
+        console.error(`❌ ${source} Image onerror fired:`, event);
+        clearTimeout(timeout);
+        reject(new Error(`${source} QR load error`));
+      };
+
+      console.log(`🚀 Starting image load for ${source}...`);
+      img.src = url;
+    });
+  }
+
+  hideErrorState() {
+    if (qrErrorState) qrErrorState.style.display = 'none';
+    if (qrImage) qrImage.style.display = 'block';
+  }
+
+  showErrorState(message) {
+    if (qrImage) qrImage.style.display = 'none';
+    if (qrErrorState) {
+      qrErrorState.style.display = 'flex';
+      const errorText = qrErrorState.querySelector('.error-text');
+      if (errorText) errorText.textContent = message;
+    }
+  }
+
+  updateConnectionStatus(text, type = 'default') {
+    if (connectionStatus) {
+      connectionStatus.textContent = text;
+      connectionStatus.className = `stat-text ${type}`;
+    }
+  }
+
+  async retry() {
+    if (this.currentCode) {
+      console.log('🔄 Manual QR retry triggered');
+      await this.generateQR(this.currentCode);
+    }
+  }
+
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+}
+
+// Initialize Premium QR Manager
+const qrManager = new PremiumQRManager();
+
+// Legacy function for backward compatibility
 function generateQR(code) {
-  const controllerURL = `${location.origin}/controller`;
-  const qrData = `${controllerURL}?room=${code}`;
-  const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&format=png&margin=10&data=${encodeURIComponent(qrData)}`;
-  
-  // Add error handling for QR code
-  qrEl.onload = () => {
-    console.log('QR code loaded successfully');
-  };
-  qrEl.onerror = () => {
-    console.log('QR code failed to load, trying backup service');
-    // Backup QR service
-    const backupURL = `https://chart.googleapis.com/chart?chs=240x240&cht=qr&chl=${encodeURIComponent(qrData)}`;
-    qrEl.src = backupURL;
-  };
-  
-  qrEl.src = qrURL;
+  qrManager.generateQR(code);
 }
 
 // Player management
@@ -176,19 +382,50 @@ function updateGameControls() {
   gameControls.classList.remove('hidden');
 }
 
+// =====================================
+// PREMIUM CARD EVENT LISTENERS
+// =====================================
+
 // Event handlers
 document.addEventListener('DOMContentLoaded', () => {
-  // Main game card click
+  console.log('🚀 DOMContentLoaded fired - setting up event listeners...');
+  
+  // Premium card button listeners
+  if (copyCodeBtn) {
+    copyCodeBtn.addEventListener('click', copyRoomCode);
+  }
+  
+  if (refreshQRBtn) {
+    refreshQRBtn.addEventListener('click', () => {
+      if (hub?.code) {
+        qrManager.generateQR(hub.code);
+      }
+    });
+  }
+  
+  if (retryQRBtn) {
+    retryQRBtn.addEventListener('click', () => {
+      qrManager.retry();
+    });
+  }
+  
+  if (refreshSessionBtn) {
+    refreshSessionBtn.addEventListener('click', refreshHub);
+  }
+  // Main game card click - The Last Braincell
   document.querySelector('[data-action=\"show-braincell\"]')?.addEventListener('click', () => {
     showView('collection');
+    tvState.currentView = 'collection';
+    tvState.selectedCategory = 0; // Show party games
+    tvState.selectedGame = -1;
+    updateTVHighlight();
   });
   
-  // Manual arena entry button
-  document.querySelector('[data-action=\"manual-enter-arena\"]')?.addEventListener('click', () => {
-    console.log('Manual arena entry clicked');
+  // Love's Proving Ground click
+  document.querySelector('[data-action=\"show-couples\"]')?.addEventListener('click', () => {
     showView('collection');
     tvState.currentView = 'collection';
-    tvState.selectedCategory = 0;
+    tvState.selectedCategory = 1; // Show couples games
     tvState.selectedGame = -1;
     updateTVHighlight();
   });
@@ -250,21 +487,165 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// =====================================
+// PREMIUM CARD FUNCTIONS  
+// =====================================
+
+function updatePremiumCard(state) {
+  console.log('🔧 updatePremiumCard called with state:', {
+    code: state.code,
+    roomCodeText: !!roomCodeText
+  });
+  
+  // Ensure roomCodeText element is available (fallback initialization)
+  if (!roomCodeText) {
+    console.log('🔄 Re-initializing roomCodeText element...');
+    roomCodeText = document.getElementById('roomCodeText');
+  }
+  
+  // Update room code in premium card
+  if (roomCodeText && state.code) {
+    console.log('📝 Setting room code text to:', state.code);
+    roomCodeText.textContent = state.code;
+  } else if (roomCodeText) {
+    console.log('📝 No room code, showing placeholder');
+    roomCodeText.textContent = '———';
+  } else {
+    console.error('❌ roomCodeText element still not found after retry!');
+  }
+  
+  // Legacy support
+  if (codeEl) {
+    codeEl.textContent = state.code;
+  }
+  
+  // Generate QR code exactly like manual refresh
+  if (state.code) {
+    
+    // Ensure elements are properly initialized before QR generation
+    if (!qrImage || !roomCodeText) {
+      initializePremiumElements();
+    }
+    
+    // Check if elements are ready after initialization
+    const elementsReady = qrImage && roomCodeText && connectionStatus;
+    // Check element readiness
+    console.log('Elements ready:', {
+      qrImage: !!qrImage,
+      roomCodeText: !!roomCodeText,
+      connectionStatus: !!connectionStatus,
+      allReady: elementsReady
+    });
+    
+    if (elementsReady) {
+      // Generate QR immediately if elements are ready
+      qrManager.generateQR(state.code);
+      updateConnectionStatus('Connected', 'success');
+    } else {
+      // Wait a bit longer if elements still not ready
+      setTimeout(() => {
+        if (!qrImage) initializePremiumElements(); // One more try
+        qrManager.generateQR(state.code);
+        updateConnectionStatus('Connected', 'success');
+      }, 200);
+    }
+  } else {
+    updateConnectionStatus('Connecting...', 'loading');
+  }
+}
+
+function updateConnectionStatus(text, type = 'default') {
+  if (connectionStatus) {
+    connectionStatus.textContent = text;
+    connectionStatus.className = `stat-text ${type}`;
+  }
+}
+
+// Copy room code functionality
+async function copyRoomCode() {
+  if (!hub?.code) return;
+  
+  try {
+    await navigator.clipboard.writeText(hub.code);
+    showToast('Room code copied!', 'success');
+    
+    // Visual feedback
+    if (copyCodeBtn) {
+      copyCodeBtn.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        copyCodeBtn.style.transform = '';
+      }, 150);
+    }
+  } catch (error) {
+    console.error('Copy failed:', error);
+    showToast('Copy failed', 'error');
+  }
+}
+
+function showToast(message, type = 'info') {
+  const toast = document.createElement('div');
+  toast.className = `premium-toast ${type}`;
+  toast.textContent = message;
+  
+  // Add styles
+  Object.assign(toast.style, {
+    position: 'fixed',
+    top: '24px',
+    right: '24px',
+    background: type === 'success' ? 'rgba(110, 255, 157, 0.1)' : 'rgba(255, 107, 107, 0.1)',
+    border: type === 'success' ? '1px solid rgba(110, 255, 157, 0.3)' : '1px solid rgba(255, 107, 107, 0.3)',
+    color: type === 'success' ? '#6EFF9D' : '#ff6b6b',
+    padding: '12px 20px',
+    borderRadius: '12px',
+    fontSize: '14px',
+    fontWeight: '600',
+    zIndex: '10000',
+    backdropFilter: 'blur(12px)',
+    transform: 'translateY(-20px)',
+    opacity: '0',
+    transition: 'all 0.3s ease'
+  });
+  
+  document.body.appendChild(toast);
+  
+  // Animate in
+  requestAnimationFrame(() => {
+    toast.style.transform = 'translateY(0)';
+    toast.style.opacity = '1';
+  });
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    toast.style.transform = 'translateY(-20px)';
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
 // Socket event handlers
 socket.on('hubState', (state) => {
   const previousPlayerCount = hub ? hub.players.length : 0;
+  const isFirstLoad = !hub; // Track if this is the first hubState received
   hub = state;
   
-  console.log('TV hubState received:', {
+  console.log('Premium TV hubState received:', {
+    roomCode: state.code,
+    isFirstLoad,
     previousPlayerCount,
     currentPlayerCount: state.players.length,
     currentView: tvState.currentView,
-    shouldAutoAdvance: previousPlayerCount === 0 && state.players.length >= 1
+    shouldAutoAdvance: previousPlayerCount === 0 && state.players.length >= 1,
+    qrImageExists: !!document.getElementById('qrImage'),
+    elementsReady: {
+      roomCodeText: !!document.getElementById('roomCodeText'),
+      qrImage: !!document.getElementById('qrImage'),
+      qrErrorState: !!document.getElementById('qrErrorState')
+    }
   });
   
-  // Update room code and QR
-  codeEl.textContent = state.code;
-  generateQR(state.code);
+  
+  // Update premium mission card
+  updatePremiumCard(state);
   
   // Update players list
   updatePlayersList(state.players);
@@ -620,20 +1001,39 @@ document.getElementById('manualEnterArena')?.addEventListener('click', () => {
 });
 
 function refreshHub() {
-  // Show loading state
-  const refreshBtn = document.getElementById('refreshHub');
-  const originalText = refreshBtn?.innerHTML;
-  if (refreshBtn) {
-    refreshBtn.innerHTML = '<span class="refresh-symbol">⚡</span><span class="refresh-label">Resetting Reality...</span>';
-    refreshBtn.disabled = true;
+  console.log('🔄 Premium Hub Refresh initiated');
+  
+  // Show loading state on premium card
+  if (refreshSessionBtn) {
+    const originalContent = refreshSessionBtn.innerHTML;
+    refreshSessionBtn.innerHTML = `
+      <div class="btn-content">
+        <div class="loading-spinner" style="width: 16px; height: 16px; border-width: 2px;"></div>
+        <span class="btn-text">Refreshing...</span>
+      </div>
+    `;
+    refreshSessionBtn.disabled = true;
+    
+    // Restore button after delay
+    setTimeout(() => {
+      refreshSessionBtn.innerHTML = originalContent;
+      refreshSessionBtn.disabled = false;
+    }, 2000);
   }
   
-  // Reset room code display to loading state
-  codeEl.textContent = '———';
+  // Update premium card states
+  if (roomCodeText) {
+    roomCodeText.textContent = '———';
+  }
   
-  // Clear QR code temporarily
-  qrEl.src = '';
-  qrEl.alt = 'Generating new reality...';
+  // Legacy support
+  if (codeEl) {
+    codeEl.textContent = '———';
+  }
+  
+  // Clear QR error state
+  qrManager.hideErrorState();
+  updateConnectionStatus('Refreshing session...', 'loading');
   
   // Reset game state
   selectedGame = null;
@@ -652,16 +1052,13 @@ function refreshHub() {
   showView('selection');
   updateTVHighlight();
   
-  // Emit hub refresh to server (clears players and resets everything including new room code)
+  // Emit hub refresh to server
   socket.emit('refreshHub');
   
-  // Restore button after delay (the hubState event will handle updating codes)
+  // Show success toast
   setTimeout(() => {
-    if (refreshBtn) {
-      refreshBtn.innerHTML = originalText;
-      refreshBtn.disabled = false;
-    }
-  }, 1500);
+    showToast('Session refreshed successfully!', 'success');
+  }, 1000);
 }
 
 // Leave Game functionality for TV
@@ -694,7 +1091,8 @@ let tvState = {
   currentView: 'selection', // 'selection', 'collection', 'game'
   selectedCategory: 0, // For collection view
   selectedGame: -1, // For collection view
-  inGameControls: false
+  inGameControls: false,
+  selectedGateway: 0 // 0 = braincell, 1 = couples (for selection view)
 };
 
 // Get game cards dynamically from the actual DOM
@@ -712,9 +1110,11 @@ function updateTVHighlight() {
   document.querySelectorAll('.tv-highlighted').forEach(el => el.classList.remove('tv-highlighted'));
   
   if (tvState.currentView === 'selection') {
-    // Highlight the epic gateway
-    const epicGateway = document.querySelector('[data-action="show-braincell"]');
-    if (epicGateway) epicGateway.classList.add('tv-highlighted');
+    // Highlight the selected gateway
+    const gateways = document.querySelectorAll('.epic-gateway');
+    if (gateways[tvState.selectedGateway]) {
+      gateways[tvState.selectedGateway].classList.add('tv-highlighted');
+    }
   } else if (tvState.currentView === 'collection') {
     if (tvState.inGameControls) {
       // Highlight start button
@@ -754,14 +1154,18 @@ socket.on('tvNavigate', ({ action, data }) => {
 
 function handleTVNavigation(direction) {
   if (tvState.currentView === 'selection') {
-    if (direction === 'select') {
-      // Actually click the epic gateway
-      const epicGateway = document.querySelector('[data-action="show-braincell"]');
-      if (epicGateway) {
-        epicGateway.click();
-        tvState.currentView = 'collection';
-        tvState.selectedCategory = 0;
-        tvState.selectedGame = -1;
+    const gateways = document.querySelectorAll('.epic-gateway');
+    
+    if (direction === 'left' && tvState.selectedGateway > 0) {
+      tvState.selectedGateway--;
+      updateTVHighlight();
+    } else if (direction === 'right' && tvState.selectedGateway < gateways.length - 1) {
+      tvState.selectedGateway++;
+      updateTVHighlight();
+    } else if (direction === 'select') {
+      // Click the selected gateway
+      if (gateways[tvState.selectedGateway]) {
+        gateways[tvState.selectedGateway].click();
       }
     }
   } else if (tvState.currentView === 'collection') {
